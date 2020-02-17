@@ -1,0 +1,96 @@
+.prospect-table {
+  border-radius: 8px;
+  background-color: white;
+  height: 300px;
+  font-size: 14px;
+}
+
+.prospect-table-header {
+  background-color: #fafafb;
+  border-radius: 8px;
+  padding: 8px 24px;
+  color: #696974;
+}
+
+.prospect-table-row {
+  color: black;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.prospect-table-row-selected {
+  background-color: #f2f6f9;
+}
+
+.w-5 {
+  width: 5%;
+}
+
+.w-20 {
+  width: 20%;
+}
+
+.w-33 {
+  width: 33%;
+}
+
+.w-14 {
+  width: 14%;
+}
+
+.w-6 {
+  width: 6%;
+}
+
+.row-check {
+  margin-left: 0;
+  width: 17px;
+  height: 17px;
+}
+
+.prospect-new {
+  color: #3dd598;
+  background-color: #e9f9f3;
+  padding: 2px 5px;
+}
+
+.prospect-pending {
+  color: #fe964a;
+  background-color: #f3ece8;
+  padding: 2px 5px;
+}
+
+.prospect-cancel {
+  color: #fc7373;
+  background-color: #ffeeee;
+  padding: 2px 5px;
+}
+
+.prospect-pagination {
+  display: flex;
+  nav .pagination {
+    .page-item {
+      margin: 2px;
+      .page-link {
+        background-color: transparent;
+        border: none;
+        border-radius: 5px;
+        color: #696974;
+      }
+      &.active .page-link {
+        margin: 2px;
+        background-color: #084e8a;
+        border: none;
+        border-radius: 5px;
+        color: white;
+      }
+    }
+    .page-item.first-page .page-link, .page-item.last-page .page-link {
+      border: 1px solid;
+      border-color: #fafbfb;
+      background-color: white;
+    }
+
+  }
+}

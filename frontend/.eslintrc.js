@@ -22,9 +22,16 @@ module.exports = {
       jsx: true,
     },
   },
+
   rules: {
-    'prettier/prettier': ['error', prettierOptions],
-    'arrow-body-style': [2, 'as-needed'],
+    'react/no-array-index-key': 0,
+    'no-restricted-globals': 0,
+    'import/order': 0,
+    // 'prettier/prettier': ['error', prettierOptions],
+    'prettier/prettier': 0,
+    // 'arrow-body-style': [2, 'as-needed'],
+    'no-param-reassign': 0,
+    'arrow-body-style': 0,
     'class-methods-use-this': 0,
     'import/imports-first': 0,
     'import/newline-after-import': 0,
@@ -34,13 +41,17 @@ module.exports = {
     'import/no-unresolved': 2,
     'import/no-webpack-loader-syntax': 0,
     'import/prefer-default-export': 0,
-    indent: [
-      2,
-      2,
-      {
-        SwitchCase: 1,
-      },
-    ],
+    'consistent-return': 0,
+    camelcase: 0,
+    'no-plusplus': 0,
+    // indent: [
+    //   2,
+    //   2,
+    //   {
+    //     SwitchCase: 1,
+    //   },
+    // ],
+    indent: 0,
     'jsx-a11y/aria-props': 2,
     'jsx-a11y/heading-has-content': 0,
     'jsx-a11y/label-has-associated-control': [

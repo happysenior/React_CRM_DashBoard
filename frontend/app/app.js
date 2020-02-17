@@ -5,8 +5,8 @@
  * code.
  */
 
-// Needed for redux-saga es6 generator support
-import '@babel/polyfill';
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 
 // Import all the third party stuff
 import React from 'react';
@@ -15,8 +15,13 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
+import FontFaceObserver from 'fontfaceobserver';
+import { SnackbarProvider } from 'notistack';
 import { SECONDARY_BLUE_LIGHT } from 'utils/colors';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { loadState, saveState } from 'services/persist.service';
+import { throttle } from 'lodash';
+import 'bootstrap/dist/css/bootstrap.css';
 
 // Import root app
 import App from 'containers/App';
@@ -27,18 +32,36 @@ import LanguageProvider from 'containers/LanguageProvider';
 // Load the favicon and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
+import '!file-loader?name=[name].[ext]!./images/logo.png';
+import '!file-loader?name=[name].[ext]!./images/icon.png';
 import 'file-loader?name=.htaccess!./.htaccess';
-/* eslint-enable import/no-unresolved, import/extensions */
 
 import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
 
+// Observe loading of Lato
+const openSansObserver = new FontFaceObserver('Lato', {});
+
+// When Lato is loaded, add a font-family using Lato to the body
+openSansObserver.load().then(() => {
+  document.body.classList.add('fontLoaded');
+});
+
 // Create redux store with history
-const initialState = {};
+const initialState = loadState();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
+
+store.subscribe(
+  throttle(() => {
+    saveState({
+      language: store.getState().language,
+      global: store.getState().global,
+    });
+  }, 1000),
+);
 
 const theme = createMuiTheme({
   palette: {
@@ -47,7 +70,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    userNextVariants: true,
+    useNextVariants: true,
     suppressDeprecationWarnings: true,
   },
 });
@@ -57,9 +80,11 @@ const render = messages => {
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
         <LanguageProvider messages={messages}>
-          <ConnectedRouter history={history}>
-            <App />
-          </ConnectedRouter>
+          <SnackbarProvider className="snackbar__provider">
+            <ConnectedRouter history={history}>
+              <App />
+            </ConnectedRouter>
+          </SnackbarProvider>
         </LanguageProvider>
       </MuiThemeProvider>
     </Provider>,

@@ -1,29 +1,15 @@
+# Don't check auto-generated stuff into git
+coverage
+build
+node_modules
+stats.json
+.vscode/
+jsconfig.json
+.github
+yarn-error.log
+.github/
+
 # Cruft
 .DS_Store
 npm-debug.log
 .idea
-
-
-# Don't check auto-generated stuff into git
-coverage
-build
-stats.json
-
-# Logs
-*.log
-logs/
-yarn.lock
-package-lock.json
-
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# dotenv environment variables file
-.env
-
-# Visual Studio Code
-.vscode
-
-# Build directory
-dist

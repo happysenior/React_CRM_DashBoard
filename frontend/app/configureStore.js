@@ -55,5 +55,6 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
+  // const persistor = persistStore(store);
   return store;
 }
