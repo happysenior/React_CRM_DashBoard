@@ -19,6 +19,7 @@
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/runtime": "^7.8.4",
+    "babel-plugin-dotenv-import": "^2.0.0",
     "babel-polyfill": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
@@ -36,6 +37,7 @@
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.3",
+    "terminal-link": "^2.1.1",
     "winston": "^3.2.1"
   },
   "nodemonConfig": {
