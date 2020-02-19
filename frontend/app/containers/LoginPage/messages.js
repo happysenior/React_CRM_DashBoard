@@ -21,6 +21,10 @@ export default defineMessages({
     id: `${scope}.emailError`,
     defaultMessage: 'Please enter the correct email',
   },
+  emailNotFound: {
+    id: `${scope}.emailNotFound`,
+    defaultMessage: 'The email does not exist',
+  },
   passwordError: {
     id: `${scope}.passwordError`,
     defaultMessage: 'Please enter the correct access code',

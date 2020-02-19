@@ -1,7 +1,7 @@
 {
-  "name": "bankapplication",
+  "name": "real_estate_crm",
   "version": "1.1.0",
-  "description": "Electronic Payment System",
+  "description": "real estate crm frontend",
   "repository": {
     "type": "git",
     "url": "git://github.com/pietrzakadrian/bank"
@@ -80,6 +80,7 @@
     "fontfaceobserver": "2.1.0",
     "history": "4.9.0",
     "hoist-non-react-statics": "3.3.0",
+    "http-status-codes": "^1.4.0",
     "immer": "3.1.3",
     "intl": "1.2.5",
     "invariant": "2.2.4",

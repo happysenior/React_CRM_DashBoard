@@ -3,7 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { FormattedMessage } from 'react-intl';
 import { push } from 'connected-react-router';
 import messages from 'containers/LoginPage/messages';
-
+import * as HttpStatus from 'http-status-codes';
 // Import Utils
 import ApiEndpoint from 'utils/api';
 import request from 'utils/request';
@@ -18,7 +18,7 @@ import {
 } from 'containers/LoginPage/selectors';
 
 // Import Actions
-import { loginAction, loginSuccessAction, loginErrorAction } from './actions';
+import { loginSuccessAction, loginErrorAction } from './actions';
 import { loggedInAction } from 'containers/App/actions';
 
 // Import Constants
@@ -36,44 +36,41 @@ export function* loginAttempt({ payload: { email, password } }) {
   const auth = new AuthService();
   const requestURL = api.getLoginPath();
   try {
-    // const response = yield call(request, requestURL, {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email,
-    //     password,
-    //   }),
-    // });
-    // if (!response.success)
-    //   return yield put(
-    //     loginErrorAction(<FormattedMessage {...messages.passwordError} />),
-    //   );
-    // auth.setToken(response.token);
-
-    const dummyUser = {
-      id: 'dummy',
-      avatar: '',
-      email: 'user@test.com',
-      password: 'password',
-      token: 'token_23412342423',
-    };
-    if (email === dummyUser.email && password === dummyUser.password) {
-      auth.setToken(dummyUser.token);
-      yield put(
-        loginSuccessAction({ id: dummyUser.id, avatar: dummyUser.avatar }),
+    const response = yield call(request, requestURL, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    if (!response.success)
+      return yield put(
+        loginErrorAction(<FormattedMessage {...messages.passwordError} />),
       );
-      yield put(loggedInAction());
-      yield put(push('/prospects'));
+    auth.setToken(response.token);
+
+    yield put(loginSuccessAction());
+    yield put(loggedInAction());
+    yield put(push('/prospects'));
+  } catch (error) {
+    console.log(error.response.status);
+    if (error.response.status === HttpStatus.NOT_FOUND) {
+      yield put(
+        loginErrorAction(<FormattedMessage {...messages.emailNotFound} />),
+      );
+    } else if (error.response.status === HttpStatus.UNAUTHORIZED) {
+      yield put(
+        loginErrorAction(<FormattedMessage {...messages.passwordError} />),
+      );
     } else {
       yield put(
-        loginErrorAction(<FormattedMessage {...messages.loginAttemptError} />),
+        loginErrorAction(<FormattedMessage {...messages.serverError} />),
       );
     }
-  } catch (error) {
-    yield put(loginErrorAction(<FormattedMessage {...messages.serverError} />));
   }
 }
 

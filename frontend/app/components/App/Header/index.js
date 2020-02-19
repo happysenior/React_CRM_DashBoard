@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { useInjectSaga } from 'utils/injectSaga';
+
+import saga from 'containers/App/saga';
+
 import styled from 'styled-components';
 import { PRIMARY_LIGHT, PRIMARY_BLUE_DARK } from 'utils/colors';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
@@ -6,20 +12,17 @@ import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {
-  Collapse,
   Navbar,
-  NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   Dropdown,
   DropdownItem,
-  NavbarText,
 } from 'reactstrap';
+
+import { logoutAction } from 'containers/App/actions';
 
 const EmptyLogo = styled.div`
   width: 40px;
@@ -40,11 +43,19 @@ const styles = {
   },
 };
 
+const key = 'appPage';
+
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dispatch = useDispatch();
+  const toggle = () => setDropdownOpen(prevState => !prevState);
 
-  const toggle = () => setIsOpen(!isOpen);
+  useInjectSaga({ key, saga });
 
+  const handleLogout = () => {
+    dispatch(logoutAction());
+  };
+  
   return (
     <div style={styles.header}>
       <Navbar expand="md">
@@ -94,12 +105,13 @@ export default function Header() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <Dropdown>
+              <Dropdown isOpen={dropdownOpen} toggle={toggle}>
                 <DropdownToggle className="bg-transparent border-0">
-                  <AccountCircleIcon fontSize='large'/>
+                  <AccountCircleIcon fontSize="large" />
                 </DropdownToggle>
-                <DropdownMenu>
-                  <div></div>
+                <DropdownMenu right>
+                  <DropdownItem onClick={handleLogout}>Log out</DropdownItem>
+                  <DropdownItem divider />
                 </DropdownMenu>
               </Dropdown>
             </NavItem>

@@ -25,6 +25,30 @@ import ProspectPage from 'containers/ProspectPage/Loadable';
 // Import Components
 import Header from 'components/App/Header';
 
+import AuthService from 'services/auth.service';
+
+function PrivateRoute({ children, ...rest }) {
+  const auth = new AuthService();
+  const isLogged = auth.loggedIn();
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isLogged ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
 export default function App() {
   return (
     <Fragment>
@@ -33,7 +57,9 @@ export default function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
         <Route path="/404" component={NotFoundPage} />
-        <Route path="/prospects" component={ProspectPage} />
+        <PrivateRoute path="/prospects">
+          <ProspectPage />
+        </PrivateRoute>
       </Switch>
       <GlobalStyle />
     </Fragment>

@@ -10,7 +10,6 @@ import { IS_LOGGED } from './constants';
 export function* handleLogged() {
   const auth = new AuthService();
   const isLogged = auth.loggedIn();
-
   if (isLogged) {
     return yield put(push('/prospects'));
   }

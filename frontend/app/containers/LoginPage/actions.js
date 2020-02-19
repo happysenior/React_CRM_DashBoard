@@ -18,13 +18,9 @@ export function isLoggedAction() {
   };
 }
 
-export function loginSuccessAction({ id, avatar }) {
+export function loginSuccessAction() {
   return {
     type: LOGIN_SUCCESS,
-    payload: {
-      id,
-      avatar,
-    },
   };
 }
 

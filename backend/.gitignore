@@ -17,4 +17,4 @@ dist-server/
 .vscode
 
 # Build directory
-dist
+dist-server

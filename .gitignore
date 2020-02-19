@@ -1,9 +1,12 @@
 # Don't check auto-generated stuff into git
 coverage
 build
+dist-server
 node_modules
 stats.json
 
+
+.env
 # Cruft
 .DS_Store
 npm-debug.log

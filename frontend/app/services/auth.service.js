@@ -4,11 +4,10 @@ export default class AuthService {
   loggedIn = () => {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
-  }
+  };
 
-  isTokenExpired = (token) => {
+  isTokenExpired = token => {
     try {
-      return true;
       const decoded = decode(token);
       if (decoded.exp < Date.now() / 1000) {
         return true;
@@ -17,22 +16,22 @@ export default class AuthService {
     } catch (err) {
       return false;
     }
-  }
+  };
 
-  setToken = (idToken) => {
+  setToken = idToken => {
     return localStorage.setItem('token', idToken);
-  }
+  };
 
   unsetToken = () => {
     return localStorage.removeItem('token');
-  }
+  };
 
   getToken = () => {
     return localStorage.getItem('token');
-  }
+  };
 
   getUserId = () => {
     const token = decode(this.getToken());
     return token.id;
-  }
+  };
 }
