@@ -6,12 +6,11 @@ import reducer from './reducer';
 import saga from './saga';
 
 import Header from 'components/App/Header';
-import MenuHeader from 'components/App/MenuHeader';
-import ProspectList from 'components/App/ProspectList';
+import ImportCSVForm from 'components/App/ImportCSVForm';
 
-const key = 'prospectPage';
+const key = 'importCSVPage';
 
-export default function ProspectPage(props) {
+export default function ImportCSVPage(props) {
   
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -19,8 +18,7 @@ export default function ProspectPage(props) {
   return (
     <Fragment>
       <Header />
-      <MenuHeader />
-      <ProspectList />
+      <ImportCSVForm />
     </Fragment>
   );
 }

@@ -9,13 +9,6 @@ import ApiEndpoint from 'utils/api';
 // Import Services
 import AuthService from 'services/auth.service';
 
-// Import Selectors
-import {
-  makeNotificationCountSelector,
-  makeIsNewMessagesSelector,
-} from 'containers/App/selectors';
-import { makeSelectLocale } from 'containers/LanguageProvider/selectors';
-
 // Import Actions
 import {
   logoutErrorAction,

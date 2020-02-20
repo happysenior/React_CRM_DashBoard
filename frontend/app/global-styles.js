@@ -4,6 +4,8 @@ import {
   PRIMARY_BLUE_LIGHT,
   PRIMARY_LIGHT,
   PRIMARY_GREY,
+  PRIMARY_DARK,
+  PRIMARY_BORDER_GREY,
 } from 'utils/colors';
 import {
   TABLET_VIEWPORT_WIDTH,
@@ -11,6 +13,7 @@ import {
 } from 'utils/rwd';
 
 const GlobalStyle = createGlobalStyle`
+  
   @font-face {
     font-family: "Poppins-Regular";
     src: local("Popins-Regular"),
@@ -22,7 +25,6 @@ const GlobalStyle = createGlobalStyle`
     src: local("Popins-Bold"),
       url(../assets/font/Poppins/Poppins-Bold.ttf) format("truetype");
   }
-
   html,
   body {
     height: 100%;
@@ -45,6 +47,16 @@ const GlobalStyle = createGlobalStyle`
         padding: 7px 11px!important;
       }
     }
+  }
+
+  $page-title-font-size: 22px;
+
+  .help-text {
+    color: ${PRIMARY_BORDER_GREY};
+  }
+
+  .title-text {
+    color: ${PRIMARY_DARK};
   }
 
   #app {

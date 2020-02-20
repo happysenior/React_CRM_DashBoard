@@ -57,7 +57,6 @@ export function* loginAttempt({ payload: { email, password } }) {
     yield put(loggedInAction());
     yield put(push('/prospects'));
   } catch (error) {
-    console.log(error.response.status);
     if (error.response.status === HttpStatus.NOT_FOUND) {
       yield put(
         loginErrorAction(<FormattedMessage {...messages.emailNotFound} />),
