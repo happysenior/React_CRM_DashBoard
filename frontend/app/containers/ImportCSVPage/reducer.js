@@ -5,24 +5,27 @@
  */
 import produce from 'immer';
 import { LOCATION_CHANGE } from 'connected-react-router';
-import { GO_SEND_BROADCAST } from './constants';
+import { SUBMIT_END, CSV_SUBMIT } from './constants';
 
 export const initialState = {
-  csv: null,
   error: '',
-  isLoading: false,
+  isSubmitting: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const importCSVPageReducer = produce((draft, action) => {
   switch (action.type) {
-    case GO_SEND_BROADCAST:
+    case CSV_SUBMIT:
       draft.error = '';
-      draft.isLoading = false;
+      draft.isSubmitting = true;
+      break;
+    case SUBMIT_END:
+      draft.error = '';
+      draft.isSubmitting = false;
       break;
     case LOCATION_CHANGE:
       draft.error = '';
-      draft.isLoading = false;
+      draft.isSubmitting = false;
       break;
   }
 }, initialState);

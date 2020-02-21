@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import { PRIMARY_BLUE_DARK } from 'utils/colors';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import PersonIcon from '@material-ui/icons/Person';
+import ClearIcon from '@material-ui/icons/Clear';
+import { useDropzone } from 'react-dropzone';
 import {
   Card,
   Button,
@@ -20,6 +23,35 @@ const styles = {
 };
 
 const SelectCSV = props => {
+  const [csvFile, setCsvFile] = useState(null);
+  const [step, setStep] = useState(0);
+
+  const onDrop = useCallback(acceptedFiles => {
+    const selectedFile = acceptedFiles[0];
+    const fileName = selectedFile.name;
+    const extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+    if (!extension || extension !== 'csv') {
+      return;
+    }
+    props.setCsvFile(selectedFile);
+    setCsvFile(selectedFile);
+    setStep(prevState => prevState + 1);
+  }, []);
+
+  const cancelFileSelect = e => {
+    setCsvFile(null);
+    setStep(prevState => prevState - 1);
+    e.stopPropagation();
+  };
+
+  const clickTerm = e => {
+    const checked = e.target.checked;
+    if (checked) setStep(prevState => prevState + 1);
+    else setStep(prevState => prevState - 1);
+    return true;
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
   return (
     <Card className="border-0">
       <CardHeader className="primary-background border-0">
@@ -35,13 +67,27 @@ const SelectCSV = props => {
             <Label for="selectCSV" className="font-weight-bold">
               Prospects
             </Label>
-            <div className="drag-drop-area">
-              <NoteAddIcon fontSize="large"></NoteAddIcon>
-              <br />
-              <div className="help-text">
-                Drag and drop or choose a file to upload your contacts.
-              </div>
-              <div className="help-text">Acceptable file types: CSV</div>
+            <div className="drag-drop-area" {...getRootProps()}>
+              <input {...getInputProps()} type="file" accept=".csv" />
+              {!csvFile ? (
+                <Fragment>
+                  <NoteAddIcon fontSize="large"></NoteAddIcon>
+                  <br />
+                  <div className="help-text">
+                    Drag and drop or choose a file to upload your contacts.
+                  </div>
+                  <div className="help-text">Acceptable file types: CSV</div>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <ClearIcon
+                    className="file-select-cancel"
+                    onClick={cancelFileSelect}
+                  />
+                  <PersonIcon fontSize="large"></PersonIcon>
+                  <div>{csvFile.name}</div>
+                </Fragment>
+              )}
             </div>
           </FormGroup>
           <FormGroup>
@@ -86,14 +132,15 @@ const SelectCSV = props => {
             </Label>
             <FormGroup check>
               <Label for="termCheck">
-                <Input id="termCheck" type="checkbox" /> I agree to the terms
-                and conditions
+                <Input id="termCheck" type="checkbox" onClick={clickTerm} /> I
+                agree to the terms and conditions
               </Label>
             </FormGroup>
           </FormGroup>
 
           <Button
             className="float-right"
+            disabled={(() => step < 2)()}
             style={styles.controlButton}
             onClick={e => {
               props.goNextStep();

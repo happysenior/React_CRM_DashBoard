@@ -5,7 +5,7 @@ import { initialState } from './reducer';
  * Direct selector to the loginPage state domain
  */
 
-const selectLoginPageDomain = state => state.loginPage || initialState;
+const selectImportCSVPageDomain = state => state.importCSV || initialState;
 
 /**
  * Other specific selectors
@@ -13,28 +13,24 @@ const selectLoginPageDomain = state => state.loginPage || initialState;
 
 const makeErrorSelector = () =>
   createSelector(
-    selectLoginPageDomain,
+    selectImportCSVPageDomain,
     substate => substate.error,
   );
 
-const makeIsLoadingSelector = () =>
+const makeIsSubmittingSelector = () =>
   createSelector(
-    selectLoginPageDomain,
+    selectImportCSVPageDomain,
     substate => substate.isLoading,
   );
 
-/**
- * Default selector used by LoginPage
- */
-
-const makeSelectLoginPage = () =>
+const makeSelectImportCSVPage = () =>
   createSelector(
-    selectLoginPageDomain,
+    selectImportCSVPageDomain,
     substate => substate,
   );
 
-export default makeSelectLoginPage;
+export default makeSelectImportCSVPage;
 export {
   makeErrorSelector,
-  makeIsLoadingSelector,
+  makeIsSubmittingSelector,
 };

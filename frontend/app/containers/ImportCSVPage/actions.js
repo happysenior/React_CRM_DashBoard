@@ -4,10 +4,20 @@
  *
  */
 
-import { GO_SEND_BROADCAST } from './constants';
+import { CSV_SUBMIT, SUBMIT_END } from './constants';
 
-export function goSendBroadcastAction() {
+export function csvSubmitAction({ csvFile, match }) {
   return {
-    type: GO_SEND_BROADCAST,
+    type: CSV_SUBMIT,
+    payload: {
+      csvFile,
+      match,
+    },
+  };
+}
+
+export function submitEndAction() {
+  return {
+    type: SUBMIT_END,
   };
 }

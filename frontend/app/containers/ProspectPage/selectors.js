@@ -5,7 +5,7 @@ import { initialState } from './reducer';
  * Direct selector to the loginPage state domain
  */
 
-const selectLoginPageDomain = state => state.loginPage || initialState;
+const selectProspectPageDomain = state => state.prospectPage || initialState;
 
 /**
  * Other specific selectors
@@ -13,13 +13,13 @@ const selectLoginPageDomain = state => state.loginPage || initialState;
 
 const makeErrorSelector = () =>
   createSelector(
-    selectLoginPageDomain,
+    selectProspectPageDomain,
     substate => substate.error,
   );
 
 const makeIsLoadingSelector = () =>
   createSelector(
-    selectLoginPageDomain,
+    selectProspectPageDomain,
     substate => substate.isLoading,
   );
 
@@ -27,13 +27,13 @@ const makeIsLoadingSelector = () =>
  * Default selector used by LoginPage
  */
 
-const makeSelectLoginPage = () =>
+const makeSelectProspectPage = () =>
   createSelector(
-    selectLoginPageDomain,
+    selectProspectPageDomain,
     substate => substate,
   );
 
-export default makeSelectLoginPage;
+export default makeSelectProspectPage;
 export {
   makeErrorSelector,
   makeIsLoadingSelector,

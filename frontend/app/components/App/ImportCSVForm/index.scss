@@ -34,6 +34,12 @@ $PRIMARY_BACKGROUND: #fafafb;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 15px;
+}
+
+.file-select-cancel {
+  justify-self: self-end;
+  align-self: flex-end;
 }
 
 .w-15 {

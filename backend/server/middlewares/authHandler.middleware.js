@@ -15,21 +15,23 @@ function generateToken(user) {
 }
 
 function authorization(req, res, next) {
+  console.log(req.headers);
+  console.log(req.body);
   var token = req.headers["authorization"];
   if (token && token.startsWith("Bearer ")) token = token.substring(7);
-
+  console.log(token);
   if (token) {
     jwt.verify(token, config.auth.secretKey, function(err, decoded) {
+      console.log(decoded);
       if (err) {
-        // api.error(res, "Token consistency error", "401");
-        api.error(res, err.message, "401");
+        res.status(401).end();
       } else {
         req.userId = decoded.id;
         return next();
       }
     });
   } else {
-    api.error(res, "Token not provided", "401");
+    res.status(401).end();
   }
 }
 

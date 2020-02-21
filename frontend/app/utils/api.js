@@ -1,10 +1,10 @@
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = 'http://localhost:8000';
 const AUTH_PATH = '/api/auth';
 const USERS_PATH = '/api/users';
 const BILLS_PATH = '/api/bills';
 const TRANSACTIONS_PATH = '/api/transactions';
 const CURRENCY_PATH = '/api/currency';
-const ADDITIONALS_PATH = '/api/additionals';
+const PROSPECTS_PATH = '/api/prospects';
 
 export default class ApiEndpoint {
   getBasePath = () => {
@@ -93,5 +93,9 @@ export default class ApiEndpoint {
 
   getIsMessagePath = () => {
     return `${BASE_URL}${ADDITIONALS_PATH}/messages/isMessage`;
+  };
+
+  getCSVSubmitPath = () => {
+    return `${BASE_URL}${PROSPECTS_PATH}/import`;
   };
 }
