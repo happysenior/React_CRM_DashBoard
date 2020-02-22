@@ -17,12 +17,7 @@ import AuthService from 'services/auth.service';
 
 // Import Constants
 
-import {
-  GO_SEND_BROADCAST,
-  GO_IMPORT_CSV,
-  LOAD_PROSPECTS,
-  GO_CONVERSATION,
-} from './constants';
+import { GO_SEND_BROADCAST, GO_IMPORT_CSV, LOAD_PROSPECTS } from './constants';
 
 export function* goSendBroadcast() {
   const auth = new AuthService();
@@ -36,13 +31,6 @@ export function* goImportCSV() {
   const isLogged = auth.loggedIn();
 
   if (isLogged) return yield put(push('/prospects/import'));
-}
-
-export function* goConversation({ payload: { prospectId } }) {
-  const auth = new AuthService();
-  const isLogged = auth.loggedIn();
-
-  if (isLogged) return yield put(push(`/conversations/${prospectId}`));
 }
 
 export function* loadProspects() {
@@ -65,7 +53,8 @@ export function* loadProspects() {
       }),
     });
 
-    if (response.prospects) yield put(push('/prospects'));
+    if(response.prospects)
+    yield put(push('/prospects'));
   } catch (error) {
     console.log(error);
   }
@@ -75,5 +64,4 @@ export default function* prospectPageSaga() {
   yield takeLatest(GO_SEND_BROADCAST, goSendBroadcast);
   yield takeLatest(GO_IMPORT_CSV, goImportCSV);
   yield takeLatest(LOAD_PROSPECTS, loadProspects);
-  yield takeLatest(GO_CONVERSATION, goConversation);
 }

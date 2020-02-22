@@ -1,7 +1,6 @@
 .prospect-table {
   border-radius: 8px;
   background-color: white;
-  height: 300px;
   font-size: 14px;
 }
 
@@ -17,10 +16,10 @@
   padding: 10px 24px;
   border-radius: 8px;
   font-weight: 500;
-}
-
-.prospect-table-row-selected {
-  background-color: #f2f6f9;
+  &:hover {
+    background-color: #f2f6f9;
+    cursor: pointer;
+  }
 }
 
 .w-5 {
@@ -86,11 +85,11 @@
         color: white;
       }
     }
-    .page-item.first-page .page-link, .page-item.last-page .page-link {
+    .page-item.first-page .page-link,
+    .page-item.last-page .page-link {
       border: 1px solid;
       border-color: #fafbfb;
       background-color: white;
     }
-
   }
 }

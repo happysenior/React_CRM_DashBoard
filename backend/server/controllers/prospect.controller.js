@@ -77,4 +77,21 @@ prospectRouter
     }
   );
 
+prospectRouter
+  .route("/read")
+  .post(
+    [
+      check("filter").exists({ checkNull: false }),
+      check("searchKey").exists({ checkNull: false })
+    ],
+    async (req, res, next) => {
+      try {
+        const prospects = await Prospect.find({});
+        res.status(200).json({ success: true, prospects });
+      } catch (error) {
+        console.log(error);
+        res.status(500).end();
+      }
+    }
+  );
 export default prospectRouter;

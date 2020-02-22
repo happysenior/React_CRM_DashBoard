@@ -98,4 +98,8 @@ export default class ApiEndpoint {
   getCSVSubmitPath = () => {
     return `${BASE_URL}${PROSPECTS_PATH}/import`;
   };
+
+  getLoadProspectsPath = () => {
+    return `${BASE_URL}${PROSPECTS_PATH}/read`;
+  };
 }

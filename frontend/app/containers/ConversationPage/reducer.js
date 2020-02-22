@@ -10,7 +10,6 @@ import {
   GO_IMPORT_CSV,
   LOAD_PROSPECTS,
   SELECT_PROSPECTS,
-  GO_CONVERSATION,
 } from './constants';
 
 export const initialState = {
@@ -28,10 +27,6 @@ const prospectPageReducer = produce((draft, action) => {
       draft.isLoading = false;
       break;
     case GO_IMPORT_CSV:
-      draft.error = '';
-      draft.isLoading = false;
-      break;
-    case GO_CONVERSATION:
       draft.error = '';
       draft.isLoading = false;
       break;

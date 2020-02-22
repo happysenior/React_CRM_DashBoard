@@ -23,6 +23,8 @@ import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import ProspectPage from 'containers/ProspectPage/Loadable';
 import ImportCSVPage from 'containers/ImportCSVPage/Loadable';
+import ConversationPage from 'containers/ConversationPage/Loadable';
+
 // Import Components
 import Header from 'components/App/Header';
 
@@ -58,13 +60,13 @@ export default function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
         <Route path="/404" component={NotFoundPage} />
-        <PrivateRoute path="/prospects/import">
-          <ImportCSVPage />
-        </PrivateRoute>
+        <PrivateRoute path="/prospects/import" component={ImportCSVPage} />
 
-        <PrivateRoute path="/prospects">
-          <ProspectPage />
-        </PrivateRoute>
+        <PrivateRoute path="/prospects" component={ProspectPage} />
+        <PrivateRoute
+          path="/conversations/:id"
+          component={ConversationPage}
+        ></PrivateRoute>
       </Switch>
       <GlobalStyle />
     </Fragment>

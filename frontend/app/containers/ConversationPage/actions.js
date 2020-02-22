@@ -10,7 +10,6 @@ import {
   LOAD_PROSPECTS,
   LOAD_PROSPECTS_SUCCESS,
   SELECT_PROSPECTS,
-  GO_CONVERSATION,
 } from './constants';
 
 export function goSendBroadcastAction() {
@@ -45,15 +44,6 @@ export function selectProspectsAction(prospectIds) {
     type: SELECT_PROSPECTS,
     payload: {
       prospectIds,
-    },
-  };
-}
-
-export function goConversationAction(prospectId) {
-  return {
-    type: GO_CONVERSATION,
-    payload: {
-      prospectId,
     },
   };
 }

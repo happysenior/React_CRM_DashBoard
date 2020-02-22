@@ -15,11 +15,8 @@ function generateToken(user) {
 }
 
 function authorization(req, res, next) {
-  console.log(req.headers);
-  console.log(req.body);
   var token = req.headers["authorization"];
   if (token && token.startsWith("Bearer ")) token = token.substring(7);
-  console.log(token);
   if (token) {
     jwt.verify(token, config.auth.secretKey, function(err, decoded) {
       console.log(decoded);

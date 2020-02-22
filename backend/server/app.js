@@ -3,8 +3,9 @@ import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import routes from "./routes";
+import bodyParser from "body-parser";
 
+import routes from "./routes";
 
 const app = express();
 

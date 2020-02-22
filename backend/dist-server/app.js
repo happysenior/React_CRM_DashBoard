@@ -17,6 +17,8 @@ var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
 var _morgan = _interopRequireDefault(require("morgan"));
 
+var _bodyParser = _interopRequireDefault(require("body-parser"));
+
 var _routes = _interopRequireDefault(require("./routes"));
 
 var app = (0, _express["default"])();
