@@ -5,6 +5,7 @@ const BILLS_PATH = '/api/bills';
 const TRANSACTIONS_PATH = '/api/transactions';
 const CURRENCY_PATH = '/api/currency';
 const PROSPECTS_PATH = '/api/prospects';
+const CONVERSATION_PATH = '/api/conversations';
 
 export default class ApiEndpoint {
   getBasePath = () => {
@@ -101,5 +102,21 @@ export default class ApiEndpoint {
 
   getLoadProspectsPath = () => {
     return `${BASE_URL}${PROSPECTS_PATH}/read`;
+  };
+
+  getLoadConversationListPath = () => {
+    return `${BASE_URL}${CONVERSATION_PATH}/list`;
+  };
+
+  getLoadConversationChatPath = prospectId => {
+    return `${BASE_URL}${CONVERSATION_PATH}/chat/${prospectId}`;
+  };
+
+  getLoadConversationProspectPath = prospectId => {
+    return `${BASE_URL}${CONVERSATION_PATH}/prospect/${prospectId}`;
+  };
+
+  getSendMessagePath = prospectId => {
+    return `${BASE_URL}${CONVERSATION_PATH}/message/${prospectId}`;
   };
 }

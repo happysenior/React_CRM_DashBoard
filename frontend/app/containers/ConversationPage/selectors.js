@@ -5,7 +5,8 @@ import { initialState } from './reducer';
  * Direct selector to the loginPage state domain
  */
 
-const selectProspectPageDomain = state => state.prospectPage || initialState;
+const selectConversationPageDomain = state =>
+  state.conversationPage || initialState;
 
 /**
  * Other specific selectors
@@ -13,28 +14,52 @@ const selectProspectPageDomain = state => state.prospectPage || initialState;
 
 const makeErrorSelector = () =>
   createSelector(
-    selectProspectPageDomain,
+    selectConversationPageDomain,
     substate => substate.error,
   );
 
 const makeIsLoadingSelector = () =>
   createSelector(
-    selectProspectPageDomain,
+    selectConversationPageDomain,
     substate => substate.isLoading,
   );
 
-/**
- * Default selector used by LoginPage
- */
-
-const makeSelectProspectPage = () =>
+const makeListSelector = () =>
   createSelector(
-    selectProspectPageDomain,
+    selectConversationPageDomain,
+    substate => substate.list,
+  );
+
+const makeChatSelector = () =>
+  createSelector(
+    selectConversationPageDomain,
+    substate => substate.chat,
+  );
+
+const makeProspectSelector = () =>
+  createSelector(
+    selectConversationPageDomain,
+    substate => substate.prospect,
+  );
+
+const makeSelectedProspectIdSelector = () =>
+  createSelector(
+    selectConversationPageDomain,
+    substate => substate.selectedProspectId,
+  );
+
+const makeSelectConversationPage = () =>
+  createSelector(
+    selectConversationPageDomain,
     substate => substate,
   );
 
-export default makeSelectProspectPage;
+export default makeSelectConversationPage;
 export {
   makeErrorSelector,
   makeIsLoadingSelector,
+  makeListSelector,
+  makeChatSelector,
+  makeProspectSelector,
+  makeSelectedProspectIdSelector,
 };

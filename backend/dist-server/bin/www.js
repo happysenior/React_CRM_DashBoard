@@ -35,6 +35,7 @@ var log = console.log;
 var connection = connect();
 connection.on("error", console.log).on("disconnected", connect).once("open", listen);
 var server;
+var port;
 
 function listen() {
   log((0, _chalk["default"])(_templateObject(), _config["default"].db.host));
@@ -42,7 +43,7 @@ function listen() {
    * Get port from environment and store in Express.
    */
 
-  var port = normalizePort(process.env.PORT || "8000");
+  port = normalizePort(process.env.PORT || "8000");
 
   _app["default"].set("port", port);
   /**

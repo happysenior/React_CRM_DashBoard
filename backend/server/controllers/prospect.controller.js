@@ -94,4 +94,17 @@ prospectRouter
       }
     }
   );
+
+prospectRouter.route("/:id").get(async (req, res, next) => {
+  try {
+    const prospect = await Prospect.findById(req.params.id);
+    res.send({
+      success: true,
+      prospect
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
 export default prospectRouter;

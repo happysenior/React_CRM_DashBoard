@@ -19,6 +19,7 @@
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/runtime": "^7.8.4",
+    "@signalwire/node": "^2.3.2",
     "babel-plugin-dotenv-import": "^2.0.0",
     "babel-polyfill": "^6.26.0",
     "bcryptjs": "^2.4.3",

@@ -12,3 +12,5 @@ export const IS_LOGGED_ERROR = 'app/App/IS_LOGGED_ERROR';
 export const LOGOUT = 'app/App/LOGOUT';
 export const LOGOUT_SUCCESS = 'app/App/LOGOUT_SUCCESS';
 export const LOGOUT_ERROR = 'app/App/LOGOUT_ERROR';
+
+export const GO_PROSPECT = 'app/App/go_prospect';

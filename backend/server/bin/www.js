@@ -19,6 +19,7 @@ connection
   .once("open", listen);
 
 var server;
+var port;
 
 function listen() {
   log(chalk`{green.bold Connected to } {yellow ${config.db.host}}`);
@@ -27,7 +28,7 @@ function listen() {
    * Get port from environment and store in Express.
    */
 
-  var port = normalizePort(process.env.PORT || "8000");
+  port = normalizePort(process.env.PORT || "8000");
   app.set("port", port);
 
   /**

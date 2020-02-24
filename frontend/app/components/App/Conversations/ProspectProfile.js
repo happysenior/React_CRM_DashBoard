@@ -36,10 +36,7 @@ const ProspectProfile = props => {
   // const [campaign, setCampaign] = useState('');
   // const [status, setStatus] = useState('');
   // const [donotcall, setDonotcall] = useState(false);
-  const name = 'Alex';
-  const email = 'test@user.com';
-  const phone = '2424233';
-  const status = 'NEW';
+
   const [state, setState] = React.useState({
     donotcall: false,
   });
@@ -50,12 +47,14 @@ const ProspectProfile = props => {
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
   };
-  return (
+
+  const profile = props.prospect ? props.prospect.profile : null;
+  return profile ? (
     <ProspectProfileWrapper>
       <ProfileFieldWrapper>
         <ProfileFieldLabel>Name</ProfileFieldLabel>
         <EditableLabel
-          text={name}
+          text={`${profile.firstName} ${profile.lastName}`}
           labelClassName="profile-label"
           inputClassName="profile-input"
           inputMaxLength={50}
@@ -67,7 +66,7 @@ const ProspectProfile = props => {
       <ProfileFieldWrapper>
         <ProfileFieldLabel>Email</ProfileFieldLabel>
         <EditableLabel
-          text={email}
+          text={profile.email || ''}
           labelClassName="profile-label"
           inputClassName="profile-input"
           inputMaxLength={50}
@@ -79,7 +78,7 @@ const ProspectProfile = props => {
       <ProfileFieldWrapper>
         <ProfileFieldLabel>Phone</ProfileFieldLabel>
         <EditableLabel
-          text={phone}
+          text={profile.phone || ''}
           labelClassName="profile-label"
           inputClassName="profile-input"
           inputMaxLength={50}
@@ -103,7 +102,7 @@ const ProspectProfile = props => {
       <ProfileFieldWrapper>
         <ProfileFieldLabel>Status</ProfileFieldLabel>
         <EditableLabel
-          text={status}
+          text={profile.status || ''}
           labelClassName="profile-label"
           inputClassName="profile-input"
           inputMaxLength={50}
@@ -127,7 +126,7 @@ const ProspectProfile = props => {
         />
       </ProfileFieldWrapper>
     </ProspectProfileWrapper>
-  );
+  ) : null;
 };
 
 export default ProspectProfile;

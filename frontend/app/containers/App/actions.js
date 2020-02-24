@@ -12,8 +12,8 @@ import {
   LOGOUT,
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
+  GO_PROSPECT,
 } from './constants';
-
 
 /**
  * Check user is logged, this action starts the request saga
@@ -68,7 +68,7 @@ export function loggedInAction() {
  * @return {object} An action object with a type of LOGOUT
  */
 export function logoutAction() {
-  console.log("second step")
+  console.log('second step');
   return {
     type: LOGOUT,
   };
@@ -96,5 +96,11 @@ export function logoutErrorAction(error) {
   return {
     type: LOGOUT_ERROR,
     error,
+  };
+}
+
+export function goProspectAction() {
+  return {
+    type: GO_PROSPECT,
   };
 }

@@ -180,3 +180,11 @@
   padding-right: 10px;
   align-self: flex-end;
 }
+
+.selected-prospect {
+  background-color: rgba(12, 119, 248, 0.1);
+}
+
+.no-selected-prospect {
+  background-color: inherit;
+}

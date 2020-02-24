@@ -12,6 +12,7 @@ import {
   LOGOUT,
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
+  GO_PROSPECT,
 } from './constants';
 
 export const initialState = {
@@ -40,6 +41,9 @@ const appPageReducer = produce((draft, action) => {
       draft.isLogged = false;
       break;
     case LOGOUT_ERROR:
+      draft.error = '';
+      break;
+    case GO_PROSPECT:
       draft.error = '';
       break;
   }

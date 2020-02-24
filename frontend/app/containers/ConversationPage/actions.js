@@ -5,45 +5,85 @@
  */
 
 import {
-  GO_SEND_BROADCAST,
-  GO_IMPORT_CSV,
-  LOAD_PROSPECTS,
-  LOAD_PROSPECTS_SUCCESS,
-  SELECT_PROSPECTS,
+  LOAD_LIST,
+  LOAD_CHAT,
+  LOAD_PROSPECT,
+  LOAD_LIST_SUCCESS,
+  LOAD_CHAT_SUCCESS,
+  LOAD_PROSPECT_SUCCESS,
+  SELECT_PROSPECT,
+  SELECT_PROSPECT_SUCCESS,
+  SEND_MESSAGE,
+  SEND_MESSAGE_SUCCESS,
 } from './constants';
 
-export function goSendBroadcastAction() {
+export function loadListAction() {
   return {
-    type: GO_SEND_BROADCAST,
+    type: LOAD_LIST,
   };
 }
 
-export function goImportCSVAction() {
+export function loadListSuccessAction(list) {
   return {
-    type: GO_IMPORT_CSV,
-  };
-}
-
-export function loadProspectsAction() {
-  return {
-    type: LOAD_PROSPECTS,
-  };
-}
-
-export function loadProspectsSuccessAction(prospects) {
-  return {
-    type: LOAD_PROSPECTS_SUCCESS,
+    type: LOAD_LIST_SUCCESS,
     payload: {
-      prospects,
+      list,
     },
   };
 }
 
-export function selectProspectsAction(prospectIds) {
+export function loadChatAction() {
   return {
-    type: SELECT_PROSPECTS,
+    type: LOAD_CHAT,
+  };
+}
+
+export function loadChatSuccessAction(chat) {
+  return {
+    type: LOAD_CHAT_SUCCESS,
     payload: {
-      prospectIds,
+      chat,
+    },
+  };
+}
+export function loadProspectAction() {
+  return {
+    type: LOAD_PROSPECT,
+  };
+}
+
+export function loadProspectSuccessAction(prospect) {
+  return {
+    type: LOAD_PROSPECT_SUCCESS,
+    payload: {
+      prospect,
+    },
+  };
+}
+
+export function selectProspectAction(prospectId) {
+  return {
+    type: SELECT_PROSPECT,
+    payload: {
+      prospectId,
+    },
+  };
+}
+
+export function selectProspectSuccessAction(selectedProspectId) {
+  return {
+    type: SELECT_PROSPECT_SUCCESS,
+    payload: {
+      selectedProspectId,
+    },
+  };
+}
+
+export function sendMessageAction(message) {
+  return {
+    type: SEND_MESSAGE,
+    payload: {
+      message,
     },
   };
 }

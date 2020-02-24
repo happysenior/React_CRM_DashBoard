@@ -22,7 +22,6 @@ const ConversationListItemWrapper = styled.div`
   grid-template-areas:
     'avatar name date'
     'avatar message badge';
-  background-color: rgba(12, 119, 248, 0.1);
   padding: 16px;
   gap: 0px 16px;
 `;
@@ -55,18 +54,35 @@ const ConversationSubTitle = styled.div`
 `;
 
 const ConversationsList = props => {
-  const name = 'AC';
   return (
     <ListWrapper>
       <MarginTop30Wrapper>
-        <ConversationListItemWrapper>
-          <ProspectAvatar name={name} size={'40px'} color={'#3399CC'} />
-          <ConversationTitle>Adam becker</ConversationTitle>
-          <ConversationTime>12:30 AM</ConversationTime>
-          <ConversationSubTitle>
-            https://b.contactsmarter.com/p/QSRzJKtyy5Pccu2EBpnQPc
-          </ConversationSubTitle>
-        </ConversationListItemWrapper>
+        {props.list
+          ? props.list.map((item, index) => {
+              const className =
+                item.prospect._id === props.prospectId
+                  ? 'selected-prospect'
+                  : 'no-selected-prospect';
+              return (
+                <ConversationListItemWrapper
+                  className={className}
+                  key={`${item._id}_${item.prospect._id}`}
+                  onClick={() => props.goConversation(item.prospect._id)}
+                >
+                  <ProspectAvatar
+                    firstName={item.prospect.firstName}
+                    lastName={item.prospect.lastName}
+                    uid={item.prospect._id}
+                    size={'40px'}
+                    color={'#3399CC'}
+                  />
+                  <ConversationTitle>{`${item.prospect.firstName} ${item.prospect.lastName}`}</ConversationTitle>
+                  <ConversationTime>{item.createdAt}</ConversationTime>
+                  <ConversationSubTitle>{item.message}</ConversationSubTitle>
+                </ConversationListItemWrapper>
+              );
+            })
+          : null}
       </MarginTop30Wrapper>
     </ListWrapper>
   );

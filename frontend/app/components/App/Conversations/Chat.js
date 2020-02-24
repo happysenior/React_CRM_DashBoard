@@ -6,17 +6,21 @@ import ConversationMessageWrapper from './ConversationMessageWrapper';
 import ComposeMessage from './ComposeMessage';
 
 const Chat = props => {
-  const firstName = 'firstName';
-  const lastName = 'lastName';
   return (
     <ChatWrapper>
       <ChatHeaderWrapper>
-        <div>{firstName + ' ' + lastName}</div>
+        <div>
+          {props.prospect
+            ? props.prospect.profile.firstName +
+              ' ' +
+              props.prospect.profile.lastName
+            : null}
+        </div>
       </ChatHeaderWrapper>
       <ConversationMessageWrapper>
-        <ConversationMessages />
+        <ConversationMessages chat={props.chat} prospect={props.prospect} />
       </ConversationMessageWrapper>
-      <ComposeMessage />
+      <ComposeMessage sendMessage={props.sendMessage} />
     </ChatWrapper>
   );
 };

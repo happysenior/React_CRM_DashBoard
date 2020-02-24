@@ -7,7 +7,8 @@ const ProspectSchema = new Schema(
     firstName: { type: String, default: "" },
     lastName: { type: String, default: "" },
     phone: { type: String, default: "" },
-    status: { type: String, default: "NEW" }
+    status: { type: String, default: "NEW" },
+    chatted: { type: Boolean, default: false }
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );

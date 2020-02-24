@@ -6,15 +6,21 @@
 import produce from 'immer';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import {
-  GO_SEND_BROADCAST,
-  GO_IMPORT_CSV,
-  LOAD_PROSPECTS,
-  SELECT_PROSPECTS,
+  LOAD_LIST,
+  LOAD_CHAT,
+  LOAD_PROSPECT,
+  LOAD_LIST_SUCCESS,
+  LOAD_CHAT_SUCCESS,
+  LOAD_PROSPECT_SUCCESS,
+  SELECT_PROSPECT,
+  SELECT_PROSPECT_SUCCESS,
 } from './constants';
 
 export const initialState = {
-  prospects: [],
-  selectedProspectIds: [],
+  list: [],
+  chat: [],
+  prospect: null,
+  selectedProspectId: null,
   error: '',
   isLoading: false,
 };
@@ -22,30 +28,35 @@ export const initialState = {
 /* eslint-disable default-case, no-param-reassign */
 const prospectPageReducer = produce((draft, action) => {
   switch (action.type) {
-    case GO_SEND_BROADCAST:
+    case LOAD_LIST:
       draft.error = '';
+      draft.isLoading = true;
+      break;
+    case LOAD_CHAT:
+      draft.error = '';
+      draft.isLoading = true;
+      break;
+    case LOAD_PROSPECT:
+      draft.isLoading = true;
+      break;
+    case LOAD_LIST_SUCCESS:
+      draft.list = action.payload.list;
       draft.isLoading = false;
       break;
-    case GO_IMPORT_CSV:
-      draft.error = '';
+    case LOAD_CHAT_SUCCESS:
+      draft.chat = action.payload.chat;
       draft.isLoading = false;
+    case LOAD_PROSPECT_SUCCESS:
+      draft.isLoading = false;
+      draft.prospect = action.payload.prospect;
       break;
-    case LOAD_PROSPECTS:
-      draft.isLoading = true;
-    case LOAD_PROSPECTS_SUCCESS:
-      draft.isLoading = true;
-      draft.prospects = action.payload.prospects;
+    case SELECT_PROSPECT:
+      // draft.selectedProspectId = action.payload.selectedProspectId;
       break;
-    case SELECT_PROSPECTS:
-      let prospectIds = action.payload.prospectIds;
-      let selectedProspectIds = prospectIds.concat(selectedProspectIds);
-      let draftSelectedProspectIds = draft.selectedProspectIds;
-      draft.selectedProspectIds = selectedProspectIds.filter(item => {
-        const belongToFirst = draftSelectedProspectIds.includes(item);
-        const belongToSecond = prospectIds.includes(item);
-        if (belongToFirst === belongToSecond) return false;
-        else return true;
-      });
+    case SELECT_PROSPECT_SUCCESS:
+      draft.selectedProspectId = action.payload.selectedProspectId;
+      break;
+
     case LOCATION_CHANGE:
       draft.error = '';
       draft.isLoading = false;

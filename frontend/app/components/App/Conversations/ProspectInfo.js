@@ -37,7 +37,7 @@ export default function ProspectInfo(props) {
       <ProspectInfoHeader>Prospect Information</ProspectInfoHeader>
       <div>
         <ProspectSectionWrapper>
-          <ProspectProfile />
+          <ProspectProfile prospect={props.prospect} />
         </ProspectSectionWrapper>
       </div>
     </ProspectInfoWrapper>

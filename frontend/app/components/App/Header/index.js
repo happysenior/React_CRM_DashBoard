@@ -22,7 +22,8 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-import { logoutAction } from 'containers/App/actions';
+import './index.scss';
+import { logoutAction, goProspectAction } from 'containers/App/actions';
 
 const EmptyLogo = styled.div`
   width: 40px;
@@ -55,7 +56,11 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(logoutAction());
   };
-  
+
+  const handleGoProspect = () => {
+    console.log('heree');
+    dispatch(goProspectAction());
+  };
   return (
     <div style={styles.header}>
       <Navbar expand="md">
@@ -66,9 +71,11 @@ export default function Header() {
           </div>
         </NavLink>
         <div className="d-flex justify-content-center h-100 w-50 ">
-          <Nav className="mr-auto ">
+          <Nav className="mr-auto cursor-point">
             <NavItem>
-              <NavLink to="/prospects">Prospects</NavLink>
+              <NavLink to="/prospects" onClick={handleGoProspect}>
+                Prospects
+              </NavLink>
             </NavItem>
             <NavItem>
               <NavLink to="/pipline">Pipline</NavLink>

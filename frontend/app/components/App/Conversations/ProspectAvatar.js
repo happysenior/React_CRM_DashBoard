@@ -6,7 +6,6 @@ const ProspectAvatarWrapper = styled.div`
   width: 40px;
   height: 40px;
   user-select: none;
-  background-color: rgb(73, 242, 202);
   font-size: 14px;
   font-weight: 600;
   display: flex;
@@ -18,15 +17,28 @@ const ProspectAvatarWrapper = styled.div`
   border-radius: 50%;
 `;
 
+const colors = [
+  '#49F2CA',
+  '#E36CDC',
+  '#00B3FF',
+  '#FF977C',
+  '#87F8A9',
+  '#00DCF9',
+];
 const ProspectAvatar = props => {
+  const name = props.firstName.charAt(0) + props.lastName.charAt(0);
+  let index = 0;
+  for (let i = 0; i < props.uid.length; i++) {
+    index = (index * 16 + props.uid.charCodeAt(i)) % 6;
+  }
+
   const style = {
     width: props.size,
     height: props.size,
-    backgroundColor: props.color,
+    backgroundColor: colors[index],
   };
-  return (
-    <ProspectAvatarWrapper style={style}>{props.name}</ProspectAvatarWrapper>
-  );
+  
+  return <ProspectAvatarWrapper style={style}>{name}</ProspectAvatarWrapper>;
 };
 
 export default ProspectAvatar;

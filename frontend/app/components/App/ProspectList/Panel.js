@@ -34,7 +34,7 @@ export default function Panel(props) {
                   <div className="w-14">
                     <span className={className}>{prospect.status}</span>
                   </div>
-                  <div className="w-14">10 days ago</div>
+                  <div className="w-14">1 day ago</div>
                   <div className="w-6"></div>
                 </div>
               );
