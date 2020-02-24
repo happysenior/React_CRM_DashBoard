@@ -24,6 +24,7 @@ const ComposeMessage = props => {
     method: 'text',
     emailCls: 'tab-no-selected',
     textCls: 'tab-selected',
+    renderCount: 0,
   });
 
   const selectEmail = () => {
@@ -50,6 +51,7 @@ const ComposeMessage = props => {
 
   const handleSendMessage = e => {
     props.sendMessage(state.message);
+    setState({ ...state, renderCount: state.renderCount + 1 });
   };
 
   return (

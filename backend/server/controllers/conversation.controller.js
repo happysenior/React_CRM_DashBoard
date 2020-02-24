@@ -6,10 +6,12 @@ import Prospect from "../models/prospect";
 import { RestClient } from "@signalwire/node";
 import Mongoose, { Schema } from "mongoose";
 
+import config from "../config/config";
+
 const client = new RestClient(
-  "3c150da3-23da-4589-b800-b3167ae01849",
-  "PT0216da18454bf91caed2d084e54021ad1f1e9629e3081b26",
-  { signalwireSpaceUrl: "realestate-test.signalwire.com" }
+  config.signalwire.projectId,
+  config.signalwire.token,
+  { signalwireSpaceUrl: config.signalwire.space }
 );
 
 const conversationRouter = Router();
@@ -68,6 +70,24 @@ conversationRouter
         prospect: Mongoose.Types.ObjectId(req.params.prospectId)
       });
       await conversation.save();
+      const prospect = await Prospect.findById(req.params.prospectId);
+      
+      console.log(prospect);
+      // client.messages
+      //   .create({
+      //     from: config.signalwire.messagingNumber,
+      //     body: "It isn't spam!",
+      //     to: "+2108900560"
+      //   })
+      //   .then(message => console.log(message))
+      //   .then(() => {
+      //     res.send({
+      //       success: true,
+      //       conversation
+      //     });
+      //   })
+      //   .done();
+      // console.log(config);
       res.send({
         success: true,
         conversation

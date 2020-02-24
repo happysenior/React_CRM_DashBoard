@@ -1,5 +1,5 @@
 const isTestEnvironment = process.env.NODE_ENV === "test";
-import { 
+import {
   APP_HOST,
   APP_PORT,
   DB_HOST,
@@ -15,7 +15,11 @@ import {
   TEST_DB_USERNAME,
   LOGGING_DIR,
   LOGGING_LEVEL,
-  SECRET_KEY
+  SECRET_KEY,
+  SIGNALWIRE_SPACE,
+  SIGNALWIRE_PROJECT_ID,
+  SIGNALWIRE_TOKEN,
+  SIGNALWIRE_MESSAGING_NUMBER
 } from "@env";
 
 export default {
@@ -23,9 +27,7 @@ export default {
   version: "1.0",
   host: APP_HOST || "127.0.0.1",
   environment: process.env.NODE_ENV || "development",
-  port:
-    (isTestEnvironment ? TEST_APP_PORT : APP_PORT) ||
-    "8000",
+  port: (isTestEnvironment ? TEST_APP_PORT : APP_PORT) || "8000",
   pagination: {
     page: 1,
     maxRows: 20
@@ -36,16 +38,18 @@ export default {
   db: {
     host: isTestEnvironment ? TEST_DB_HOST : DB_HOST,
     port: isTestEnvironment ? TEST_DB_PORT : DB_PORT,
-    username: isTestEnvironment
-      ? TEST_DB_USERNAME
-      : DB_USERNAME,
-    password: isTestEnvironment
-      ? TEST_DB_PASSWORD
-      : DB_PASSWORD,
+    username: isTestEnvironment ? TEST_DB_USERNAME : DB_USERNAME,
+    password: isTestEnvironment ? TEST_DB_PASSWORD : DB_PASSWORD,
     database: isTestEnvironment ? TEST_DB_NAME : DB_NAME
   },
   logging: {
     dir: LOGGING_DIR || "logs",
     level: LOGGING_LEVEL || "debug"
+  },
+  signalwire: {
+    space: SIGNALWIRE_SPACE,
+    token: SIGNALWIRE_TOKEN,
+    projectId: SIGNALWIRE_PROJECT_ID,
+    messagingNumber: SIGNALWIRE_MESSAGING_NUMBER
   }
 };

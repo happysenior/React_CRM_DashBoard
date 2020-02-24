@@ -19,7 +19,6 @@ function authorization(req, res, next) {
   if (token && token.startsWith("Bearer ")) token = token.substring(7);
   if (token) {
     jwt.verify(token, config.auth.secretKey, function(err, decoded) {
-      console.log(decoded);
       if (err) {
         res.status(401).end();
       } else {
