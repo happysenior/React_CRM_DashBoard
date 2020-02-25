@@ -15,9 +15,9 @@ var _logout = _interopRequireDefault(require("./controllers/logout.controller"))
 
 var _prospect = _interopRequireDefault(require("./controllers/prospect.controller"));
 
-var _messaging = _interopRequireDefault(require("./controllers/messaging.controller"));
-
 var _conversation = _interopRequireDefault(require("./controllers/conversation.controller"));
+
+var _webhook = _interopRequireDefault(require("./controllers/webhook.controller"));
 
 var _authHandler = _interopRequireDefault(require("./middlewares/authHandler.middleware"));
 
@@ -25,6 +25,6 @@ var router = (0, _express.Router)();
 router.use("/auth", [_login["default"], _logout["default"]]);
 router.use("/prospects", _authHandler["default"].authorization, _prospect["default"]);
 router.use("/conversations", _authHandler["default"].authorization, _conversation["default"]);
-router.use("/webhook/", _messaging["default"]);
+router.use("/webhook", _webhook["default"]);
 var _default = router;
 exports["default"] = _default;

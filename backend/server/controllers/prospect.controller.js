@@ -6,6 +6,7 @@ import path from "path";
 import multer from "multer";
 import neatCsv from "neat-csv";
 import Prospect from "../models/prospect";
+import phone from "phone";
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -55,13 +56,14 @@ prospectRouter
           }
           let csv = await neatCsv(data);
           const match = JSON.parse(req.body.match);
-
           await Promise.all(
             csv.map(async item => {
+              let phoneNum = match.phone ? phone(item[match.phone])[0] : "";
               const feed = {
                 firstName: match.firstName ? item[match.firstName] : "",
                 lastName: match.lastName ? item[match.lastName] : "",
-                phone: match.phone ? item[match.phone] : ""
+                phone: match.phone ? phoneNum : "",
+                email: "testuser@gmail.com"
               };
               const prospect = new Prospect(feed);
               await prospect.save();

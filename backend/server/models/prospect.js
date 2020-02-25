@@ -7,6 +7,7 @@ const ProspectSchema = new Schema(
     firstName: { type: String, default: "" },
     lastName: { type: String, default: "" },
     phone: { type: String, default: "" },
+    email: { type: String, default: "" },
     status: { type: String, default: "NEW" },
     chatted: { type: Boolean, default: false }
   },

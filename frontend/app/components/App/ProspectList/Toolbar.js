@@ -16,7 +16,10 @@ import {
 } from 'reactstrap';
 import SearchIcon from '@material-ui/icons/Search';
 import ToolbarMenuItem from './ToolbarMenuItem';
-import { goSendBroadcastAction, goImportCSVAction } from 'containers/ProspectPage/actions';
+import {
+  goSendBroadcastAction,
+  goImportCSVAction,
+} from 'containers/ProspectPage/actions';
 
 const styles = {
   toolbar: {
@@ -111,7 +114,7 @@ const Toolbar = props => {
       className="d-flex justify-content-between p-3 font-weight-bold"
     >
       <div style={styles.title}>
-        2342
+        {props.prospectCnt}
         <span> Prospects</span>
       </div>
       <div className="d-flex justify-content-between">

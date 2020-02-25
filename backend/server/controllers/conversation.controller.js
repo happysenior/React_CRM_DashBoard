@@ -71,27 +71,21 @@ conversationRouter
       });
       await conversation.save();
       const prospect = await Prospect.findById(req.params.prospectId);
-      
-      console.log(prospect);
-      // client.messages
-      //   .create({
-      //     from: config.signalwire.messagingNumber,
-      //     body: "It isn't spam!",
-      //     to: "+2108900560"
-      //   })
-      //   .then(message => console.log(message))
-      //   .then(() => {
-      //     res.send({
-      //       success: true,
-      //       conversation
-      //     });
-      //   })
-      //   .done();
-      // console.log(config);
-      res.send({
-        success: true,
-        conversation
-      });
+
+      client.messages
+        .create({
+          from: config.signalwire.messagingNumber,
+          body: req.body.message,
+          to: prospect.phone
+        })
+        .then(message => {
+          console.log(message);
+          res.send({
+            success: true,
+            conversation
+          });
+        })
+        .done();
     } catch (error) {
       console.log(error);
       res.status(500).end();

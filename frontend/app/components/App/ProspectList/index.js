@@ -52,7 +52,7 @@ export default function ProspectList() {
 
   return (
     <Container>
-      <Toolbar />
+      <Toolbar prospectCnt={prospects.length} />
       <Status />
       <Panel prospects={prospects} clickProspect={clickProspect} />
       <Paginator />
