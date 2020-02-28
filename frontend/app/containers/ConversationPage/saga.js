@@ -42,6 +42,8 @@ import {
   SELECT_PROSPECT,
   SEND_MESSAGE,
   GO_CONVERSATION,
+  RECEIVE_NEW_MESSAGE,
+  RELOAD_CONVERSATION,
 } from './constants';
 import { func } from 'prop-types';
 
@@ -78,7 +80,7 @@ export function* loadChat() {
 
   if (!isLogged) return yield put(push('/login'));
   const selectedProspectId = yield select(makeSelectedProspectIdSelector());
-
+  if (!selectedProspectId) return;
   const requestURL = api.getLoadConversationChatPath(selectedProspectId);
   try {
     const response = yield call(request, requestURL, {
@@ -106,6 +108,8 @@ export function* loadProspect() {
   if (!isLogged) return yield put(push('/login'));
 
   const selectedProspectId = yield select(makeSelectedProspectIdSelector());
+  if (!selectedProspectId) return;
+
   const requestURL = api.getLoadConversationProspectPath(selectedProspectId);
 
   try {
@@ -127,11 +131,25 @@ export function* loadProspect() {
 
 export function* selectProspect({ payload: { prospectId } }) {
   try {
+    const auth = new AuthService();
+    const token = auth.getToken();
+    const api = new ApiEndpoint();
+
+    const requestURL = api.getMarkAsReadConversationPath(prospectId);
+
+    const response = yield call(request, requestURL, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     yield put(selectProspectSuccessAction(prospectId));
     yield put(loadListAction());
     yield put(loadChatAction());
     yield put(loadProspectAction());
-    yield put(push(`/conversations/${prospectId}`));
   } catch (error) {
     console.log(error);
   }
@@ -146,6 +164,7 @@ export function* sendMessage({ payload: { message } }) {
   if (!isLogged) return yield put(push('/login'));
 
   const selectedProspectId = yield select(makeSelectedProspectIdSelector());
+  if (!selectedProspectId) return;
   const requestURL = api.getSendMessagePath(selectedProspectId);
 
   try {
@@ -161,10 +180,22 @@ export function* sendMessage({ payload: { message } }) {
       }),
     });
 
-    if (response.success) yield put(selectProspectAction(selectedProspectId));
+    if (response.success) {
+      yield put(selectProspectAction(selectedProspectId));
+    }
   } catch (error) {
     console.log(error);
   }
+}
+
+export function* receiveNewMessage() {
+  yield put(loadChatAction());
+}
+
+export function* reloadConversation() {
+  yield put(loadListAction());
+  yield put(loadChatAction());
+  yield put(loadProspectAction());
 }
 
 export default function* conversationPageSaga() {
@@ -173,4 +204,6 @@ export default function* conversationPageSaga() {
   yield takeLatest(LOAD_CHAT, loadChat);
   yield takeLatest(LOAD_PROSPECT, loadProspect);
   yield takeLatest(SEND_MESSAGE, sendMessage);
+  yield takeLatest(RECEIVE_NEW_MESSAGE, receiveNewMessage);
+  yield takeLatest(RELOAD_CONVERSATION, reloadConversation);
 }

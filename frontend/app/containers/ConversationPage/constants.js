@@ -10,3 +10,8 @@ export const SELECT_PROSPECT_SUCCESS =
   'app/ConversationPage/select_prospect_success';
 export const SEND_MESSAGE = 'app/ConversationPage/send_message';
 export const SEND_MESSAGE_SUCCESS = 'app/ConversationPage/send_message_success';
+export const RECEIVE_NEW_MESSAGE = 'app/ConversationPage/receive_new_message';
+export const RELOAD_CONVERSATION = 'app/ConversationPage/reload_conversation';
+export const RELOAD_CONVERSATION_COUNT =
+  'app/ConversationPage/reload_conversation_count';
+export const TEST = 'app/ConversationPage/test';

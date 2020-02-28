@@ -13,13 +13,12 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   GO_PROSPECT,
+  LOAD_APP_STATE,
+  RECEIVE_NEW_MESSAGE,
+  READ_MESSAGE,
+  GO_CONVERSATION
 } from './constants';
 
-/**
- * Check user is logged, this action starts the request saga
- *
- * @return {object} An action object with a type of IS_LOGGED
- */
 export function isLoggedAction() {
   return {
     type: IS_LOGGED,
@@ -68,7 +67,6 @@ export function loggedInAction() {
  * @return {object} An action object with a type of LOGOUT
  */
 export function logoutAction() {
-  console.log('second step');
   return {
     type: LOGOUT,
   };
@@ -102,5 +100,36 @@ export function logoutErrorAction(error) {
 export function goProspectAction() {
   return {
     type: GO_PROSPECT,
+  };
+}
+
+export function loadAppStateSuccessAction(state) {
+  return {
+    type: LOAD_APP_STATE,
+    payload: {
+      user: state.user,
+      unreadMessage: state.unreadMessage,
+    },
+  };
+}
+
+export function receiveNewMessageAction() {
+  return {
+    type: RECEIVE_NEW_MESSAGE,
+  };
+}
+
+export function readMessageAction(readMessage) {
+  return {
+    type: READ_MESSAGE,
+    payload: {
+      readMessage,
+    },
+  };
+}
+
+export function goConversationAction() {
+  return {
+    type: GO_CONVERSATION,
   };
 }

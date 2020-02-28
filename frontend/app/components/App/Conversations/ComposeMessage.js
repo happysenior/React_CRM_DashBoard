@@ -24,7 +24,6 @@ const ComposeMessage = props => {
     method: 'text',
     emailCls: 'tab-no-selected',
     textCls: 'tab-selected',
-    renderCount: 0,
   });
 
   const selectEmail = () => {
@@ -51,7 +50,14 @@ const ComposeMessage = props => {
 
   const handleSendMessage = e => {
     props.sendMessage(state.message);
-    setState({ ...state, renderCount: state.renderCount + 1 });
+    setState({ ...state, message: '' });
+  };
+
+  const handleKeyDownMessage = e => {
+    if (e.key === 'Enter' && !e.shiftKey && state.message !== '') {
+      e.preventDefault();
+      handleSendMessage();
+    }
   };
 
   return (
@@ -71,8 +77,10 @@ const ComposeMessage = props => {
         <textarea
           placeholder="Write a message"
           rows="3"
+          value={state.message}
           className="message-area"
           spellCheck="false"
+          onKeyDown={handleKeyDownMessage}
           onChange={handleChange}
         ></textarea>
         <div>

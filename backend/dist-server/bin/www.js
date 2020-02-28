@@ -21,6 +21,8 @@ var _config = _interopRequireDefault(require("../config/config"));
 
 var _terminalLink = _interopRequireDefault(require("terminal-link"));
 
+var _socket = require("../socket");
+
 function _templateObject() {
   var data = (0, _taggedTemplateLiteral2["default"])(["{green.bold Connected to } {yellow ", "}"]);
 
@@ -59,6 +61,8 @@ function listen() {
   server.listen(port);
   server.on("error", onError);
   server.on("listening", onListening);
+
+  _socket.socketServer.init(server);
 }
 
 function connect() {

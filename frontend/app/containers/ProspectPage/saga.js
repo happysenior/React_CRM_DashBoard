@@ -2,7 +2,6 @@ import React, { useReducer } from 'react';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { FormattedMessage } from 'react-intl';
 import { push } from 'connected-react-router';
-import messages from 'containers/LoginPage/messages';
 import * as HttpStatus from 'http-status-codes';
 // Import Utils
 import ApiEndpoint from 'utils/api';
@@ -14,6 +13,9 @@ import AuthService from 'services/auth.service';
 // Import Selectors
 
 // Import Actions
+
+import { selectProspectSuccessAction } from 'containers/ConversationPage/actions';
+import { loadProspectsSuccessAction } from '../ProspectPage/actions';
 
 // Import Constants
 
@@ -28,7 +30,7 @@ export function* goSendBroadcast() {
   const auth = new AuthService();
   const isLogged = auth.loggedIn();
 
-  if (isLogged) return yield put(push('/forgot-password'));
+  if (isLogged) return yield put(push('/broadcast'));
 }
 
 export function* goImportCSV() {
@@ -42,7 +44,10 @@ export function* goConversation({ payload: { prospectId } }) {
   const auth = new AuthService();
   const isLogged = auth.loggedIn();
 
-  if (isLogged) return yield put(push(`/conversations/${prospectId}`));
+  if (isLogged) {
+    yield put(selectProspectSuccessAction(prospectId));
+    yield put(push('/conversations'));
+  }
 }
 
 export function* loadProspects() {
@@ -65,7 +70,9 @@ export function* loadProspects() {
       }),
     });
 
-    if (response.prospects) yield put(push('/prospects'));
+    if (response.success) {
+      yield put(loadProspectsSuccessAction(response.prospects));
+    }
   } catch (error) {
     console.log(error);
   }

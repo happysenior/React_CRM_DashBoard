@@ -6,6 +6,7 @@ import ConversationMessageWrapper from './ConversationMessageWrapper';
 import ComposeMessage from './ComposeMessage';
 
 const Chat = props => {
+
   return (
     <ChatWrapper>
       <ChatHeaderWrapper>

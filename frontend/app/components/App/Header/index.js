@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectSaga } from 'utils/injectSaga';
-
+import { useInjectReducer } from 'utils/injectReducer';
+import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
+import { socket } from 'utils/socket';
 
 import styled from 'styled-components';
 import { PRIMARY_LIGHT, PRIMARY_BLUE_DARK } from 'utils/colors';
@@ -23,7 +25,19 @@ import {
 } from 'reactstrap';
 
 import './index.scss';
-import { logoutAction, goProspectAction } from 'containers/App/actions';
+import {
+  logoutAction,
+  goProspectAction,
+  receiveNewMessageAction,
+  goConversationAction,
+} from 'containers/App/actions';
+import { makeUnreadMessageSelector } from 'containers/App/selectors';
+import {
+  loadChatAction,
+  loadListAction,
+  loadProspectAction,
+  reloadConversationAction,
+} from 'containers/ConversationPage/actions';
 
 const EmptyLogo = styled.div`
   width: 40px;
@@ -46,21 +60,42 @@ const styles = {
 
 const key = 'appPage';
 
+const stateSelector = createStructuredSelector({
+  unreadMessage: makeUnreadMessageSelector(),
+});
+
 export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const toggle = () => setDropdownOpen(prevState => !prevState);
 
   useInjectSaga({ key, saga });
+  useInjectReducer({ key, reducer });
 
+  const { unreadMessage } = useSelector(stateSelector);
+  const notifications = 0;
+  const appointments = 0;
   const handleLogout = () => {
     dispatch(logoutAction());
   };
 
   const handleGoProspect = () => {
-    console.log('heree');
     dispatch(goProspectAction());
   };
+
+  const handleGoConversation = () => {
+    dispatch(goConversationAction());
+  };
+
+  useEffect(() => {
+    socket.on('RECEIVE_NEW_MESSAGE', data => {
+      dispatch(receiveNewMessageAction(data));
+      dispatch(reloadConversationAction());
+    });
+    return () => {
+      socket.off('RECEIVE_NEW_MESSAGE');
+    };
+  }, []);
   return (
     <div style={styles.header}>
       <Navbar expand="md">
@@ -97,18 +132,31 @@ export default function Header() {
         <div className="d-flex justify-content-end h-100 w-25">
           <Nav>
             <NavItem>
-              <NavLink to="/appointments">
+              <NavLink to="/appointments" className="position-relative">
                 <CalendarTodayIcon />
+                {appointments ? (
+                  <div className="indicator">{appointments}</div>
+                ) : null}
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/conversations">
+              <NavLink
+                to="/conversations"
+                className="position-relative"
+                onClick={handleGoConversation}
+              >
                 <ForumOutlinedIcon />
+                {unreadMessage ? (
+                  <div className="indicator">{unreadMessage}</div>
+                ) : null}
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/notifications">
+              <NavLink to="/notifications" className="position-relative">
                 <NotificationsIcon />
+                {notifications ? (
+                  <div className="indicator">{notifications}</div>
+                ) : null}
               </NavLink>
             </NavItem>
             <NavItem>

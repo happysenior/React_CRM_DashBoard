@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 import chalk from "chalk";
 import config from "../config/config";
 import terminalLink from "terminal-link";
+import { socketServer } from "../socket";
+
 const log = console.log;
 const connection = connect();
 
@@ -43,6 +45,8 @@ function listen() {
   server.listen(port);
   server.on("error", onError);
   server.on("listening", onListening);
+
+  socketServer.init(server);
 }
 
 function connect() {

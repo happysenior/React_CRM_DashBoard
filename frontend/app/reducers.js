@@ -7,6 +7,8 @@ import { connectRouter } from 'connected-react-router';
 import history from 'utils/history';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import globalReducer from 'containers/App/reducer';
+import conversationReducer from 'containers/ConversationPage/reducer';
+import prospectPageReducer from 'containers/ProspectPage/reducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -15,6 +17,8 @@ export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     global: globalReducer,
     language: languageProviderReducer,
+    conversationPage: conversationReducer,
+    prospectPage: prospectPageReducer,
     router: connectRouter(history),
     ...injectedReducers,
   });

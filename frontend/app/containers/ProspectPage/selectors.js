@@ -23,6 +23,24 @@ const makeIsLoadingSelector = () =>
     substate => substate.isLoading,
   );
 
+const makeProspectsSelector = () =>
+  createSelector(
+    selectProspectPageDomain,
+    substate => substate.prospects,
+  );
+
+const makeSelectedProspectIdsSelector = () =>
+  createSelector(
+    selectProspectPageDomain,
+    substate => substate.selectedProspectIds,
+  );
+
+const makeCheckAllSelector = () =>
+  createSelector(
+    selectProspectPageDomain,
+    substate => substate.checkAll,
+  );
+
 /**
  * Default selector used by LoginPage
  */
@@ -37,4 +55,7 @@ export default makeSelectProspectPage;
 export {
   makeErrorSelector,
   makeIsLoadingSelector,
+  makeSelectedProspectIdsSelector,
+  makeProspectsSelector,
+  makeCheckAllSelector,
 };

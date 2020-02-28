@@ -29,7 +29,7 @@ app.use(_express["default"].urlencoded({
   extended: false
 }));
 app.use((0, _cookieParser["default"])());
-app.use(_express["default"]["static"](_path["default"].join(__dirname, "../public")));
+app.use(_express["default"]["static"](_path["default"].join(__dirname, "../public/build")));
 app.use("/api", _routes["default"]);
 var _default = app;
 exports["default"] = _default;

@@ -55,7 +55,7 @@ export function* loginAttempt({ payload: { email, password } }) {
 
     yield put(loginSuccessAction());
     yield put(loggedInAction());
-    yield put(push('/prospects'));
+    yield put(push('/'));
   } catch (error) {
     if (error.response.status === HttpStatus.NOT_FOUND) {
       yield put(

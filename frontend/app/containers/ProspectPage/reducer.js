@@ -9,8 +9,10 @@ import {
   GO_SEND_BROADCAST,
   GO_IMPORT_CSV,
   LOAD_PROSPECTS,
+  LOAD_PROSPECTS_SUCCESS,
   SELECT_PROSPECTS,
   GO_CONVERSATION,
+  SET_CHECK_ALL,
 } from './constants';
 
 export const initialState = {
@@ -18,6 +20,7 @@ export const initialState = {
   selectedProspectIds: [],
   error: '',
   isLoading: false,
+  checkAll: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -37,20 +40,16 @@ const prospectPageReducer = produce((draft, action) => {
       break;
     case LOAD_PROSPECTS:
       draft.isLoading = true;
+      break;
     case LOAD_PROSPECTS_SUCCESS:
       draft.isLoading = true;
       draft.prospects = action.payload.prospects;
       break;
     case SELECT_PROSPECTS:
-      let prospectIds = action.payload.prospectIds;
-      let selectedProspectIds = prospectIds.concat(selectedProspectIds);
-      let draftSelectedProspectIds = draft.selectedProspectIds;
-      draft.selectedProspectIds = selectedProspectIds.filter(item => {
-        const belongToFirst = draftSelectedProspectIds.includes(item);
-        const belongToSecond = prospectIds.includes(item);
-        if (belongToFirst === belongToSecond) return false;
-        else return true;
-      });
+      draft.selectedProspectIds = action.payload.selectedProspectIds;
+      break;
+    case SET_CHECK_ALL:
+      draft.checkAll = action.payload.checkAll;
     case LOCATION_CHANGE:
       draft.error = '';
       draft.isLoading = false;

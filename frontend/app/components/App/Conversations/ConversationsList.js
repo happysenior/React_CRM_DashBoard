@@ -53,6 +53,25 @@ const ConversationSubTitle = styled.div`
   overflow: hidden;
 `;
 
+const ConversationBadge = styled.div`
+  font-size: 0.75rem;
+  grid-area: badge / badge / badge / badge;
+  width: 18px;
+  height: 18px;
+  background-color: red;
+  font-weight: 400;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  transform: translate(25%, -25%);
+  border-radius: 50%;
+  color: white;
+`;
+
+import { roundFormatDate } from 'utils/helper';
+
 const ConversationsList = props => {
   return (
     <ListWrapper>
@@ -77,8 +96,13 @@ const ConversationsList = props => {
                     color={'#3399CC'}
                   />
                   <ConversationTitle>{`${item.prospect.firstName} ${item.prospect.lastName}`}</ConversationTitle>
-                  <ConversationTime>{item.createdAt}</ConversationTime>
+                  <ConversationTime>
+                    {roundFormatDate(new Date(item.createdAt))}
+                  </ConversationTime>
                   <ConversationSubTitle>{item.message}</ConversationSubTitle>
+                  {item.unreadMessage ? (
+                    <ConversationBadge>{item.unreadMessage}</ConversationBadge>
+                  ) : null}
                 </ConversationListItemWrapper>
               );
             })

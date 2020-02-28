@@ -2,11 +2,12 @@ import { Router } from "express";
 import * as HttpStatus from "http-status-codes";
 import { check, validationResult } from "express-validator";
 import User from "../models/user";
+import Conversation from "../models/conversation";
 import AuthHandler from "../middlewares/authHandler.middleware";
 
-const loginRouter = Router();
+const authRouter = Router();
 
-loginRouter.route("/login").post(
+authRouter.route("/login").post(
   [
     check("email").isEmail(),
     check("password")
@@ -54,4 +55,39 @@ loginRouter.route("/login").post(
   }
 );
 
-export default loginRouter;
+authRouter.route("/logout").put(async (req, res, next) => {
+  try {
+    res.status(HttpStatus.OK).json({
+      success: true
+    });
+  } catch (error) {
+    next(err);
+  }
+});
+
+authRouter
+  .route("/authenticate")
+  .get(AuthHandler.authorization, async (req, res, next) => {
+    try {
+      const user = await User.findById(req.userId);
+      if (user) {
+        const conversations = await Conversation.find({
+          status: "new",
+          outgoing: false
+        });
+        delete user.hashedPassword;
+        res.send({ success: true, user, unreadMessage: conversations.length });
+      } else {
+        res.status(HttpStatus.NOT_FOUND).end();
+      }
+    } catch (error) {
+      const err = {
+        success: false,
+        code: HttpStatus.BAD_REQUEST,
+        error
+      };
+      next(err);
+    }
+  });
+
+export default authRouter;

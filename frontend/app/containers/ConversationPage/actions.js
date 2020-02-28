@@ -15,6 +15,9 @@ import {
   SELECT_PROSPECT_SUCCESS,
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
+  RECEIVE_NEW_MESSAGE,
+  TEST,
+  RELOAD_CONVERSATION,
 } from './constants';
 
 export function loadListAction() {
@@ -79,11 +82,26 @@ export function selectProspectSuccessAction(selectedProspectId) {
   };
 }
 
+export function receiveNewMessageAction(message) {
+  return {
+    type: RECEIVE_NEW_MESSAGE,
+    payload: {
+      message,
+    },
+  };
+}
+
 export function sendMessageAction(message) {
   return {
     type: SEND_MESSAGE,
     payload: {
       message,
     },
+  };
+}
+
+export function reloadConversationAction() {
+  return {
+    type: RELOAD_CONVERSATION,
   };
 }

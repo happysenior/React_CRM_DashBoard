@@ -23,8 +23,15 @@ const makeSelectLocation = () =>
     routerState => routerState.location,
   );
 
+const makeUnreadMessageSelector = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.unreadMessage,
+  );
+
 export {
   makeSelectLocation,
   makeErrorSelector,
   makeIsLoggedSelector,
+  makeUnreadMessageSelector,
 };

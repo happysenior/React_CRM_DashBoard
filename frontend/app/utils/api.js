@@ -119,4 +119,16 @@ export default class ApiEndpoint {
   getSendMessagePath = prospectId => {
     return `${BASE_URL}${CONVERSATION_PATH}/message/${prospectId}`;
   };
+
+  getAuthenticatePath = () => {
+    return `${BASE_URL}${AUTH_PATH}/authenticate`;
+  };
+
+  getMarkAsReadConversationPath = prospectId => {
+    return `${BASE_URL}${CONVERSATION_PATH}/mark/${prospectId}`;
+  };
+
+  getBroadcastPath = () => {
+    return `${BASE_URL}${CONVERSATION_PATH}/broadcast`;
+  };
 }

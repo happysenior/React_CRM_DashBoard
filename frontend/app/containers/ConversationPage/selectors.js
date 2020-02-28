@@ -48,6 +48,12 @@ const makeSelectedProspectIdSelector = () =>
     substate => substate.selectedProspectId,
   );
 
+const makeReloadCountSelector = () =>
+  createSelector(
+    selectConversationPageDomain,
+    substate => substate.reloadCount,
+  );
+
 const makeSelectConversationPage = () =>
   createSelector(
     selectConversationPageDomain,
@@ -62,4 +68,5 @@ export {
   makeChatSelector,
   makeProspectSelector,
   makeSelectedProspectIdSelector,
+  makeReloadCountSelector
 };

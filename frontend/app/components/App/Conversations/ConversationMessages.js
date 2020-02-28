@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import './index.scss';
+import { formatDate } from 'utils/helper';
 
 const colors = [
   '#49F2CA',
@@ -11,9 +12,13 @@ const colors = [
 ];
 
 const ConversationMessages = props => {
-  console.log('props chat, prospect');
-  console.log(props.chat);
-  console.log(props.prospect);
+  const [messageEnd, setMessageEnd] = useState(null);
+  useEffect(() => {
+    if (messageEnd) {
+      messageEnd.scrollIntoView({});
+    }
+  });
+
   return (
     <div>
       {props.chat && props.prospect
@@ -28,24 +33,26 @@ const ConversationMessages = props => {
                 6;
             }
 
+            const formattedDate = formatDate(new Date(item.createdAt));
+
             if (item.outgoing) {
               return (
                 <div className="outgoing" key={item._id}>
                   <div className="message">{item.message}</div>
                   <div className="message-date">
                     via {item.method}
-                    <span> {item.createdAt}</span>
+                    <span> {formattedDate}</span>
                   </div>
                   <div className="avatar">EE</div>
                 </div>
               );
             } else {
               return (
-                <div className="incoming">
+                <div className="incoming" key={item._id}>
                   <div className="message">{item.message}</div>
                   <div className="message-date">
                     via {item.method}
-                    <span> {item.createdAt}</span>
+                    <span> {formattedDate}</span>
                   </div>
                   <div
                     className="avatar"
@@ -58,6 +65,11 @@ const ConversationMessages = props => {
             }
           })
         : null}
+      <div
+        ref={el => {
+          setMessageEnd(el);
+        }}
+      ></div>
     </div>
   );
 };

@@ -24,26 +24,27 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import ProspectPage from 'containers/ProspectPage/Loadable';
 import ImportCSVPage from 'containers/ImportCSVPage/Loadable';
 import ConversationPage from 'containers/ConversationPage/Loadable';
+import BroadcastPage from 'containers/BroadcastPage/Loadable';
 
 // Import Components
 import Header from 'components/App/Header';
 
 import AuthService from 'services/auth.service';
 
-function PrivateRoute({ children, ...rest }) {
+function PrivateRoute({ component: Component, ...rest }) {
   const auth = new AuthService();
   const isLogged = auth.loggedIn();
   return (
     <Route
       {...rest}
-      render={({ location }) =>
+      render={props =>
         isLogged ? (
-          children
+          <Component {...props} />
         ) : (
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: location },
+              state: { from: props.location },
             }}
           />
         )
@@ -61,10 +62,10 @@ export default function App() {
         <Route path="/forgot-password" component={ForgotPasswordPage} />
         <Route path="/404" component={NotFoundPage} />
         <PrivateRoute path="/prospects/import" component={ImportCSVPage} />
-
+        <PrivateRoute path="/broadcast" component={BroadcastPage} />
         <PrivateRoute path="/prospects" component={ProspectPage} />
         <PrivateRoute
-          path="/conversations/:id"
+          path="/conversations/"
           component={ConversationPage}
         ></PrivateRoute>
       </Switch>

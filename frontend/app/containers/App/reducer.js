@@ -13,14 +13,19 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   GO_PROSPECT,
+  LOAD_APP_STATE,
+  RECEIVE_NEW_MESSAGE,
+  READ_MESSAGE,
 } from './constants';
 
 export const initialState = {
+  user: null,
+  unreadMessage: 0,
   isLogged: false,
   error: '',
 };
 
-setAutoFreeze(false);
+// setAutoFreeze(false);
 /* eslint-disable default-case, no-param-reassign */
 const appPageReducer = produce((draft, action) => {
   switch (action.type) {
@@ -45,6 +50,16 @@ const appPageReducer = produce((draft, action) => {
       break;
     case GO_PROSPECT:
       draft.error = '';
+      break;
+    case RECEIVE_NEW_MESSAGE:
+      draft.unreadMessage = draft.unreadMessage + 1;
+      break;
+    case READ_MESSAGE:
+      draft.unreadMessage = draft.unreadMessage - action.payload.readMessage;
+      break;
+    case LOAD_APP_STATE:
+      draft.unreadMessage = action.payload.unreadMessage;
+      draft.user = action.payload.user;
       break;
   }
 }, initialState);

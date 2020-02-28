@@ -1,0 +1,75 @@
+$PRIMARY_BORDER_GREY: #b1b1b1;
+$PRIMARY_BACKGROUND: #fafafb;
+$PRIMARY_BLUE_DARK: #084e8a;
+
+.form-title {
+  font-size: 22px;
+}
+
+.primary-background {
+  background-color: $PRIMARY_BACKGROUND;
+}
+
+
+.import-csv {
+  margin: auto;
+  padding: 0 25%;
+  background-color: $PRIMARY_BACKGROUND;
+}
+
+.control-button {
+  background-color: #084e8a;
+}
+
+.broadcast-confirm {
+  margin-top: 30px;
+  max-width: 680px;
+  min-width: 680px;
+  padding: 20px 30px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.broadcast-confirm-title {
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.broadcast-confirm-content {
+  margin-bottom: 50px;
+  font-size: 17px;
+}
+
+.broadcast-goback {
+  border-color: $PRIMARY_BLUE_DARK;
+  outline-color: $PRIMARY_BLUE_DARK;
+  margin-right: 20px;
+}
+
+.broadcast-continue {
+  background-color: $PRIMARY_BLUE_DARK;
+}
+
+.select-method {
+  background-color: white;
+  outline-color: $PRIMARY_BLUE_DARK;
+  color: $PRIMARY_BLUE_DARK;
+  border-color: $PRIMARY_BLUE_DARK;
+}
+
+.code {
+  font-style: italic;
+  color: rgb(153, 153, 153);
+}
+
+.broadcast-message-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.broadcast-message {
+  height: 100px;
+  resize: none;
+}

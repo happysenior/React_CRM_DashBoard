@@ -40,7 +40,7 @@ import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
-
+import configureSocket from './utils/socket';
 // Observe loading of Lato
 const openSansObserver = new FontFaceObserver('Lato', {});
 
@@ -74,7 +74,7 @@ const theme = createMuiTheme({
     suppressDeprecationWarnings: true,
   },
 });
-
+var socket = configureSocket();
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>

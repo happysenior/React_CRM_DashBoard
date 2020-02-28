@@ -14,6 +14,8 @@ import {
   LOAD_PROSPECT_SUCCESS,
   SELECT_PROSPECT,
   SELECT_PROSPECT_SUCCESS,
+  RECEIVE_NEW_MESSAGE,
+  RELOAD_CONVERSATION_COUNT,
 } from './constants';
 
 export const initialState = {
@@ -23,6 +25,7 @@ export const initialState = {
   selectedProspectId: null,
   error: '',
   isLoading: false,
+  reloadCount: 0,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -52,11 +55,24 @@ const prospectPageReducer = produce((draft, action) => {
       break;
     case SELECT_PROSPECT:
       // draft.selectedProspectId = action.payload.selectedProspectId;
+      draft.list = draft.list.map((item, index) => {
+        if (item.prospect._id == action.payload.selectedProspectId)
+          return {
+            ...item,
+            unreadMessage: 0,
+          };
+        return item;
+      });
       break;
     case SELECT_PROSPECT_SUCCESS:
       draft.selectedProspectId = action.payload.selectedProspectId;
       break;
-
+    case RECEIVE_NEW_MESSAGE:
+      console.log('reducer receive new message');
+      break;
+    case RELOAD_CONVERSATION_COUNT:
+      draft.reloadCount = draft.reloadCount + 1;
+      break;
     case LOCATION_CHANGE:
       draft.error = '';
       draft.isLoading = false;

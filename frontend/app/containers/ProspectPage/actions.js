@@ -11,7 +11,9 @@ import {
   LOAD_PROSPECTS_SUCCESS,
   SELECT_PROSPECTS,
   GO_CONVERSATION,
+  SET_CHECK_ALL,
 } from './constants';
+import { func } from 'prop-types';
 
 export function goSendBroadcastAction() {
   return {
@@ -44,7 +46,7 @@ export function selectProspectsAction(prospectIds) {
   return {
     type: SELECT_PROSPECTS,
     payload: {
-      prospectIds,
+      selectedProspectIds: prospectIds,
     },
   };
 }
@@ -54,6 +56,15 @@ export function goConversationAction(prospectId) {
     type: GO_CONVERSATION,
     payload: {
       prospectId,
+    },
+  };
+}
+
+export function setCheckAllAction(checkAll) {
+  return {
+    type: SET_CHECK_ALL,
+    payload: {
+      checkAll,
     },
   };
 }

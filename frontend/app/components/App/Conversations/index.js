@@ -12,13 +12,16 @@ import {
   selectProspectAction,
   sendMessageAction,
   goConversationAction,
+  reloadConversationAction,
 } from 'containers/ConversationPage/actions';
 
+import { readMessageAction } from 'containers/App/actions';
 import {
   makeSelectedProspectIdSelector,
   makeListSelector,
   makeChatSelector,
   makeProspectSelector,
+  makeReloadCountSelector,
 } from 'containers/ConversationPage/selectors';
 
 import ConversationsWrapper from './ConversationsWrapper';
@@ -36,33 +39,52 @@ const stateSelector = createStructuredSelector({
   chat: makeChatSelector(),
   prospect: makeProspectSelector(),
   selectedProspectId: makeSelectedProspectIdSelector(),
+  reloadCount: makeReloadCountSelector(),
 });
 
 const Conversations = props => {
+  const [state, setState] = useState({
+    reloadCount: 0,
+  });
+
   const dispatch = useDispatch();
-  const [loaded, setLoaded] = useState(false);
 
   useInjectSaga({ key, saga });
 
   useInjectReducer({ key, reducer });
-  useEffect(() => {
-    if (!loaded) {
-      dispatch(selectProspectAction(props.prospectId));
-      setLoaded(true);
-    }
-  }, []);
 
   const sendMessage = message => {
     dispatch(sendMessageAction(message));
   };
 
-  const { list, chat, prospect, selectedProspectId } = useSelector(
+  const { list, chat, prospect, selectedProspectId, reloadCount } = useSelector(
     stateSelector,
   );
 
   const goConversation = prospectId => {
+    for (let i = 0; i < list.length; i++) {
+      if (prospectId == list[i].prospect._id) {
+        if (list[i].unreadMessage)
+          dispatch(readMessageAction(list[i].unreadMessage));
+      }
+    }
     dispatch(selectProspectAction(prospectId));
   };
+
+  useEffect(() => {
+    if (selectedProspectId) {
+      goConversation(selectedProspectId);
+    } else {
+      dispatch(loadListAction());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (state.reloadCount != reloadCount) {
+      setState({ ...state, reloadCount });
+      dispatch(reloadConversationAction());
+    }
+  });
 
   return (
     <ConversationsWrapper>
