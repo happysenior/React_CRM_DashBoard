@@ -18,7 +18,6 @@ const ConversationMessages = props => {
       messageEnd.scrollIntoView({});
     }
   });
-
   return (
     <div>
       {props.chat && props.prospect

@@ -29,104 +29,65 @@ const ProfileFieldLabel = styled.div`
   margin-right: 10px;
 `;
 
-const ProspectProfile = props => {
-  // const [name, setName] = useState('Alex');
-  // const [email, setEmail] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [campaign, setCampaign] = useState('');
-  // const [status, setStatus] = useState('');
-  // const [donotcall, setDonotcall] = useState(false);
+export default class ProspectProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      donotcall: false,
+    };
 
-  const [state, setState] = React.useState({
-    donotcall: false,
-  });
-  const _handleFocus = text => {};
+    this._handleFocus = this._handleFocus.bind(this);
+    this._handleFocusOut = this._handleFocusOut.bind(this);
+  }
 
-  const _handleFocusOut = text => {};
+  _handleFocus(text) {}
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
-  };
+  _handleFocusOut(text) {}
 
-  const profile = props.prospect ? props.prospect.profile : null;
-  return profile ? (
-    <ProspectProfileWrapper>
-      <ProfileFieldWrapper>
-        <ProfileFieldLabel>Name</ProfileFieldLabel>
-        <EditableLabel
-          text={`${profile.firstName} ${profile.lastName}`}
-          labelClassName="profile-label"
-          inputClassName="profile-input"
-          inputMaxLength={50}
-          onFocus={_handleFocus}
-          onFocusOut={_handleFocusOut}
-          className="profile-inline-editing"
-        />
-      </ProfileFieldWrapper>
-      <ProfileFieldWrapper>
-        <ProfileFieldLabel>Email</ProfileFieldLabel>
-        <EditableLabel
-          text={profile.email || ''}
-          labelClassName="profile-label"
-          inputClassName="profile-input"
-          inputMaxLength={50}
-          onFocus={_handleFocus}
-          onFocusOut={_handleFocusOut}
-          className="profile-inline-editing"
-        />
-      </ProfileFieldWrapper>
-      <ProfileFieldWrapper>
-        <ProfileFieldLabel>Phone</ProfileFieldLabel>
-        <EditableLabel
-          text={profile.phone || ''}
-          labelClassName="profile-label"
-          inputClassName="profile-input"
-          inputMaxLength={50}
-          onFocus={_handleFocus}
-          onFocusOut={_handleFocusOut}
-          className="profile-inline-editing"
-        />
-      </ProfileFieldWrapper>
-      <ProfileFieldWrapper>
-        <ProfileFieldLabel>Campaign</ProfileFieldLabel>
-        <EditableLabel
-          text={'welend'}
-          labelClassName="profile-label"
-          inputClassName="profile-input"
-          inputMaxLength={50}
-          onFocus={_handleFocus}
-          onFocusOut={_handleFocusOut}
-          className="profile-inline-editing"
-        />
-      </ProfileFieldWrapper>
-      <ProfileFieldWrapper>
-        <ProfileFieldLabel>Status</ProfileFieldLabel>
-        <EditableLabel
-          text={profile.status || ''}
-          labelClassName="profile-label"
-          inputClassName="profile-input"
-          inputMaxLength={50}
-          onFocus={_handleFocus}
-          onFocusOut={_handleFocusOut}
-          className="profile-inline-editing"
-        />
-      </ProfileFieldWrapper>
-      <ProfileFieldWrapper>
-        <ProfileFieldLabel>
-          Do not call
-          <InfoIcon fontSize="small" />
-        </ProfileFieldLabel>
-        <Switch
-          value="checkedD"
-          checked={state.donotcall}
-          onChange={handleChange('donotcall')}
-          value="checkedB"
-          color="primary"
-          inputProps={{ 'aria-label': 'disabled checkbox' }}
-        />
-      </ProfileFieldWrapper>
-    </ProspectProfileWrapper>
-  ) : null;
-};
+  handleChange(name) {
+    return event => {
+      setState({ ...state, [name]: event.target.checked });
+    };
+  }
 
-export default ProspectProfile;
+  render() {
+    return this.props.prospect ? (
+      <ProspectProfileWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>Name</ProfileFieldLabel>
+          <div>{`${this.props.prospect.profile.firstName} ${this.props.prospect.profile.lastName}`}</div>
+        </ProfileFieldWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>Email</ProfileFieldLabel>
+          <div>{this.props.prospect.profile.email}</div>
+        </ProfileFieldWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>Phone</ProfileFieldLabel>
+          <div>{this.props.prospect.profile.phone}</div>
+        </ProfileFieldWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>Campaign</ProfileFieldLabel>
+          <div>welend</div>
+        </ProfileFieldWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>Status</ProfileFieldLabel>
+          <div>{this.props.prospect.profile.status}</div>
+        </ProfileFieldWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>
+            Do not call
+            <InfoIcon fontSize="small" />
+          </ProfileFieldLabel>
+          <Switch
+            value="checkedD"
+            checked={this.state.donotcall}
+            onChange={this.handleChange('donotcall')}
+            value="checkedB"
+            color="primary"
+            inputProps={{ 'aria-label': 'disabled checkbox' }}
+          />
+        </ProfileFieldWrapper>
+      </ProspectProfileWrapper>
+    ) : null;
+  }
+}

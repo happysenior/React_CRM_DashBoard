@@ -49,6 +49,7 @@ const prospectPageReducer = produce((draft, action) => {
     case LOAD_CHAT_SUCCESS:
       draft.chat = action.payload.chat;
       draft.isLoading = false;
+      break;
     case LOAD_PROSPECT_SUCCESS:
       draft.isLoading = false;
       draft.prospect = action.payload.prospect;
