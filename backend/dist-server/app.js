@@ -30,6 +30,12 @@ app.use(_express["default"].urlencoded({
 }));
 app.use((0, _cookieParser["default"])());
 app.use(_express["default"]["static"](_path["default"].join(__dirname, "../public/build")));
-app.use("/api", _routes["default"]);
+app.use("/api", _routes["default"]); // catch 404 and forward to error handler
+
+app.use(function (req, res, next) {
+  res.redirect("/"); // var err = new Error("Not Found");
+  // err.status = 404;
+  // next(err);
+});
 var _default = app;
 exports["default"] = _default;
