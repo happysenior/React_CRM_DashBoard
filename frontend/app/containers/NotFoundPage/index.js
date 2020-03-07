@@ -5,18 +5,16 @@
  */
 
 import React, { Fragment } from 'react';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-
-// Import Components
-import Header from 'components/Header';
-import Subheader from 'components/Subheader';
-import Information from 'components/Information';
-import Footer from 'components/Footer';
-import FormWrapper from 'components/FormWrapper';
-import TextWrapper from './TextWrapper';
-import messages from './messages';
+import { Container } from 'reactstrap';
+import './index.scss';
 
 export default function NotFoundPage() {
-  return <Fragment>NotFoundPage</Fragment>;
+  return (
+    <Container>
+      <div className="pt-5 d-flex justify-content-center">
+        <div className="h2 font-weight-bold mr-5">404 </div>
+        <div className="h3"> Not Found Page</div>
+      </div>
+    </Container>
+  );
 }

@@ -154,6 +154,7 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
           body: req.body.message,
           to: prospect.phone
         });
+        console.log(signalwireMessage);
       })
     );
     res.send({

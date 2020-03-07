@@ -20,14 +20,13 @@ import GlobalStyle from 'global-styles';
 import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import ForgotPasswordPage from 'containers/ForgotPasswordPage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import ProspectPage from 'containers/ProspectPage/Loadable';
 import ImportCSVPage from 'containers/ImportCSVPage/Loadable';
 import ConversationPage from 'containers/ConversationPage/Loadable';
 import BroadcastPage from 'containers/BroadcastPage/Loadable';
+import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 // Import Components
-import Header from 'components/App/Header';
 
 import AuthService from 'services/auth.service';
 
@@ -60,7 +59,6 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
-        <Route path="/404" component={NotFoundPage} />
         <PrivateRoute path="/prospects/import" component={ImportCSVPage} />
         <PrivateRoute path="/broadcast" component={BroadcastPage} />
         <PrivateRoute path="/prospects" component={ProspectPage} />
@@ -68,6 +66,8 @@ export default function App() {
           path="/conversations/"
           component={ConversationPage}
         ></PrivateRoute>
+        <Route path="/404" component={NotFoundPage} />
+        <Route render={() => <Redirect to="/404" />} />
       </Switch>
       <GlobalStyle />
     </Fragment>

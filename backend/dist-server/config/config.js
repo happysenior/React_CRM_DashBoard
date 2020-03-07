@@ -33,7 +33,7 @@ var _default = {
     space: "pmrnyc.signalwire.com",
     token: "PTc88d0f0b4ea900568ea97943da98f6db4a624ad9e3c857af",
     projectId: "b8c3b83b-a163-4deb-a3d7-6b54c4efa79d",
-    messagingNumber: "+18445676050"
+    messagingNumber: "+18444178402"
   }
 };
 exports["default"] = _default;
