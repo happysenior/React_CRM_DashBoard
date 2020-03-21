@@ -12,6 +12,9 @@ import {
   SELECT_PROSPECTS,
   GO_CONVERSATION,
   SET_CHECK_ALL,
+  SET_CHECK_PAGE,
+  SELECT_PAGE,
+  SELECT_PAGE_SUCCESS,
 } from './constants';
 import { func } from 'prop-types';
 
@@ -27,17 +30,22 @@ export function goImportCSVAction() {
   };
 }
 
-export function loadProspectsAction() {
+export function loadProspectsAction(filters) {
+  console.log("loadprospection actions");
+  console.log(filters);
   return {
     type: LOAD_PROSPECTS,
+    payload: {
+      filters,
+    },
   };
 }
 
-export function loadProspectsSuccessAction(prospects) {
+export function loadProspectsSuccessAction(result) {
   return {
     type: LOAD_PROSPECTS_SUCCESS,
     payload: {
-      prospects,
+      result,
     },
   };
 }
@@ -65,6 +73,33 @@ export function setCheckAllAction(checkAll) {
     type: SET_CHECK_ALL,
     payload: {
       checkAll,
+    },
+  };
+}
+
+export function selectPageAction(page) {
+  return {
+    type: SELECT_PAGE,
+    payload: {
+      page,
+    },
+  };
+}
+
+export function selectPageSuccessAction(page) {
+  return {
+    type: SELECT_PAGE_SUCCESS,
+    payload: {
+      page,
+    },
+  };
+}
+
+export function setCheckedPageAction(checkedPages) {
+  return {
+    type: SET_CHECK_PAGE,
+    payload: {
+      checkedPages,
     },
   };
 }

@@ -104,6 +104,7 @@ export default class ApiEndpoint {
     return `${BASE_URL}${PROSPECTS_PATH}/read`;
   };
 
+
   getLoadConversationListPath = () => {
     return `${BASE_URL}${CONVERSATION_PATH}/list`;
   };

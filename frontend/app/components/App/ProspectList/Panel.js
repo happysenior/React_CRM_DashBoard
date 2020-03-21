@@ -4,7 +4,6 @@ import './index.scss';
 export default class Panel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
 
     this.handleCheckAll = this.handleCheckAll.bind(this);
   }
@@ -12,7 +11,8 @@ export default class Panel extends React.Component {
   handleCheckAll(event) {
     const target = event.target;
     const value = target.checked;
-    this.props.selectAllProspects(value);
+    // this.props.selectAllProspects(value);
+    this.props.selectAllProspectsInPage(value, this.props.page);
   }
 
   render() {

@@ -114,7 +114,7 @@ const Toolbar = props => {
       className="d-flex justify-content-between p-3 font-weight-bold"
     >
       <div style={styles.title}>
-        {props.prospectCnt}
+        {props.totalProspects}
         <span> Prospects</span>
       </div>
       <div className="d-flex justify-content-between">

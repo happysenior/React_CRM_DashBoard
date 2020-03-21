@@ -12,10 +12,16 @@ import AuthService from 'services/auth.service';
 
 // Import Selectors
 
+import { makePageSelector } from './selectors';
+
 // Import Actions
 
 import { selectProspectSuccessAction } from 'containers/ConversationPage/actions';
-import { loadProspectsSuccessAction } from '../ProspectPage/actions';
+import {
+  loadProspectsSuccessAction,
+  selectPageSuccessAction,
+  loadProspectsAction,
+} from './actions';
 
 // Import Constants
 
@@ -24,6 +30,7 @@ import {
   GO_IMPORT_CSV,
   LOAD_PROSPECTS,
   GO_CONVERSATION,
+  SELECT_PAGE,
 } from './constants';
 
 export function* goSendBroadcast() {
@@ -50,12 +57,14 @@ export function* goConversation({ payload: { prospectId } }) {
   }
 }
 
-export function* loadProspects() {
+export function* loadProspects({ payload: { filters } }) {
   const api = new ApiEndpoint();
   const auth = new AuthService();
   const token = auth.getToken();
   const requestURL = api.getLoadProspectsPath();
-
+  const page = yield select(makePageSelector());
+  console.log("loadprosepcts");
+  console.log(filters);
   try {
     const response = yield call(request, requestURL, {
       method: 'POST',
@@ -65,14 +74,24 @@ export function* loadProspects() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        filter: [],
+        filters: filters,
         searchKey: '',
+        page,
       }),
     });
 
     if (response.success) {
-      yield put(loadProspectsSuccessAction(response.prospects));
+      yield put(loadProspectsSuccessAction(response));
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* selectPage({ payload: { page } }) {
+  try {
+    yield put(selectPageSuccessAction(page));
+    yield put(loadProspectsAction());
   } catch (error) {
     console.log(error);
   }
@@ -83,4 +102,5 @@ export default function* prospectPageSaga() {
   yield takeLatest(GO_IMPORT_CSV, goImportCSV);
   yield takeLatest(LOAD_PROSPECTS, loadProspects);
   yield takeLatest(GO_CONVERSATION, goConversation);
+  yield takeLatest(SELECT_PAGE, selectPage);
 }

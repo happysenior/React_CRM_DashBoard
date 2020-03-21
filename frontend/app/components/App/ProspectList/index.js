@@ -4,12 +4,15 @@ import Toolbar from './Toolbar';
 import Status from './Status';
 import Panel from './Panel';
 import Paginator from './Paginator';
+import FilterArea from './FilterArea';
 import { Container } from 'reactstrap';
 import {
   loadProspectsAction,
   goConversationAction,
   selectProspectsAction,
   setCheckAllAction,
+  selectPageAction,
+  setCheckedPageAction,
 } from 'containers/ProspectPage/actions';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -24,12 +27,20 @@ import {
   makeProspectsSelector,
   makeSelectedProspectIdsSelector,
   makeCheckAllSelector,
+  makePageSelector,
+  makeLastPageSelector,
+  makeTotalProspectsSelector,
+  makeCheckedPagesSelector,
 } from 'containers/ProspectPage/selectors';
 
 const stateSelector = createStructuredSelector({
   prospects: makeProspectsSelector(),
   selectedProspectIds: makeSelectedProspectIdsSelector(),
   checkAll: makeCheckAllSelector(),
+  page: makePageSelector(),
+  lastPage: makeLastPageSelector(),
+  totalProspects: makeTotalProspectsSelector(),
+  checkedPages: makeCheckedPagesSelector(),
 });
 
 export default function ProspectList() {
@@ -39,9 +50,15 @@ export default function ProspectList() {
 
   useInjectReducer({ key, reducer });
 
-  const { prospects, selectedProspectIds, checkAll } = useSelector(
-    stateSelector,
-  );
+  const {
+    prospects,
+    selectedProspectIds,
+    checkAll,
+    page,
+    lastPage,
+    totalProspects,
+    checkedPages,
+  } = useSelector(stateSelector);
 
   const clickProspect = id => {
     dispatch(goConversationAction(id));
@@ -49,15 +66,43 @@ export default function ProspectList() {
 
   const selectAllProspects = value => {
     if (value) {
-      const ids = prospects.map(item => item._id);
-      dispatch(selectProspectsAction(ids));
+      const newIds = prospects.map(x => x._id);
+      dispatch(selectProspectsAction(newIds));
     } else {
       dispatch(selectProspectsAction([]));
     }
     dispatch(setCheckAllAction(value));
   };
 
+  const selectAllProspectsInPage = (value, page) => {
+    if (value) {
+      const newIds = prospects
+        .filter(item => {
+          return selectedProspectIds && !selectedProspectIds.includes(item._id);
+        })
+        .map(x => x._id);
+
+      const newCheckedPages = [...checkedPages, page];
+      dispatch(setCheckedPageAction(newCheckedPages));
+      dispatch(selectProspectsAction(selectedProspectIds.concat(newIds)));
+    } else {
+      const newCheckedPages = checkedPages.filter(x => {
+        return !(x === page);
+      });
+      dispatch(setCheckedPageAction(newCheckedPages));
+      const newIds = selectedProspectIds.filter(item => {
+        return prospects && prospects.find(x => x._id === item) === undefined;
+      });
+
+      dispatch(selectProspectsAction(newIds));
+    }
+  };
+
   const selectProspect = (id, value) => {
+    const newCheckedPages = checkedPages.filter(x => {
+      return !(x === page);
+    });
+    dispatch(setCheckedPageAction(newCheckedPages));
     dispatch(setCheckAllAction(false));
     if (value) {
       dispatch(selectProspectsAction([...selectedProspectIds, id]));
@@ -67,23 +112,42 @@ export default function ProspectList() {
     }
   };
 
+  const goTo = page => {
+    dispatch(selectPageAction(page));
+  };
+
+  const filterProspects = filters => {
+    dispatch(loadProspectsAction(filters));
+  }
+
   useEffect(() => {
-    dispatch(loadProspectsAction());
+    dispatch(loadProspectsAction([]));
   }, []);
 
+  const isCheckedPaged = checkedPages && checkedPages.includes(page);
   return (
     <Container>
-      <Toolbar prospectCnt={prospects.length} />
-      <Status />
-      <Panel
+      <FilterArea filterProspects={filterProspects}/>
+      <Toolbar totalProspects={totalProspects} />
+      <Status
+        selectedIdsCnt={selectedProspectIds.length}
+        totalProspects={totalProspects}
+        selectAllProspects={selectAllProspects}
+        page={page}
+        checkedPages={checkedPages}
         checkAll={checkAll}
+      />
+      <Panel
+        checkAll={isCheckedPaged}
         prospects={prospects}
         selectedProspectIds={selectedProspectIds}
         clickProspect={clickProspect}
         selectProspect={selectProspect}
         selectAllProspects={selectAllProspects}
+        selectAllProspectsInPage={selectAllProspectsInPage}
+        page={page}
       />
-      <Paginator />
+      <Paginator goTo={goTo} page={page} lastPage={lastPage} />
     </Container>
   );
 }

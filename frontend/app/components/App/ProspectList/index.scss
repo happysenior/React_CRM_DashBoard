@@ -85,11 +85,56 @@
         color: white;
       }
     }
-    .page-item.first-page .page-link,
-    .page-item.last-page .page-link {
+    .page-item.prev-page .page-link,
+    .page-item.next-page .page-link {
       border: 1px solid;
       border-color: #fafbfb;
       background-color: white;
     }
   }
+}
+
+.prospect-status {
+  padding: 3px 15px;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d6edf9;
+    padding: 5px 5px;
+  }
+}
+.select-all-prospects {
+  color: #084e8a;
+  &:hover {
+    background-color: rgb(75, 139, 189);
+  }
+  padding: 2px 2px;
+}
+
+.filter-toggle {
+  background-color: #6b93b7;
+  display: flex;
+  &:hover {
+    background-color: #6b93b7;
+  }
+  svg {
+    margin-left: 5px;
+  }
+}
+
+.red-border {
+  border: 1px solid #ff0000 !important;
+}
+
+.filter-menu {
+  width: 280px;
+}
+
+.filter-number-input {
+  width: 150px;
+}
+
+.dropdown-item:active {
+  background-color: transparent !important;
 }

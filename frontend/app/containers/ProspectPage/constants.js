@@ -5,3 +5,6 @@ export const LOAD_PROSPECTS_SUCCESS = 'app/ProspectPage/load_prospects_success';
 export const SELECT_PROSPECTS = 'app/ProspectPage/select_prospects';
 export const GO_CONVERSATION = 'app/ProspectPage/go_conversation';
 export const SET_CHECK_ALL = 'app/ProspectPage/set_check_all';
+export const SELECT_PAGE = 'app/ProspectPage/select_page';
+export const SELECT_PAGE_SUCCESS = 'app/ProspectPage/select_page_success';
+export const SET_CHECK_PAGE = 'app/ProspectPage/set_check_page';
