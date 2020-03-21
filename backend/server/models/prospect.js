@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
+mongoose;
 
 const ProspectSchema = new Schema(
   {
@@ -9,7 +10,8 @@ const ProspectSchema = new Schema(
     phone: { type: String, default: "" },
     email: { type: String, default: "" },
     status: { type: String, default: "NEW" },
-    chatted: { type: Boolean, default: false }
+    chatted: { type: Boolean, default: false },
+    campaign: { type: String, default: "" }
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );
@@ -51,6 +53,15 @@ const validatePresenceOf = value => value && value.length;
 //   }
 // });
 
+const fields = [
+  "firstName",
+  "lastName",
+  "phone",
+  "email",
+  "status",
+  "campaign"
+];
+
 ProspectSchema.methods = {};
 
 ProspectSchema.statics = {
@@ -59,6 +70,45 @@ ProspectSchema.statics = {
     return this.findOne(options.criteria)
       .select(options.select)
       .exec(cb);
+  },
+
+  findByFilters: function(options) {
+    let where = {};
+    let { filters, searchKey } = options;
+    for (let i = 0; filters && i < filters.length; i++) {
+      if (fields.includes(filters[i].key)) {
+        if (filters[i].value == "") continue;
+        if (filters[i].rule == "is") {
+          where = { ...where, [filters[i].key]: filters.value };
+        } else if (filters[i].rule == "contains") {
+
+          where = {
+            ...where,
+            [filters[i].key]: new RegExp(filters[i].value, "i")
+          };
+        } else if (filters[i].rule == "not contains") {
+          where = {
+            ...where,
+            [filters[i].key]: new new RegExp(
+              `^((?!${filters[i].value}).)*$`,
+              "i"
+            )()
+          };
+        }
+      }
+    }
+    let searchWhere = [];
+    if (searchKey) {
+      for (let i = 0; i < fields.length; i++) {
+        searchWhere = [
+          ...searchWhere,
+          { [fields[i]]: new RegExp(`${searchKey}`, "i") }
+        ];
+      }
+    }
+    const query = this.find(where);
+    if (searchKey) return query.or(searchWhere);
+    return query;
   }
 };
 

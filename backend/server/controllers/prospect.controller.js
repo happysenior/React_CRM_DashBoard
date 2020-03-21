@@ -79,23 +79,28 @@ prospectRouter
     }
   );
 
-prospectRouter
-  .route("/read")
-  .post(
-    [
-      check("filter").exists({ checkNull: false }),
-      check("searchKey").exists({ checkNull: false })
-    ],
-    async (req, res, next) => {
-      try {
-        const prospects = await Prospect.find({});
-        res.status(200).json({ success: true, prospects });
-      } catch (error) {
-        console.log(error);
-        res.status(500).end();
-      }
-    }
-  );
+prospectRouter.route("/read").post(async (req, res, next) => {
+  try {
+    let prospects = await Prospect.findByFilters({
+      filters: req.body.filters,
+      searchKey: req.body.searchKey
+    });
+    const totalProspects = prospects.length;
+    const lastPage = Math.ceil(totalProspects / 15);
+    prospects = prospects.filter((x, i) => {
+      return i >= (req.body.page - 1) * 15 && i < req.body.page * 15;
+    });
+    res.status(200).json({
+      success: true,
+      prospects,
+      totalProspects,
+      lastPage
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
 
 prospectRouter.route("/:id").get(async (req, res, next) => {
   try {
