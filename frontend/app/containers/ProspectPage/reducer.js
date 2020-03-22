@@ -16,6 +16,9 @@ import {
   SELECT_PAGE_SUCCESS,
   SET_CHECK_ALL,
   SET_CHECK_PAGE,
+  FILTER_SEELCT_SUCCESS,
+  SEARCH_KEY_SAVE,
+  SEARCH,
 } from './constants';
 
 export const initialState = {
@@ -25,9 +28,15 @@ export const initialState = {
   lastPage: 5,
   totalProspects: 100,
   error: '',
+  filters: [],
   isLoading: false,
   checkAll: false,
   checkedPages: [],
+  searchKey: '',
+  modalState: {
+    type: 1,
+    open: false,
+  },
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -53,6 +62,13 @@ const prospectPageReducer = produce((draft, action) => {
       draft.prospects = action.payload.result.prospects;
       draft.lastPage = action.payload.result.lastPage;
       draft.totalProspects = action.payload.result.totalProspects;
+      draft.checkAll = false;
+      draft.checkedPages = [];
+      draft.selectedProspectIds = [];
+      draft.modalState = {
+        type: 1,
+        open: false,
+      };
       break;
     case SELECT_PROSPECTS:
       draft.selectedProspectIds = action.payload.selectedProspectIds;
@@ -65,6 +81,12 @@ const prospectPageReducer = produce((draft, action) => {
       break;
     case SELECT_PAGE_SUCCESS:
       draft.page = action.payload.page;
+      break;
+    case FILTER_SEELCT_SUCCESS:
+      draft.filters = action.payload.filters;
+      break;
+    case SEARCH_KEY_SAVE:
+      draft.searchKey = action.payload.searchKey;
       break;
     case LOCATION_CHANGE:
       draft.error = '';

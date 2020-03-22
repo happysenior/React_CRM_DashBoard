@@ -12,7 +12,13 @@ import AuthService from 'services/auth.service';
 
 // Import Selectors
 
-import { makePageSelector } from './selectors';
+import {
+  makePageSelector,
+  makeFilterSelector,
+  makeSelectedProspectIdsSelector,
+  makeCheckAllSelector,
+  makeSearchKeySelector,
+} from './selectors';
 
 // Import Actions
 
@@ -21,6 +27,10 @@ import {
   loadProspectsSuccessAction,
   selectPageSuccessAction,
   loadProspectsAction,
+  filterSelectAction,
+  filterSelectSuccessAction,
+  assignCampaignAction,
+  searchKeySaveAction,
 } from './actions';
 
 // Import Constants
@@ -31,7 +41,14 @@ import {
   LOAD_PROSPECTS,
   GO_CONVERSATION,
   SELECT_PAGE,
+  FILTER_SEELCT,
+  ASSIGN_CAMPAIGN,
+  ASSIGN_STATUS,
+  DELETE_PROSPECTS,
+  SEARCH
 } from './constants';
+import FilterDropdown from '../../components/App/ProspectList/FilterDropdown';
+import { func } from 'prop-types';
 
 export function* goSendBroadcast() {
   const auth = new AuthService();
@@ -57,15 +74,15 @@ export function* goConversation({ payload: { prospectId } }) {
   }
 }
 
-export function* loadProspects({ payload: { filters } }) {
+export function* loadProspects() {
   const api = new ApiEndpoint();
   const auth = new AuthService();
   const token = auth.getToken();
   const requestURL = api.getLoadProspectsPath();
   const page = yield select(makePageSelector());
-  console.log("loadprosepcts");
-  console.log(filters);
   try {
+    const filters = yield select(makeFilterSelector());
+    const searchKey = yield select(makeSearchKeySelector());
     const response = yield call(request, requestURL, {
       method: 'POST',
       headers: {
@@ -91,6 +108,120 @@ export function* loadProspects({ payload: { filters } }) {
 export function* selectPage({ payload: { page } }) {
   try {
     yield put(selectPageSuccessAction(page));
+    yield put(filterSelectAction([]));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* filterSelect({ payload: { filters } }) {
+  try {
+    yield put(filterSelectSuccessAction(filters));
+    yield put(loadProspectsAction());
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* assignCampaign({ payload: { campaign, autoSequence } }) {
+  const api = new ApiEndpoint();
+  const auth = new AuthService();
+  const token = auth.getToken();
+  const requestURL = api.getAssignCampaignPath();
+  try {
+    const filters = yield select(makeFilterSelector());
+    const selectedProspectIds = yield select(makeSelectedProspectIdsSelector());
+    const checkAll = yield select(makeCheckAllSelector());
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        filters: filters,
+        selectedProspectIds,
+        checkAll,
+        campaign,
+        autoSequence,
+      }),
+    });
+
+    if (response.success) {
+      yield put(loadProspectsAction());
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* assignStatus({ payload: { status } }) {
+  const api = new ApiEndpoint();
+  const auth = new AuthService();
+  const token = auth.getToken();
+  const requestURL = api.getAssignStatusPath();
+  try {
+    const filters = yield select(makeFilterSelector());
+    const selectedProspectIds = yield select(makeSelectedProspectIdsSelector());
+    const checkAll = yield select(makeCheckAllSelector());
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        filters: filters,
+        selectedProspectIds,
+        checkAll,
+        status,
+      }),
+    });
+
+    if (response.success) {
+      yield put(loadProspectsAction());
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* deleteProspects() {
+  const api = new ApiEndpoint();
+  const auth = new AuthService();
+  const token = auth.getToken();
+  const requestURL = api.getDeleteProspectsPath();
+  try {
+    const filters = yield select(makeFilterSelector());
+    const selectedProspectIds = yield select(makeSelectedProspectIdsSelector());
+    const checkAll = yield select(makeCheckAllSelector());
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        filters: filters,
+        selectedProspectIds,
+        checkAll,
+      }),
+    });
+
+    if (response.success) {
+      yield put(loadProspectsAction());
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* search({ payload: { searchKey } }) {
+  try {
+    yield put(searchKeySaveAction(searchKey));
     yield put(loadProspectsAction());
   } catch (error) {
     console.log(error);
@@ -103,4 +234,9 @@ export default function* prospectPageSaga() {
   yield takeLatest(LOAD_PROSPECTS, loadProspects);
   yield takeLatest(GO_CONVERSATION, goConversation);
   yield takeLatest(SELECT_PAGE, selectPage);
+  yield takeLatest(FILTER_SEELCT, filterSelect);
+  yield takeLatest(ASSIGN_CAMPAIGN, assignCampaign);
+  yield takeLatest(ASSIGN_STATUS, assignStatus);
+  yield takeLatest(DELETE_PROSPECTS, deleteProspects);
+  yield takeLatest(SEARCH, search);
 }

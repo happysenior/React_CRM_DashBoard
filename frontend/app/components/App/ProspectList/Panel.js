@@ -25,7 +25,7 @@ export default class Panel extends React.Component {
                 name="isGoing"
                 type="checkbox"
                 className="row-check"
-                checked={this.props.checkAll}
+                checked={this.props.checkedPage}
                 onChange={this.handleCheckAll}
               />
             </div>
@@ -38,9 +38,11 @@ export default class Panel extends React.Component {
           {this.props.prospects
             ? this.props.prospects.map(prospect => {
                 const className = `prospect-${prospect.status.toLowerCase()}`;
-                let checked = this.props.selectedProspectIds.includes(
-                  prospect._id,
-                );
+                let checked =
+                  (this.props.checkAll &&
+                    !this.props.selectedProspectIds.includes(prospect._id)) ||
+                  (!this.props.checkAll &&
+                    this.props.selectedProspectIds.includes(prospect._id));
                 return (
                   <div
                     className="prospect-table-row d-flex flex-row"
@@ -66,7 +68,7 @@ export default class Panel extends React.Component {
                       />
                     </div>
                     <div className="w-20">{`${prospect.firstName} ${prospect.lastName}`}</div>
-                    <div className="w-33">LABROKER2</div>
+                    <div className="w-33">{prospect.campaign}</div>
                     <div className="w-14">
                       <span className={className}>{prospect.status}</span>
                     </div>

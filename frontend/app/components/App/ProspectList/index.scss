@@ -1,3 +1,9 @@
+$PRIMARY_BLUE: #084d8a;
+
+.primary-button {
+  background-color: $PRIMARY_BLUE;
+}
+
 .prospect-table {
   border-radius: 8px;
   background-color: white;
@@ -54,15 +60,21 @@
   padding: 2px 5px;
 }
 
-.prospect-pending {
+.prospect-responded {
   color: #fe964a;
   background-color: #f3ece8;
   padding: 2px 5px;
 }
 
-.prospect-cancel {
-  color: #fc7373;
-  background-color: #ffeeee;
+.prospect-won {
+  color: #6772c3;
+  background-color: #abafe0;
+  padding: 2px 5px;
+}
+
+.prospect-lost {
+  color: #444650;
+  background-color: #9fa1b5;
   padding: 2px 5px;
 }
 

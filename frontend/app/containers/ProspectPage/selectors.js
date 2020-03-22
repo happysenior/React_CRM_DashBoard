@@ -65,6 +65,24 @@ const makeCheckedPagesSelector = () =>
     substate => substate.checkedPages,
   );
 
+const makeFilterSelector = () =>
+  createSelector(
+    selectProspectPageDomain,
+    substate => substate.filters,
+  );
+
+const makeSearchKeySelector = () =>
+  createSelector(
+    selectProspectPageDomain,
+    substate => substate.searchKey,
+  );
+
+const makeModalStateSelector = () =>
+  createSelector(
+    selectProspectPageDomain,
+    substate => substate.modalState,
+  );
+
 /**
  * Default selector used by LoginPage
  */
@@ -85,5 +103,8 @@ export {
   makePageSelector,
   makeLastPageSelector,
   makeTotalProspectsSelector,
-  makeCheckedPagesSelector
+  makeCheckedPagesSelector,
+  makeFilterSelector,
+  makeSearchKeySelector,
+  makeModalStateSelector,
 };

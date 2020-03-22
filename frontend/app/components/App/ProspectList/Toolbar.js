@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInjectSaga } from 'utils/injectSaga';
 
@@ -16,9 +16,11 @@ import {
 } from 'reactstrap';
 import SearchIcon from '@material-ui/icons/Search';
 import ToolbarMenuItem from './ToolbarMenuItem';
+import BulkEditModal from './BulkEditModal';
 import {
   goSendBroadcastAction,
   goImportCSVAction,
+  searchAction,
 } from 'containers/ProspectPage/actions';
 
 const styles = {
@@ -51,6 +53,10 @@ const key = 'prospectPage';
 const Toolbar = props => {
   const [bulkEditDropdownOpen, setBulkEditDropdownOpen] = useState(false);
   const [actionsDropdownOpen, setActionsDropdownOpen] = useState(false);
+  const [modalState, setModalState] = useState({
+    type: 1,
+    open: false,
+  });
 
   const toggleBulkEdit = () => setBulkEditDropdownOpen(prevState => !prevState);
   const toggleActions = () => setActionsDropdownOpen(prevState => !prevState);
@@ -65,6 +71,82 @@ const Toolbar = props => {
 
   const handleImportCSV = () => {
     dispatch(goImportCSVAction());
+  };
+
+  const modalToggle = () => {
+    setModalState(prevState => ({ ...prevState, open: !prevState.open }));
+  };
+
+  const search = searchKey => {
+    dispatch(searchAction(searchKey));
+  };
+
+  const openModal = type => {
+    setModalState(prevState => {
+      return {
+        ...prevState,
+        open: true,
+        type,
+      };
+    });
+  };
+
+  useEffect(() => {
+    setModalState(prevState => {
+      return props.modalState;
+    });
+    return () => {};
+  }, [props.modalState]);
+  const renderBulkEditDropdown = (selectedIdsCnt, totalProspects, checkAll) => {
+    let selectedCnt = checkAll
+      ? totalProspects - selectedIdsCnt
+      : selectedIdsCnt;
+    return (
+      <Dropdown
+        className="m-2"
+        style={styles.toolbarBtn}
+        isOpen={bulkEditDropdownOpen}
+        toggle={toggleBulkEdit}
+      >
+        <DropdownToggle caret className="border-0" style={styles.toolbarBtn}>
+          Bulk Edit ({selectedCnt}/{totalProspects})
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem
+            onClick={() => {
+              if (selectedCnt < 1) return;
+              openModal(1);
+            }}
+          >
+            <ToolbarMenuItem title="Assign to campaign" help="" />
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              if (selectedCnt < 1) return;
+              openModal(2);
+            }}
+          >
+            <ToolbarMenuItem title="Change status" help="" />
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              if (selectedCnt < 1) return;
+              openModal(3);
+            }}
+          >
+            <ToolbarMenuItem title="Add tags" help="" />
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
+              if (selectedCnt < 1) return;
+              openModal(4);
+            }}
+          >
+            <ToolbarMenuItem title="Delete prospects" help="" />
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    );
   };
 
   const renderActionsDropdown = () => (
@@ -124,23 +206,31 @@ const Toolbar = props => {
               <SearchIcon />
             </InputGroupText>
           </InputGroupAddon>
-          <Input placeholder="Search prospects..." style={styles.search} />
+          <Input
+            placeholder="Search prospects..."
+            style={styles.search}
+            onChange={e => {
+              search(e.target.value);
+            }}
+          />
         </InputGroup>
-        <Dropdown
-          className="m-2"
-          style={styles.toolbarBtn}
-          isOpen={bulkEditDropdownOpen}
-          toggle={toggleBulkEdit}
-        >
-          <DropdownToggle caret className="border-0" style={styles.toolbarBtn}>
-            Bulk Edit (0/620)
-          </DropdownToggle>
-          <DropdownMenu right>
-            <div></div>
-          </DropdownMenu>
-        </Dropdown>
+        {renderBulkEditDropdown(
+          props.selectedIdsCnt,
+          props.totalProspects,
+          props.checkAll,
+        )}
         {renderActionsDropdown()}
       </div>
+      <BulkEditModal
+        modalState={modalState}
+        modalToggle={modalToggle}
+        totalProspects={props.totalProspects}
+        selectedIdsCnt={props.selectedIdsCnt}
+        checkAll={props.checkAll}
+        assignCampaign={props.assignCampaign}
+        assignStatus={props.assignStatus}
+        deleteProspects={props.deleteProspects}
+      />
     </div>
   );
 };

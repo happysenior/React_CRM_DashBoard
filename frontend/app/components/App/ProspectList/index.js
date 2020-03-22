@@ -7,12 +7,15 @@ import Paginator from './Paginator';
 import FilterArea from './FilterArea';
 import { Container } from 'reactstrap';
 import {
-  loadProspectsAction,
   goConversationAction,
   selectProspectsAction,
   setCheckAllAction,
   selectPageAction,
   setCheckedPageAction,
+  filterSelectAction,
+  assignCampaignAction,
+  assignStatusAction,
+  deleteProspectsAction,
 } from 'containers/ProspectPage/actions';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -31,6 +34,7 @@ import {
   makeLastPageSelector,
   makeTotalProspectsSelector,
   makeCheckedPagesSelector,
+  makeModalStateSelector,
 } from 'containers/ProspectPage/selectors';
 
 const stateSelector = createStructuredSelector({
@@ -41,6 +45,7 @@ const stateSelector = createStructuredSelector({
   lastPage: makeLastPageSelector(),
   totalProspects: makeTotalProspectsSelector(),
   checkedPages: makeCheckedPagesSelector(),
+  modalState: makeModalStateSelector(),
 });
 
 export default function ProspectList() {
@@ -58,6 +63,7 @@ export default function ProspectList() {
     lastPage,
     totalProspects,
     checkedPages,
+    modalState,
   } = useSelector(stateSelector);
 
   const clickProspect = id => {
@@ -65,50 +71,98 @@ export default function ProspectList() {
   };
 
   const selectAllProspects = value => {
+    dispatch(selectProspectsAction([]));
     if (value) {
-      const newIds = prospects.map(x => x._id);
-      dispatch(selectProspectsAction(newIds));
+      let newCheckedPages = [];
+      for (let i = 1; i <= lastPage; i++) {
+        newCheckedPages.push(i);
+      }
+      dispatch(setCheckedPageAction(newCheckedPages));
     } else {
-      dispatch(selectProspectsAction([]));
+      dispatch(setCheckedPageAction([]));
     }
     dispatch(setCheckAllAction(value));
   };
 
   const selectAllProspectsInPage = (value, page) => {
     if (value) {
-      const newIds = prospects
-        .filter(item => {
-          return selectedProspectIds && !selectedProspectIds.includes(item._id);
-        })
-        .map(x => x._id);
-
       const newCheckedPages = [...checkedPages, page];
-      dispatch(setCheckedPageAction(newCheckedPages));
-      dispatch(selectProspectsAction(selectedProspectIds.concat(newIds)));
+
+      if (!checkAll) {
+        const newIds = prospects
+          .filter(item => {
+            return (
+              selectedProspectIds && !selectedProspectIds.includes(item._id)
+            );
+          })
+          .map(x => x._id);
+        dispatch(setCheckedPageAction(newCheckedPages));
+        dispatch(selectProspectsAction(selectedProspectIds.concat(newIds)));
+      } else {
+        const newIds = selectedProspectIds.filter(item => {
+          return prospects && prospects.find(x => x._id === item) === undefined;
+        });
+
+        dispatch(setCheckedPageAction(newCheckedPages));
+        dispatch(selectProspectsAction(newIds));
+      }
     } else {
       const newCheckedPages = checkedPages.filter(x => {
         return !(x === page);
       });
-      dispatch(setCheckedPageAction(newCheckedPages));
-      const newIds = selectedProspectIds.filter(item => {
-        return prospects && prospects.find(x => x._id === item) === undefined;
-      });
+      if (!checkAll) {
+        dispatch(setCheckedPageAction(newCheckedPages));
+        const newIds = selectedProspectIds.filter(item => {
+          return prospects && prospects.find(x => x._id === item) === undefined;
+        });
 
-      dispatch(selectProspectsAction(newIds));
+        dispatch(selectProspectsAction(newIds));
+      } else {
+        dispatch(setCheckedPageAction(newCheckedPages));
+
+        const newIds = prospects
+          .filter(item => {
+            return (
+              selectedProspectIds && !selectedProspectIds.includes(item._id)
+            );
+          })
+          .map(x => x._id);
+        dispatch(selectProspectsAction(selectedProspectIds.concat(newIds)));
+      }
     }
   };
 
   const selectProspect = (id, value) => {
-    const newCheckedPages = checkedPages.filter(x => {
-      return !(x === page);
-    });
-    dispatch(setCheckedPageAction(newCheckedPages));
-    dispatch(setCheckAllAction(false));
     if (value) {
-      dispatch(selectProspectsAction([...selectedProspectIds, id]));
+      if (!checkAll) {
+        if (prospects.length - 1 == selectedProspectIds.length) {
+          const newCheckedPages = [...checkedPages, page];
+          dispatch(setCheckedPageAction(newCheckedPages));
+        }
+        dispatch(selectProspectsAction([...selectedProspectIds, id]));
+      } else {
+        if (selectedProspectIds.length == 1) {
+          const newCheckedPages = [...checkedPages, page];
+          dispatch(setCheckedPageAction(newCheckedPages));
+        }
+        const ids = selectedProspectIds.filter(item => item != id);
+        dispatch(selectProspectsAction(ids));
+      }
     } else {
-      const ids = selectedProspectIds.filter(item => item != id);
-      dispatch(selectProspectsAction(ids));
+      if (!checkAll) {
+        if (selectedProspectIds.length == prospects.length) {
+          const newCheckedPages = checkedPages.filter(x => x != page);
+          dispatch(setCheckedPageAction(newCheckedPages));
+        }
+        const ids = selectedProspectIds.filter(item => item != id);
+        dispatch(selectProspectsAction(ids));
+      } else {
+        if (selectedProspectIds.length == 0) {
+          const newCheckedPages = checkedPages.filter(x => x != page);
+          dispatch(setCheckedPageAction(newCheckedPages));
+        }
+        dispatch(selectProspectsAction([...selectedProspectIds, id]));
+      }
     }
   };
 
@@ -117,18 +171,40 @@ export default function ProspectList() {
   };
 
   const filterProspects = filters => {
-    dispatch(loadProspectsAction(filters));
-  }
+    dispatch(filterSelectAction(filters));
+  };
+
+  const assignCampaign = (campaign, autoSequence) => {
+    dispatch(assignCampaignAction(campaign, autoSequence));
+  };
+
+  const assignStatus = status => {
+    dispatch(assignStatusAction(status));
+  };
+
+  const deleteProspects = () => {
+    dispatch(deleteProspectsAction());
+    dispatch(deleteProspectsAction());
+  };
 
   useEffect(() => {
-    dispatch(loadProspectsAction([]));
+    dispatch(filterSelectAction([]));
   }, []);
 
-  const isCheckedPaged = checkedPages && checkedPages.includes(page);
+  const checkedPage = checkedPages && checkedPages.includes(page);
+
   return (
     <Container>
-      <FilterArea filterProspects={filterProspects}/>
-      <Toolbar totalProspects={totalProspects} />
+      <FilterArea filterProspects={filterProspects} />
+      <Toolbar
+        checkAll={checkAll}
+        totalProspects={totalProspects}
+        selectedIdsCnt={selectedProspectIds.length}
+        assignCampaign={assignCampaign}
+        assignStatus={assignStatus}
+        deleteProspects={deleteProspects}
+        modalState={modalState}
+      />
       <Status
         selectedIdsCnt={selectedProspectIds.length}
         totalProspects={totalProspects}
@@ -138,7 +214,8 @@ export default function ProspectList() {
         checkAll={checkAll}
       />
       <Panel
-        checkAll={isCheckedPaged}
+        checkedPage={checkedPage}
+        checkAll={checkAll}
         prospects={prospects}
         selectedProspectIds={selectedProspectIds}
         clickProspect={clickProspect}

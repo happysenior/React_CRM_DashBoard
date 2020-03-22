@@ -114,4 +114,41 @@ prospectRouter.route("/:id").get(async (req, res, next) => {
     res.status(500).end();
   }
 });
+
+prospectRouter.route("/bulkedit/campaign").put(async (req, res, next) => {
+  try {
+    await Prospect.assignCampaign(req.body);
+    res.status(200).json({
+      success: true
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
+prospectRouter.route("/bulkedit/status").put(async (req, res, next) => {
+  try {
+    await Prospect.assignStatus(req.body);
+    res.status(200).json({
+      success: true
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
+prospectRouter.route("/bulkedit/delete").delete(async (req, res, next) => {
+  try {
+    await Prospect.deleteProspects(req.body);
+    res.status(200).json({
+      success: true
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
 export default prospectRouter;

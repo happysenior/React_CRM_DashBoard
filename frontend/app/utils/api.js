@@ -104,7 +104,6 @@ export default class ApiEndpoint {
     return `${BASE_URL}${PROSPECTS_PATH}/read`;
   };
 
-
   getLoadConversationListPath = () => {
     return `${BASE_URL}${CONVERSATION_PATH}/list`;
   };
@@ -131,5 +130,14 @@ export default class ApiEndpoint {
 
   getBroadcastPath = () => {
     return `${BASE_URL}${CONVERSATION_PATH}/broadcast`;
+  };
+  getAssignCampaignPath = () => {
+    return `${BASE_URL}${PROSPECTS_PATH}/bulkedit/campaign`;
+  };
+  getAssignStatusPath = () => {
+    return `${BASE_URL}${PROSPECTS_PATH}/bulkedit/status`;
+  };
+  getDeleteProspectsPath = () => {
+    return `${BASE_URL}${PROSPECTS_PATH}/bulkedit/delete`;
   };
 }

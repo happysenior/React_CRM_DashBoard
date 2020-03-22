@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-mongoose;
 
 const ProspectSchema = new Schema(
   {
@@ -74,14 +73,15 @@ ProspectSchema.statics = {
 
   findByFilters: function(options) {
     let where = {};
-    let { filters, searchKey } = options;
+
+    const { filters, searchKey } = options;
+
     for (let i = 0; filters && i < filters.length; i++) {
       if (fields.includes(filters[i].key)) {
         if (filters[i].value == "") continue;
         if (filters[i].rule == "is") {
           where = { ...where, [filters[i].key]: filters.value };
         } else if (filters[i].rule == "contains") {
-
           where = {
             ...where,
             [filters[i].key]: new RegExp(filters[i].value, "i")
@@ -109,6 +109,53 @@ ProspectSchema.statics = {
     const query = this.find(where);
     if (searchKey) return query.or(searchWhere);
     return query;
+  },
+
+  assignCampaign: async function(options) {
+    let query = this.find();
+    if (options.checkAll) {
+      query = this.findByFilters(options);
+      query.where("_id").nin(options.selectedProspectIds);
+    } else {
+      query.where("_id").in(options.selectedProspectIds);
+    }
+    const prospects = await query.updateMany(
+      {},
+      {
+        $set: {
+          campaign: options.campaign
+        }
+      }
+    );
+  },
+
+  assignStatus: async function(options) {
+    let query = this.find();
+    if (options.checkAll) {
+      query = this.findByFilters(options);
+      query.where("_id").nin(options.selectedProspectIds);
+    } else {
+      query.where("_id").in(options.selectedProspectIds);
+    }
+    const prospects = await query.updateMany(
+      {},
+      {
+        $set: {
+          status: options.status
+        }
+      }
+    );
+  },
+
+  deleteProspects: async function(options) {
+    let query = this.find();
+    if (options.checkAll) {
+      query = this.findByFilters(options);
+      query.where("_id").nin(options.selectedProspectIds);
+    } else {
+      query.where("_id").in(options.selectedProspectIds);
+    }
+    const prospects = await query.deleteMany({});
   }
 };
 

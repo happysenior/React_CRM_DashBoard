@@ -14,9 +14,11 @@ export default function Status(props) {
       <div>
         <div className="mr-5">
           <span className="pr-1">
-            {checkAll ? `${totalProspects}` : `${selectedIdsCnt}`}
+            {checkAll
+              ? `${totalProspects - selectedIdsCnt}`
+              : `${selectedIdsCnt}`}
           </span>
-          prospects on this page are selected.
+          prospects are selected.
         </div>
         <div
           className="select-all-prospects"

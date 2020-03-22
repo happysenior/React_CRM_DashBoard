@@ -168,8 +168,10 @@ const FilterArea = props => {
 
   const setFilterProperty = (name, value, index) => {
     setState(prevState => {
+      let isNeedFetch = true;
       let newFilters = prevState.filters.map((x, i) => {
         if (i != index) return x;
+        if (x.value == '' && name == 'rule') isNeedFetch = false;
         return {
           ...x,
           [name]: value,
@@ -178,7 +180,7 @@ const FilterArea = props => {
       return {
         ...prevState,
         filters: newFilters,
-        isNeedFetch: true,
+        isNeedFetch,
       };
     });
   };
