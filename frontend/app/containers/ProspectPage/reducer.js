@@ -62,9 +62,6 @@ const prospectPageReducer = produce((draft, action) => {
       draft.prospects = action.payload.result.prospects;
       draft.lastPage = action.payload.result.lastPage;
       draft.totalProspects = action.payload.result.totalProspects;
-      draft.checkAll = false;
-      draft.checkedPages = [];
-      draft.selectedProspectIds = [];
       draft.modalState = {
         type: 1,
         open: false,
@@ -84,9 +81,17 @@ const prospectPageReducer = produce((draft, action) => {
       break;
     case FILTER_SEELCT_SUCCESS:
       draft.filters = action.payload.filters;
+      draft.checkAll = false;
+      draft.checkedPages = [];
+      draft.selectedProspectIds = [];
+
       break;
     case SEARCH_KEY_SAVE:
       draft.searchKey = action.payload.searchKey;
+      draft.checkAll = false;
+      draft.checkedPages = [];
+      draft.selectedProspectIds = [];
+
       break;
     case LOCATION_CHANGE:
       draft.error = '';

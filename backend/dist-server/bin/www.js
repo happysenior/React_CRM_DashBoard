@@ -74,6 +74,8 @@ function connect() {
 
   _mongoose["default"].connect(_config["default"].db.host, options);
 
+  _mongoose["default"].set("useFindAndModify", false);
+
   return _mongoose["default"].connection;
 }
 /**

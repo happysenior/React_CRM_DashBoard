@@ -9,15 +9,15 @@ export default function Status(props) {
     checkedPages,
     checkAll,
   } = props;
-  return (
+
+  const selectedCnt = checkAll
+    ? totalProspects - selectedIdsCnt
+    : selectedIdsCnt;
+  return selectedCnt >= 0 ? (
     <div className="prospect-status">
       <div>
         <div className="mr-5">
-          <span className="pr-1">
-            {checkAll
-              ? `${totalProspects - selectedIdsCnt}`
-              : `${selectedIdsCnt}`}
-          </span>
+          <span className="pr-1">{selectedCnt}</span>
           prospects are selected.
         </div>
         <div
@@ -32,5 +32,5 @@ export default function Status(props) {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

@@ -44,6 +44,7 @@ import {
   GO_CONVERSATION,
   RECEIVE_NEW_MESSAGE,
   RELOAD_CONVERSATION,
+  UPDATE_PROSPECT,
 } from './constants';
 import { func } from 'prop-types';
 
@@ -198,6 +199,38 @@ export function* reloadConversation() {
   yield put(loadProspectAction());
 }
 
+export function* updateProspect({ payload: { field, value, prospectId } }) {
+  const auth = new AuthService();
+  const token = auth.getToken();
+  const api = new ApiEndpoint();
+  const isLogged = auth.loggedIn();
+
+  if (!isLogged) return yield put(push('/login'));
+
+  const requestURL = api.getChangeProspectPropertyPath(prospectId);
+
+  try {
+    const response = yield call(request, requestURL, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        field,
+        value,
+      }),
+    });
+
+    if (response.success) {
+      yield put(selectProspectAction(prospectId));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* conversationPageSaga() {
   yield takeLatest(SELECT_PROSPECT, selectProspect);
   yield takeLatest(LOAD_LIST, loadList);
@@ -206,4 +239,5 @@ export default function* conversationPageSaga() {
   yield takeLatest(SEND_MESSAGE, sendMessage);
   yield takeLatest(RECEIVE_NEW_MESSAGE, receiveNewMessage);
   yield takeLatest(RELOAD_CONVERSATION, reloadConversation);
+  yield takeLatest(UPDATE_PROSPECT, updateProspect);
 }

@@ -56,6 +56,8 @@ function connect() {
     useUnifiedTopology: true
   };
   mongoose.connect(config.db.host, options);
+  mongoose.set("useFindAndModify", false);
+
   return mongoose.connection;
 }
 

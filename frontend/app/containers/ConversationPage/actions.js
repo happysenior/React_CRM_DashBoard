@@ -18,6 +18,7 @@ import {
   RECEIVE_NEW_MESSAGE,
   TEST,
   RELOAD_CONVERSATION,
+  UPDATE_PROSPECT,
 } from './constants';
 
 export function loadListAction() {
@@ -103,5 +104,16 @@ export function sendMessageAction(message) {
 export function reloadConversationAction() {
   return {
     type: RELOAD_CONVERSATION,
+  };
+}
+
+export function updateProspectAction(field, value, prospectId) {
+  return {
+    type: UPDATE_PROSPECT,
+    payload: {
+      field,
+      value,
+      prospectId,
+    },
   };
 }

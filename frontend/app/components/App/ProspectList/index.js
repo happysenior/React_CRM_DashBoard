@@ -133,15 +133,21 @@ export default function ProspectList() {
   };
 
   const selectProspect = (id, value) => {
+    const selectedIdsOnThePage = prospects.filter(x => {
+      let result = selectedProspectIds.find(prospectId => prospectId == x._id);
+      if (result == undefined) return false;
+      return true;
+    });
+
     if (value) {
       if (!checkAll) {
-        if (prospects.length - 1 == selectedProspectIds.length) {
+        if (prospects.length - 1 == selectedIdsOnThePage.length) {
           const newCheckedPages = [...checkedPages, page];
           dispatch(setCheckedPageAction(newCheckedPages));
         }
         dispatch(selectProspectsAction([...selectedProspectIds, id]));
       } else {
-        if (selectedProspectIds.length == 1) {
+        if (selectedIdsOnThePage.length == 1) {
           const newCheckedPages = [...checkedPages, page];
           dispatch(setCheckedPageAction(newCheckedPages));
         }
@@ -150,14 +156,14 @@ export default function ProspectList() {
       }
     } else {
       if (!checkAll) {
-        if (selectedProspectIds.length == prospects.length) {
+        if (selectedIdsOnThePage.length == prospects.length) {
           const newCheckedPages = checkedPages.filter(x => x != page);
           dispatch(setCheckedPageAction(newCheckedPages));
         }
         const ids = selectedProspectIds.filter(item => item != id);
         dispatch(selectProspectsAction(ids));
       } else {
-        if (selectedProspectIds.length == 0) {
+        if (selectedIdsOnThePage.length == 0) {
           const newCheckedPages = checkedPages.filter(x => x != page);
           dispatch(setCheckedPageAction(newCheckedPages));
         }

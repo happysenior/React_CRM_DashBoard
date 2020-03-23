@@ -22,6 +22,7 @@ import {
   DELETE_PROSPECTS,
   SEARCH,
   SEARCH_KEY_SAVE,
+  UPDATE_PROSPECT
 } from './constants';
 import { func } from 'prop-types';
 
@@ -166,3 +167,4 @@ export function searchKeySaveAction(searchKey) {
     },
   };
 }
+

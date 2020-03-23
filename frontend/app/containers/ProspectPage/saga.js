@@ -45,7 +45,7 @@ import {
   ASSIGN_CAMPAIGN,
   ASSIGN_STATUS,
   DELETE_PROSPECTS,
-  SEARCH
+  SEARCH,
 } from './constants';
 import FilterDropdown from '../../components/App/ProspectList/FilterDropdown';
 import { func } from 'prop-types';
@@ -108,7 +108,7 @@ export function* loadProspects() {
 export function* selectPage({ payload: { page } }) {
   try {
     yield put(selectPageSuccessAction(page));
-    yield put(filterSelectAction([]));
+    yield put(loadProspectsAction());
   } catch (error) {
     console.log(error);
   }

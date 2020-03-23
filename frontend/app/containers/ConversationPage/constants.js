@@ -15,3 +15,4 @@ export const RELOAD_CONVERSATION = 'app/ConversationPage/reload_conversation';
 export const RELOAD_CONVERSATION_COUNT =
   'app/ConversationPage/reload_conversation_count';
 export const TEST = 'app/ConversationPage/test';
+export const UPDATE_PROSPECT = 'app/ProspectPage/update_prospect';

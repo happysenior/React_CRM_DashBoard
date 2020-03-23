@@ -156,6 +156,16 @@ ProspectSchema.statics = {
       query.where("_id").in(options.selectedProspectIds);
     }
     const prospects = await query.deleteMany({});
+  },
+
+  updateProspect: async function(id, options) {
+    // let prospect = await this.findByIdAndUpdate(id, {
+    //   [options.field]: options.value
+    // });
+    let prospect = await this.findOneAndUpdate(
+      { _id: id },
+      { [options.field]: options.value }
+    );
   }
 };
 

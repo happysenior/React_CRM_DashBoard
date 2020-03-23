@@ -13,6 +13,7 @@ import {
   sendMessageAction,
   goConversationAction,
   reloadConversationAction,
+  updateProspectAction,
 } from 'containers/ConversationPage/actions';
 
 import { readMessageAction } from 'containers/App/actions';
@@ -86,6 +87,10 @@ const Conversations = props => {
     }
   });
 
+  const changeProspectProperty = (field, value, prospectId) => {
+    dispatch(updateProspectAction(field, value, prospectId));
+  };
+
   return (
     <ConversationsWrapper>
       <ConversationsSidebarWrapper>
@@ -98,7 +103,10 @@ const Conversations = props => {
       </ConversationsSidebarWrapper>
       <ConversationsRootWrapper>
         <Chat chat={chat} prospect={prospect} sendMessage={sendMessage} />
-        <ProspectInfo prospect={prospect} />
+        <ProspectInfo
+          prospect={prospect}
+          changeProspectProperty={changeProspectProperty}
+        />
       </ConversationsRootWrapper>
     </ConversationsWrapper>
   );

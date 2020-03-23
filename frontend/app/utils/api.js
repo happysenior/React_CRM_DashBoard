@@ -140,4 +140,8 @@ export default class ApiEndpoint {
   getDeleteProspectsPath = () => {
     return `${BASE_URL}${PROSPECTS_PATH}/bulkedit/delete`;
   };
+
+  getChangeProspectPropertyPath = prospectId => {
+    return `${BASE_URL}${PROSPECTS_PATH}/${prospectId}/update`;
+  };
 }

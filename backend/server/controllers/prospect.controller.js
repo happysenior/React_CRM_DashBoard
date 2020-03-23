@@ -151,4 +151,16 @@ prospectRouter.route("/bulkedit/delete").delete(async (req, res, next) => {
   }
 });
 
+prospectRouter.route("/:id/update").put(async (req, res, next) => {
+  try {
+    await Prospect.updateProspect(req.params.id, req.body);
+    res.status(200).json({
+      success: true
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
 export default prospectRouter;
