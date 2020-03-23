@@ -190,7 +190,6 @@ export default function ProspectList() {
 
   const deleteProspects = () => {
     dispatch(deleteProspectsAction());
-    dispatch(deleteProspectsAction());
   };
 
   useEffect(() => {

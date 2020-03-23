@@ -13,7 +13,7 @@ export default function Status(props) {
   const selectedCnt = checkAll
     ? totalProspects - selectedIdsCnt
     : selectedIdsCnt;
-  return selectedCnt >= 0 ? (
+  return selectedCnt > 0 ? (
     <div className="prospect-status">
       <div>
         <div className="mr-5">

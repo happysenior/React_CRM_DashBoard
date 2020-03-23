@@ -198,7 +198,7 @@ export function* deleteProspects() {
     const selectedProspectIds = yield select(makeSelectedProspectIdsSelector());
     const checkAll = yield select(makeCheckAllSelector());
     const response = yield call(request, requestURL, {
-      method: 'PUT',
+      method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

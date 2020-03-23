@@ -178,6 +178,20 @@ const TagModal = props => {
 const DeleteModal = props => {
   const toggle = props.modalToggle;
 
+  const [state, setState] = useState({
+    waiting: false,
+  });
+
+  const deleteProspects = () => {
+    props.deleteProspects();
+    setState(prevState => {
+      return {
+        ...prevState,
+        waiting: true,
+      };
+    });
+  };
+
   return (
     <div>
       <Modal isOpen={true} toggle={toggle} centered={true}>
@@ -190,7 +204,11 @@ const DeleteModal = props => {
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button className={'primary-button'} size="sm" onClick={toggle}>
+          <Button
+            className={'primary-button'}
+            size="sm"
+            onClick={deleteProspects}
+          >
             DELETE
           </Button>
         </ModalFooter>
