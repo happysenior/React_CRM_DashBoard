@@ -70,7 +70,6 @@ export default class ProspectProfile extends React.Component {
   changeFirstName = () => {
     if (this.firstNameRef) {
       const temp = this.firstNameRef.current.innerHTML;
-      console.log(this.props.prospect.profile._id);
       if (this.props.firstName != temp) {
         this.props.changeProspectProperty(
           'firstName',
@@ -110,7 +109,7 @@ export default class ProspectProfile extends React.Component {
       if (this.props.phone != this.phoneRef.current.innerHTML) {
         this.props.changeProspectProperty(
           'phone',
-          this.emailRef.current.innerHTML,
+          this.phoneRef.current.innerHTML,
           this.props.prospect.profile._id,
         );
       }

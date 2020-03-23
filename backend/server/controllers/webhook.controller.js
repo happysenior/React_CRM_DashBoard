@@ -43,7 +43,9 @@ webhookRouter.route("/message").post(async (req, res, next) => {
     const response = new RestClient.LaML.MessagingResponse();
     const phone = req.body.From;
     const message = req.body.Body;
-    const prospect = await Prospect.findOne({ phone });
+    const query = Prospect.findOne({ phone });
+    const prospect = await query.exec();
+    await query.updateOne({}, { status: "RESPONDED" });
     if (prospect) {
       const conversation = new Conversation({
         message,
