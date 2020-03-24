@@ -26,6 +26,7 @@ conversationRouter.route("/list").get(async (req, res, next) => {
     const unreadMap = new Map();
 
     for (let conversation of conversations) {
+      if(!conversation.prospect) continue;
       if (conversation.status === "new") {
         const cnt = unreadMap.get(conversation.prospect._id);
         if (cnt === undefined) unreadMap.set(conversation.prospect._id, 1);
@@ -104,7 +105,6 @@ conversationRouter
         body: req.body.message,
         to: prospect.phone
       });
-      console.log(signalwireMessage);
       res.send({
         success: true,
         conversation
