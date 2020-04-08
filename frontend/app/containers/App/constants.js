@@ -19,3 +19,4 @@ export const GO_CONVERSATION = 'app/App/go_conversation';
 export const LOAD_APP_STATE = 'app/App/load_app_state';
 export const RECEIVE_NEW_MESSAGE = 'app/App/receive_new_message';
 export const READ_MESSAGE = 'app/App/read_message';
+export const GO_CAMPAIGNS = 'app/App/go_campaigns';

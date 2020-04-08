@@ -26,7 +26,7 @@ conversationRouter.route("/list").get(async (req, res, next) => {
     const unreadMap = new Map();
 
     for (let conversation of conversations) {
-      if(!conversation.prospect) continue;
+      if (!conversation.prospect) continue;
       if (conversation.status === "new") {
         const cnt = unreadMap.get(conversation.prospect._id);
         if (cnt === undefined) unreadMap.set(conversation.prospect._id, 1);
@@ -136,8 +136,22 @@ conversationRouter.route("/mark/:prospectId").get(async (req, res, next) => {
 conversationRouter.route("/broadcast").post(async (req, res, next) => {
   try {
     const selectedProspectIds = req.body.selectedProspectIds;
-    const message = req.body.message;
+    let message = req.body.message;
     const method = req.body.method;
+
+    const templateWords = [
+      "{{FirstName}}",
+      "{{MyFullName}}",
+      "{{MyFirstName}}",
+      "{{MyPhoneNumber}}",
+      "{{Signature}}"
+    ];
+    let convertWords = [];
+
+    const user = User.findById(req.userId);
+    convertWords[1] = `${user.firstName} ${user.lastName}`;
+    convertWords[2] = user.firstName;
+    convertWords[3] = user.phone;
 
     await Promise.all(
       selectedProspectIds.map(async id => {
@@ -148,13 +162,18 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
         });
         await conversation.save();
         const prospect = await Prospect.findById(id);
+        convertWords[0] = prospect.firstName;
 
-        const signalwireMessage = await client.messages.create({
-          from: config.signalwire.messagingNumber,
-          body: req.body.message,
-          to: prospect.phone
-        });
-        console.log(signalwireMessage);
+        for (let i = 0; i < 4; i++) {
+          let pattern = new RegExp(templateWords[i], "g");
+          message = message.replace(pattern, convertWords[i]);
+        }
+        console.log(message);
+        // const signalwireMessage = await client.messages.create({
+        //   from: config.signalwire.messagingNumber,
+        //   body: message,
+        //   to: prospect.phone
+        // });
       })
     );
     res.send({

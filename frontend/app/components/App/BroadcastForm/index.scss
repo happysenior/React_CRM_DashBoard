@@ -10,7 +10,6 @@ $PRIMARY_BLUE_DARK: #084e8a;
   background-color: $PRIMARY_BACKGROUND;
 }
 
-
 .import-csv {
   margin: auto;
   padding: 0 25%;
@@ -61,6 +60,14 @@ $PRIMARY_BLUE_DARK: #084e8a;
 .code {
   font-style: italic;
   color: rgb(153, 153, 153);
+  user-select: none;
+  cursor: pointer;
+  &:active {
+    color: #b1b1b1;
+  }
+  &:hover {
+    color: #084e8a;
+  }
 }
 
 .broadcast-message-title {

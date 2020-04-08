@@ -1,0 +1,243 @@
+.main {
+  padding-top: 40px;
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+}
+
+.btn-new-campaign {
+  background: #084e8a;
+  color: white;
+}
+
+.campaign-btn {
+  background-color: white;
+  border: none;
+  box-shadow: none;
+  margin-left: 10px;
+}
+
+.change-period {
+  border: 1px solid #084e8a;
+  color: #084e8a;
+  margin-left: 5px;
+  &:hover {
+    background-color: #084e8a;
+    color: white;
+  }
+  &:active,
+  &:focus {
+    background-color: #084e8a;
+    color: white;
+    box-shadow: #084e8a;
+  }
+}
+
+.campaign-card {
+  border: none;
+  height: 233px;
+}
+
+.big-number {
+  color: #000;
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.small-number {
+  text-align: center;
+}
+
+.campaign-sequence {
+  font-size: 24px;
+  margin-top: 30px;
+}
+
+.create-sequence {
+  background: #084e8a;
+  color: white;
+  &:hover {
+    color: white;
+    background-color: #15a0dd;
+  }
+}
+
+.sequence-add-day,
+.sequence-day {
+  font-size: 18px;
+  letter-spacing: -0.11px;
+  line-height: 27px;
+  background-color: #fbfbfb;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.sequence-day {
+  text-align: center;
+  color: #b0b0b0;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px dashed #d0d0d0;
+}
+
+.sequence-add-day {
+  text-align: center;
+  color: #b0b0b0;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px dashed #d0d0d0;
+}
+
+.pull-right {
+  float: right;
+}
+
+.sequence-day-selected {
+  border: 2px solid #084e8a;
+}
+
+.sequence-event {
+  margin-top: 8px;
+  background-color: #fff;
+  border: 1px solid #d0d0d0;
+}
+
+.sequence-add-event,
+.sequence-event {
+  font-size: 18px;
+  letter-spacing: -0.11px;
+  line-height: 27px;
+  text-align: center;
+  color: #b0b0b0;
+  padding: 24px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.sequence-event-selected {
+  border: 2px solid #084e8a;
+}
+
+.sequence-event .event-sms .event-type {
+  text-transform: uppercase;
+  color: #000;
+}
+
+.missing-events {
+  margin-top: 96px;
+  color: #b0b0b0;
+  font-size: 18px;
+  letter-spacing: -0.11px;
+  line-height: 27px;
+  text-align: center;
+}
+
+.nav-tabs .nav-link {
+  color: #6f6f6f;
+  &.active,
+  &.active:focus {
+    background-color: transparent;
+    border-color: transparent transparent #084e8a;
+    border-bottom-width: 4px;
+    color: #084e8a;
+    font-weight: 500;
+  }
+  &:hover {
+    background-color: transparent;
+    border-color: transparent transparent #084e8a;
+    border-bottom-width: 3px;
+    color: #084e8a;
+    font-weight: 500;
+  }
+}
+
+.tab-content .tab-pane {
+  padding: 1rem;
+}
+
+.btn-record,
+.btn-stop-record {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #084e8a;
+  border-radius: 50%;
+  font-size: 18px;
+  color: white;
+  background-color: #084e8a;
+}
+
+.btn-record,
+.btn-stop-record {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #084e8a;
+  border-radius: 50%;
+  color: white;
+  font-size: 18px;
+  background-color: #084e8a;
+}
+
+.use-voice-template {
+  background-color: #084e8a;
+  color: white;
+}
+
+.card-event-details .dropzone {
+  border: 1px dashed #d0d0d0;
+  border-radius: 2px;
+  background-color: #fbfbfb;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dropzone .dz-message {
+  text-align: center;
+  margin: 2em 0;
+}
+
+.upload-recording {
+  color: white;
+  background-color: #084e8a;
+  &:hover,
+  &:active {
+    background-color: #15a0dd;
+    color: white;
+  }
+}
+
+.btn-tag,
+.btn-tag-email {
+  color: #084e8a;
+  font-size: 13px;
+  letter-spacing: -0.23px;
+  line-height: 25px;
+  border: 1px solid #084e8a;
+  border-radius: 2px;
+  background-color: #6cb2eb;
+  margin-top: 4px;
+}
+
+.load-message-library {
+  color: #fff;
+  background-color: #084e8a;
+  border-color: #084e8a;
+}
+
+.upload-img {
+  color: #fff;
+  background-color: #084e8a;
+  border-color: #084e8a;
+}
+
+.btn-save-sms {
+  color: #fff;
+  background-color: #084e8a;
+  border-color: #084e8a;
+}

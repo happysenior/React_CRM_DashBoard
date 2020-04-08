@@ -10,7 +10,8 @@ const ProspectSchema = new Schema(
     email: { type: String, default: "" },
     status: { type: String, default: "NEW" },
     chatted: { type: Boolean, default: false },
-    campaign: { type: String, default: "" }
+    campaign: { type: String, default: "" },
+    address: { type: String, default: "" },
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );
@@ -58,7 +59,7 @@ const fields = [
   "phone",
   "email",
   "status",
-  "campaign"
+  "campaign",
 ];
 
 ProspectSchema.methods = {};
@@ -162,10 +163,13 @@ ProspectSchema.statics = {
     // let prospect = await this.findByIdAndUpdate(id, {
     //   [options.field]: options.value
     // });
+    console.log(id);
+    console.log(options);
     let prospect = await this.findOneAndUpdate(
       { _id: id },
       { [options.field]: options.value }
     );
+    console.log(prospect);
   }
 };
 

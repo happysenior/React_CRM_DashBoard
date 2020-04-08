@@ -14,6 +14,7 @@ import {
   goConversationAction,
   reloadConversationAction,
   updateProspectAction,
+  changeLocalProspectAction,
 } from 'containers/ConversationPage/actions';
 
 import { readMessageAction } from 'containers/App/actions';
@@ -91,6 +92,10 @@ const Conversations = props => {
     dispatch(updateProspectAction(field, value, prospectId));
   };
 
+  const changeLocalProspectProperty = async property => {
+    await dispatch(changeLocalProspectAction(property));
+  };
+
   return (
     <ConversationsWrapper>
       <ConversationsSidebarWrapper>
@@ -106,6 +111,7 @@ const Conversations = props => {
         <ProspectInfo
           prospect={prospect}
           changeProspectProperty={changeProspectProperty}
+          changeLocalProspectProperty={changeLocalProspectProperty}
         />
       </ConversationsRootWrapper>
     </ConversationsWrapper>

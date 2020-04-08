@@ -1,0 +1,18 @@
+.main {
+  padding-top: 40px;
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+}
+
+.btn-new-campaign {
+  background: #084e8a;
+  color: white;
+}

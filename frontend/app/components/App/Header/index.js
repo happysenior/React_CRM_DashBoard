@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -30,6 +31,7 @@ import {
   goProspectAction,
   receiveNewMessageAction,
   goConversationAction,
+  goCampaignsAction,
 } from 'containers/App/actions';
 import { makeUnreadMessageSelector } from 'containers/App/selectors';
 import {
@@ -87,6 +89,10 @@ export default function Header() {
     dispatch(goConversationAction());
   };
 
+  const handleGoCampaigns = () => {
+    dispatch(goCampaignsAction());
+  };
+
   useEffect(() => {
     socket.on('RECEIVE_NEW_MESSAGE', data => {
       dispatch(receiveNewMessageAction(data));
@@ -116,7 +122,9 @@ export default function Header() {
               <NavLink to="/pipline">Pipline</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/campaigns">Campaigns</NavLink>
+              <NavLink to="/campaigns" onClick={handleGoCampaigns}>
+                Campaigns
+              </NavLink>
             </NavItem>
             <NavItem>
               <NavLink to="/users">Users</NavLink>

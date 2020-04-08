@@ -4,6 +4,23 @@ import { Button } from 'reactstrap';
 import TextsmsOutlinedIcon from '@material-ui/icons/TextsmsOutlined';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
+const templateWords = [
+  '{{FirstName}}',
+  '{{MyFullName}}',
+  '{{MyFirstName}}',
+  '{{MyPhoneNumber}}',
+  '{{Signature}}',
+];
+
+const templateWordDescriptions = [
+  ` - Prospect's first name`,
+  ` - You full name`,
+  ` - Your first name`,
+  ` - Your system phone number`,
+  ` - Account signature. (edit at account settings)`,
+  ` - Account signature. (edit at account settings)`,
+];
+
 const MessageEdit = props => {
   const [state, setState] = useState({
     method: 'text',
@@ -14,6 +31,16 @@ const MessageEdit = props => {
     if (state.message != '') {
       props.broadcast(state.message, state.method);
     }
+  };
+
+  const paste = event => {
+    event.persist();
+    setState(prevState => {
+      return {
+        ...prevState,
+        message: `${prevState.message}${event.target.innerText}`,
+      };
+    });
   };
 
   return (
@@ -31,39 +58,24 @@ const MessageEdit = props => {
       </div>
       <div className="broadcast-confirm-content">
         <div className="h6 mb-3">
+          You can double click to replace with user information on the subject
+          and body:
+        </div>
+        <div className="h6 mb-3">
           You can copy and paste the following string to replace with user
           information on the subject and body:
         </div>
-        <div className="d-flex mb-2">
-          <div className="code">
-            {'{{'} FirstName {'}}'} -
-          </div>
-          <div>Prospect's first name</div>
-        </div>
-        <div className="d-flex mb-2">
-          <div className="code">
-            {'{{'} MyFullName {'}}'} -
-          </div>
-          <div>You full name</div>
-        </div>
-        <div className="d-flex mb-2">
-          <div className="code">
-            {'{{'} MyFirstName {'}}'} -
-          </div>
-          <div>Your first name</div>
-        </div>
-        <div className="d-flex mb-2">
-          <div className="code">
-            {'{{'} MyPhoneNumber {'}}'} -
-          </div>
-          <div>Your system phone number</div>
-        </div>
-        <div className="d-flex mb-2">
-          <div className="code">
-            {'{{'} Signature {'}}'} -
-          </div>
-          <div>Account signature. (edit at account settings)</div>
-        </div>
+
+        {templateWords.map((x, k) => {
+          return (
+            <div className="d-flex mb-2" key={`template_word_${k}`}>
+              <div className="code" onDoubleClick={paste}>
+                {x}
+              </div>
+              <div>{templateWordDescriptions[k]}</div>
+            </div>
+          );
+        })}
       </div>
       <div className="d-flex flex-column mb-5">
         <div className="broadcast-message-title">Message</div>

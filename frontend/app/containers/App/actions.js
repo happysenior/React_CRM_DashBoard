@@ -16,7 +16,8 @@ import {
   LOAD_APP_STATE,
   RECEIVE_NEW_MESSAGE,
   READ_MESSAGE,
-  GO_CONVERSATION
+  GO_CONVERSATION,
+  GO_CAMPAIGNS,
 } from './constants';
 
 export function isLoggedAction() {
@@ -131,5 +132,11 @@ export function readMessageAction(readMessage) {
 export function goConversationAction() {
   return {
     type: GO_CONVERSATION,
+  };
+}
+
+export function goCampaignsAction() {
+  return {
+    type: GO_CAMPAIGNS,
   };
 }

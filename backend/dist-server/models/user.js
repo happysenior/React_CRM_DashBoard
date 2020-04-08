@@ -25,6 +25,10 @@ var UserSchema = new Schema({
     type: String,
     "default": ""
   },
+  phone: {
+    type: String,
+    "default": ""
+  },
   hashedPassword: {
     type: String,
     "default": ""

@@ -24,6 +24,10 @@ import ProspectPage from 'containers/ProspectPage/Loadable';
 import ImportCSVPage from 'containers/ImportCSVPage/Loadable';
 import ConversationPage from 'containers/ConversationPage/Loadable';
 import BroadcastPage from 'containers/BroadcastPage/Loadable';
+import CampaignPage from 'containers/CampaignPage/Loadable';
+import CampaignCreatePage from 'containers/CampaignCreatePage/Loadable';
+import CampaignEditPage from 'containers/CampaignEditPage/Loadable';
+import SequenceSettingPage from 'containers/SequenceSettingPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 // Import Components
@@ -66,6 +70,10 @@ export default function App() {
           path="/conversations/"
           component={ConversationPage}
         ></PrivateRoute>
+        <PrivateRoute path="/campaigns/edit/:id" component={CampaignEditPage} />
+        <PrivateRoute path="/campaigns/create" component={CampaignCreatePage} />
+        <PrivateRoute path="/campaigns" component={CampaignPage} />
+        <PrivateRoute path="/sequences/:id" component={SequenceSettingPage} />
         <Route path="/404" component={NotFoundPage} />
         <Route render={() => <Redirect to="/404" />} />
       </Switch>

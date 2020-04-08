@@ -13,7 +13,7 @@ import {
 } from 'utils/rwd';
 
 const GlobalStyle = createGlobalStyle`
-  
+
   @font-face {
     font-family: "Poppins-Regular";
     src: local("Popins-Regular"),
@@ -130,7 +130,7 @@ const GlobalStyle = createGlobalStyle`
   .recharts-wrapper {
     width: 73px!important;
     height: 78px!important;
-    
+
     .recharts-surface {
       width: 100%;
       height: 74px;
@@ -183,13 +183,13 @@ const GlobalStyle = createGlobalStyle`
       background-color: ${SECONDARY_BLUE_LIGHT}!important;
     }
   }
-  
+
   @media screen and (min-width: ${TABLET_VIEWPORT_WIDTH}) {
     .snackbar__provider--open-menu {
-      left: 280px!important; 
+      left: 280px!important;
       bottom: 20px!important;
       right: auto!important;
-      position: absolute; 
+      position: absolute;
     }
   }
 

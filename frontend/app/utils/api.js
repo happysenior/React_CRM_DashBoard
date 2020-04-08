@@ -6,6 +6,7 @@ const TRANSACTIONS_PATH = '/api/transactions';
 const CURRENCY_PATH = '/api/currency';
 const PROSPECTS_PATH = '/api/prospects';
 const CONVERSATION_PATH = '/api/conversations';
+const CAMPAIGNS_PATH = '/api/campaigns';
 
 export default class ApiEndpoint {
   getBasePath = () => {
@@ -143,5 +144,9 @@ export default class ApiEndpoint {
 
   getChangeProspectPropertyPath = prospectId => {
     return `${BASE_URL}${PROSPECTS_PATH}/${prospectId}/update`;
+  };
+
+  getCampaignCreatePath = () => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}/create`;
   };
 }

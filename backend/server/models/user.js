@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   },
   firstName: { type: String, default: "" },
   lastName: { type: String, default: "" },
+  phone: { type: String, default: ""},
   hashedPassword: {
     type: String,
     default: ""

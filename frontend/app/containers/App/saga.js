@@ -15,11 +15,16 @@ import {
   logoutSuccessAction,
   isLoggedSuccessAction,
   isLoggedErroAction,
-  goProspectAction,
 } from './actions';
 
 // Import Constants
-import { LOGOUT, IS_LOGGED, GO_PROSPECT, GO_CONVERSATION } from './constants';
+import {
+  LOGOUT,
+  IS_LOGGED,
+  GO_PROSPECT,
+  GO_CONVERSATION,
+  GO_CAMPAIGNS,
+} from './constants';
 
 export function* handleLogout() {
   const auth = new AuthService();
@@ -76,9 +81,17 @@ export function* goConversation() {
   if (isLogged) yield put(push('/conversations'));
 }
 
+export function* goCampaigns() {
+  const auth = new AuthService();
+  const isLogged = auth.loggedIn();
+
+  if (isLogged) yield put(push('/campaigns'));
+}
+
 export default function* appPageSaga() {
   yield takeLatest(GO_PROSPECT, goProspect);
   yield takeLatest(GO_CONVERSATION, goConversation);
+  yield takeLatest(GO_CAMPAIGNS, goCampaigns);
   yield takeLatest(LOGOUT, handleLogout);
   yield takeLatest(IS_LOGGED, handleLogged);
 }

@@ -32,13 +32,16 @@ const ProspectSectionWrapper = styled.div`
 `;
 
 export default function ProspectInfo(props) {
-
   return (
     <ProspectInfoWrapper>
       <ProspectInfoHeader>Prospect Information</ProspectInfoHeader>
       <div>
         <ProspectSectionWrapper>
-          <ProspectProfile prospect={props.prospect} changeProspectProperty={props.changeProspectProperty}/>
+          <ProspectProfile
+            prospect={props.prospect}
+            changeProspectProperty={props.changeProspectProperty}
+            changeLocalProspectProperty={props.changeLocalProspectProperty}
+          />
         </ProspectSectionWrapper>
       </div>
     </ProspectInfoWrapper>

@@ -45,91 +45,47 @@ export default class ProspectProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      donotcall: false,
-      firstName: '',
-    };
-
-    this.firstNameRef = React.createRef();
-    this.lastNameRef = React.createRef();
-    this.emailRef = React.createRef();
-    this.phoneRef = React.createRef();
-    this._handleFocus = this._handleFocus.bind(this);
-    this._handleFocusOut = this._handleFocusOut.bind(this);
-  }
-
-  _handleFocus(text) {}
-
-  _handleFocusOut(text) {}
-
-  handleChange(name) {
-    return event => {
-      this.setState({ ...state, [name]: event.target.checked });
+      donotcall: '',
     };
   }
 
-  changeFirstName = () => {
-    if (this.firstNameRef) {
-      const temp = this.firstNameRef.current.innerHTML;
-      if (this.props.firstName != temp) {
-        this.props.changeProspectProperty(
-          'firstName',
-          this.firstNameRef.current.innerHTML,
-          this.props.prospect.profile._id,
-        );
-      }
+  componentDidMount = () => {
+    this.state = {
+      donotcall: '',
+      isChanged_donotcall: false,
+      isChanged_firstName: false,
+      isChanged_lastName: false,
+      isChanged_email: false,
+      isChanged_phone: false,
+      isChanged_address: false,
+      isChanged_compaign: false,
+      isChanged_status: false,
+    };
+  };
+
+  changeLocalProspect = (field, value) => {
+    this.setState({ [`isChanged_${field}`]: true });
+    this.props.changeLocalProspectProperty({ [field]: value });
+  };
+  updateProspect = field => {
+    if (this.state[`isChanged_${field}`] == true) {
+      this.props.changeProspectProperty(
+        field,
+        this.props.prospect.profile[field],
+        this.props.prospect.profile._id,
+      );
     }
   };
 
-  changeLastName = () => {
-    if (this.lastNameRef) {
-      if (this.props.lastName != this.lastNameRef.current.innerHTML) {
-        this.props.changeProspectProperty(
-          'lastName',
-          this.lastNameRef.current.innerHTML,
-          this.props.prospect.profile._id,
-        );
-      }
-    }
+  handleChange = property => {};
+  handleCampaignSelectChange = async event => {
+    await this.changeLocalProspect('campaign', event.target.value);
+    this.updateProspect('campaign');
   };
 
-  changeEmail = () => {
-    if (this.emailRef) {
-      if (this.props.email != this.emailRef.current.innerHTML) {
-        this.props.changeProspectProperty(
-          'email',
-          this.emailRef.current.innerHTML,
-          this.props.prospect.profile._id,
-        );
-      }
-    }
-  };
-
-  changePhone = () => {
-    if (this.phoneRef) {
-      if (this.props.phone != this.phoneRef.current.innerHTML) {
-        this.props.changeProspectProperty(
-          'phone',
-          this.phoneRef.current.innerHTML,
-          this.props.prospect.profile._id,
-        );
-      }
-    }
-  };
-
-  changeStatus = event => {
-    this.props.changeProspectProperty(
-      'status',
-      event.target.value,
-      this.props.prospect.profile._id,
-    );
-  };
-
-  changeCampaign = event => {
-    this.props.changeProspectProperty(
-      'campaign',
-      event.target.value,
-      this.props.prospect.profile._id,
-    );
+  handleStatusSelectChange = async event => {
+    await this.changeLocalProspect('status', event.target.value);
+    this.updateProspect('status');
   };
 
   render() {
@@ -137,54 +93,48 @@ export default class ProspectProfile extends React.Component {
       <ProspectProfileWrapper>
         <ProfileFieldWrapper>
           <ProfileFieldLabel>First Name</ProfileFieldLabel>
-          <div
-            contentEditable="true"
-            suppressContentEditableWarning={true}
-            ref={this.firstNameRef}
-            onBlur={this.changeFirstName}
-          >
-            {this.props.prospect.profile.firstName}
-          </div>
+          <input
+            className="prospect-info-input"
+            defaultValue={this.props.prospect.profile.firstName}
+            onChange={e =>
+              this.changeLocalProspect('firstName', e.target.value)
+            }
+            onBlur={e => this.updateProspect('firstName')}
+          />
         </ProfileFieldWrapper>
         <ProfileFieldWrapper>
           <ProfileFieldLabel>Last Name</ProfileFieldLabel>
-          <div
-            contentEditable="true"
-            suppressContentEditableWarning={true}
-            ref={this.lastNameRef}
-            onBlur={this.changeLastName}
-          >
-            {this.props.prospect.profile.lastName}
-          </div>
-        </ProfileFieldWrapper>
-        <ProfileFieldWrapper>
-          <ProfileFieldLabel>Email</ProfileFieldLabel>
-          <div
-            contentEditable="true"
-            ref={this.emailRef}
-            suppressContentEditableWarning={true}
-            onBlur={this.changeEmail}
-          >
-            {this.props.prospect.profile.email}
-          </div>
+          <input
+            className="prospect-info-input"
+            defaultValue={this.props.prospect.profile.lastName}
+            onChange={e => this.changeLocalProspect('lastName', e.target.value)}
+            onBlur={e => this.updateProspect('lastName')}
+          />
         </ProfileFieldWrapper>
         <ProfileFieldWrapper>
           <ProfileFieldLabel>Phone</ProfileFieldLabel>
-          <div
-            contentEditable="true"
-            suppressContentEditableWarning={true}
-            ref={this.phoneRef}
-            onBlur={this.changePhone}
-          >
-            {this.props.prospect.profile.phone}
-          </div>
+          <input
+            className="prospect-info-input"
+            defaultValue={this.props.prospect.profile.phone}
+            onChange={e => this.changeLocalProspect('phone', e.target.value)}
+            onBlur={e => this.updateProspect('phone')}
+          />
+        </ProfileFieldWrapper>
+        <ProfileFieldWrapper>
+          <ProfileFieldLabel>Address</ProfileFieldLabel>
+          <input
+            className="prospect-info-input"
+            defaultValue={this.props.prospect.profile.address}
+            onChange={e => this.changeLocalProspect('address', e.target.value)}
+            onBlur={e => this.updateProspect('address')}
+          />
         </ProfileFieldWrapper>
         <ProfileFieldWrapper>
           <ProfileFieldLabel>Campaign</ProfileFieldLabel>
           <div>
             <select
               value={this.props.prospect.profile.campaign}
-              onChange={this.changeCampaign}
+              onChange={this.handleCampaignSelectChange}
             >
               {campaignOptions.map(x => {
                 return (
@@ -204,7 +154,7 @@ export default class ProspectProfile extends React.Component {
           <div>
             <select
               value={this.props.prospect.profile.status}
-              onChange={this.changeStatus}
+              onChange={this.handleStatusSelectChange}
             >
               {statusOptions.map(x => {
                 return (
@@ -219,7 +169,7 @@ export default class ProspectProfile extends React.Component {
             </select>
           </div>
         </ProfileFieldWrapper>
-        <ProfileFieldWrapper>
+        {/* <ProfileFieldWrapper>
           <ProfileFieldLabel>
             Do not call
             <InfoIcon fontSize="small" />
@@ -232,7 +182,7 @@ export default class ProspectProfile extends React.Component {
             color="primary"
             inputProps={{ 'aria-label': 'disabled checkbox' }}
           />
-        </ProfileFieldWrapper>
+        </ProfileFieldWrapper> */}
       </ProspectProfileWrapper>
     ) : null;
   }
