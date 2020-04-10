@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import { Button, Popover, PopoverBody, ButtonGroup } from 'reactstrap';
@@ -87,9 +88,14 @@ const SequenceEdit = props => {
   const [ready, setReady] = useState(false);
   const [open, setOpen] = useState(false);
 
+  let history = useHistory();
   function toggle() {
     setOpen(!open);
   }
+
+  const goSetting = sequenceId => {
+    history.push(`/sequences/${sequenceId}`);
+  };
 
   useEffect(() => {
     if (addEventRef.current) {
@@ -107,15 +113,25 @@ const SequenceEdit = props => {
       </div>
       <div className="col-md-6">
         <div className="text-right pt-4">
-          <Button outline color="secondary" className="campaign-btn" size="sm">
-            <SettingsIcon fontSize="small" />
-            <span>Sequence settings</span>
-          </Button>
+          {props.sequence ? (
+            <Button
+              outline
+              color="secondary"
+              className="campaign-btn"
+              size="sm"
+              onClick={() => {
+                goSetting(props.sequence._id);
+              }}
+            >
+              <SettingsIcon fontSize="small" />
+              <span>Sequence settings</span>
+            </Button>
+          ) : null}
         </div>
       </div>
       <div className="col-md-12 mb-4">
-        Sequence Time Zone: <strong>America/New York</strong> - Current time
-        <em>Apr 6th 2020, 12:20 pm</em>
+        {/* Sequence Time Zone: <strong>America/New York</strong> - Current time
+        <em>Apr 6th 2020, 12:20 pm</em> */}
       </div>
       <div className="col-md-3">
         <div className="card p-4">
@@ -124,7 +140,9 @@ const SequenceEdit = props => {
               Days
               <span className="pull-right"></span>
             </h4>
-            <div className="sequence-add-day">+ Add Day</div>
+            <div className="sequence-add-day" onClick={props.addDay}>
+              + Add Day
+            </div>
             <div className="days-list">
               <div>
                 <div>
@@ -544,8 +562,8 @@ const SequenceEdit = props => {
               </div>
             </div>
           </div>
-          <div class="col-md-12 pt-2">
-            <button class="btn btn-primary btn-save-sms">
+          <div className="col-md-12 pt-2">
+            <button className="btn btn-primary btn-save-sms">
               <DoneAllIcon /> Save Event
             </button>
           </div>

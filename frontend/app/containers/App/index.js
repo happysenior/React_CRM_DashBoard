@@ -56,7 +56,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-export default function App() {
+export default function App(props) {
   return (
     <Fragment>
       <Switch>
@@ -70,7 +70,10 @@ export default function App() {
           path="/conversations/"
           component={ConversationPage}
         ></PrivateRoute>
-        <PrivateRoute path="/campaigns/edit/:id" component={CampaignEditPage} />
+        <PrivateRoute
+          path="/campaigns/edit/:campaignId"
+          component={CampaignEditPage}
+        />
         <PrivateRoute path="/campaigns/create" component={CampaignCreatePage} />
         <PrivateRoute path="/campaigns" component={CampaignPage} />
         <PrivateRoute path="/sequences/:id" component={SequenceSettingPage} />

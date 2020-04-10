@@ -9,7 +9,7 @@ export default function SequenceSettingPage(props) {
   return (
     <Fragment>
       <Header />
-      <SequenceSetting />
+      <SequenceSetting history={props.history} match={props.match} />
     </Fragment>
   );
 }

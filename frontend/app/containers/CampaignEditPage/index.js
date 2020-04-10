@@ -5,7 +5,7 @@ import CampaignEdit from './CampaignEdit';
 
 const key = 'campaignEditPage';
 
-export default function CampaignCreatePage(props) {
+export default function CampaignEditPage(props) {
   return (
     <Fragment>
       <Header />

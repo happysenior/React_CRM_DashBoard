@@ -20,7 +20,10 @@ const CreateSequence = props => {
               <p className="py-3">
                 Create new sequence and save it for re-use in future.
               </p>
-              <button className="btn create-sequence mt-5">
+              <button
+                className="btn create-sequence mt-5"
+                onClick={props.createSequence}
+              >
                 <DoneAllIcon /> Create New
               </button>
             </div>

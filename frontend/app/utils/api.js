@@ -7,6 +7,7 @@ const CURRENCY_PATH = '/api/currency';
 const PROSPECTS_PATH = '/api/prospects';
 const CONVERSATION_PATH = '/api/conversations';
 const CAMPAIGNS_PATH = '/api/campaigns';
+const SEQUENCE_PATH = '/api/sequences';
 
 export default class ApiEndpoint {
   getBasePath = () => {
@@ -147,6 +148,22 @@ export default class ApiEndpoint {
   };
 
   getCampaignCreatePath = () => {
-    return `${BASE_URL}${CAMPAIGNS_PATH}/create`;
+    return `${BASE_URL}${CAMPAIGNS_PATH}`;
+  };
+
+  getLoadCampaignPath = campaignId => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}/${campaignId}`;
+  };
+
+  getCreateSequencePath = campaignId => {
+    return `${BASE_URL}${SEQUENCE_PATH}/${campaignId}`;
+  };
+
+  getSequenceSettingPath = sequenceId => {
+    return `${BASE_URL}${SEQUENCE_PATH}/${sequenceId}`;
+  };
+
+  getRenameCampaignPath = campaignId => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}/${campaignId}`;
   };
 }

@@ -1,13 +1,14 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory,  } from 'react-router-dom';
 
 import './index.scss';
 
 import ApiEndpoint from 'utils/api';
 import AuthService from 'services/auth.service';
+import request from 'utils/request';
 
 const CampaignCreate = props => {
-  const [campaign, setCampaign] = useState(campaign);
+  const [campaign, setCampaign] = useState('');
 
   let history = useHistory();
 
@@ -16,18 +17,23 @@ const CampaignCreate = props => {
   const api = new ApiEndpoint();
 
   const createCampaign = async () => {
-    if (state.campaign == '') return;
+    if (campaign == '') return;
     const url = api.getCampaignCreatePath();
     try {
-      const res = await fetch(url, {
-        method: 'GET',
+      const res = await request(url, {
+        method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          name: campaign,
+        }),
       });
-      history.push(`/campaign/edit/${res.id}`);
+
+      console.log(res);
+      history.push(`/campaigns/edit/${res.campaign._id}`);
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +60,7 @@ const CampaignCreate = props => {
                         name="name"
                         id="name"
                         placeholder=""
-                        value={state.campaign}
+                        value={campaign}
                         className="form-control form-control"
                         onChange={e => {
                           setCampaign(e.target.value);
