@@ -5,6 +5,7 @@ import conversationRouter from "./controllers/conversation.controller";
 import campaignRouter from "./controllers/campaign.controller";
 import sequenceRouter from "./controllers/sequence.controller";
 import webhookRouter from "./controllers/webhook.controller";
+import uploadRouter from "./controllers/upload.controller";
 
 import AuthHandler from "./middlewares/authHandler.middleware";
 
@@ -14,6 +15,6 @@ router.use("/prospects", AuthHandler.authorization, prospectRouter);
 router.use("/conversations", AuthHandler.authorization, conversationRouter);
 router.use("/campaigns", AuthHandler.authorization, campaignRouter);
 router.use("/sequences", AuthHandler.authorization, sequenceRouter);
-
+router.use("/uploads", AuthHandler.authorization, uploadRouter);
 router.use("/webhook", webhookRouter);
 export default router;

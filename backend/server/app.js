@@ -15,10 +15,13 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, "../public/build")));
+app.use("/files", express.static(path.join(__dirname, "../uploads")));
+
 app.use("/api", routes);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(express.static(path.join(__dirname, "../public/build")));
+
+app.use(function (req, res, next) {
   res.redirect("/");
   // var err = new Error("Not Found");
   // err.status = 404;

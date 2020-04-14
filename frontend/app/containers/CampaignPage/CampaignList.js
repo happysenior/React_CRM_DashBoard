@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import {
   Container,
@@ -10,6 +11,13 @@ import {
 } from 'reactstrap';
 
 import './index.scss';
+import ApiEndpoint from 'utils/api';
+import AuthService from 'services/auth.service';
+import request from 'utils/request';
+
+const auth = new AuthService();
+const token = auth.getToken();
+const api = new ApiEndpoint();
 
 const headers = [
   { title: 'Name', width: '20%' },
@@ -21,29 +29,12 @@ const headers = [
   { title: '', width: '20%' },
 ];
 
-const campaigns = [
-  {
-    name: 'test',
-    prospects: 202,
-    sequences: 5,
-    messages: 4,
-    createdAt: 'Mar 26th 2020, 4:37 pm',
-    updatedAt: 'Mar 26th 2020, 4:37 pm',
-  },
-  {
-    name: 'stress',
-    prospects: 22,
-    sequences: 5,
-    messages: 4,
-    createdAt: 'Mar 26th 2020, 4:37 pm',
-    updatedAt: 'Mar 26th 2020, 4:37 pm',
-  },
-];
-
 const CampaignList = props => {
   const [state, setState] = useState({
     isOpen: [],
   });
+
+  const [campaigns, setCampaigns] = useState([]);
 
   const toggle = index => {
     setState(prevState => {
@@ -57,6 +48,40 @@ const CampaignList = props => {
       };
     });
   };
+
+  const loadCampaigns = async () => {
+    const url = api.getCampaignsAggregationPath();
+    try {
+      const res = await request(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCampaigns(res.campaigns);
+    } catch (err) {}
+  }
+
+  useEffect(() => {
+    loadCampaigns();
+  }, []);
+
+  const deleteCampaign = async campaignId => {
+    const url = api.getDeleteCampaignPath(campaignId);
+    try {
+      const res = await request(url, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      loadCampaigns();
+    } catch (err) {}
+  }
 
   return (
     <Container>
@@ -105,7 +130,7 @@ const CampaignList = props => {
                     style={{ width: headers[2].width }}
                   >
                     <span className="badge badge-lg badge-tag-2">
-                      {campaigns[k].sequences}
+                      {campaigns[k].sequences ? 1 : 0}
                     </span>
                   </div>
                   <div
@@ -120,24 +145,40 @@ const CampaignList = props => {
                     className="campaign-column date"
                     style={{ width: headers[4].width }}
                   >
-                    {campaigns[k].createdAt}
+                    {campaigns[k].createdAt.substring(0, 10)}
                   </div>
                   <div
                     className="campaign-column date"
                     style={{ width: headers[5].width }}
                   >
-                    {campaigns[k].updatedAt}
+                    {campaigns[k].updatedAt
+                      ? campaigns[k].updatedAt.substring(0, 10)
+                      : ''}
                   </div>
                   <div
                     className="campaign-column d-flex"
                     style={{ width: headers[6].width }}
                   >
                     <div>
-                      <button type="button" className="btn btn-outline-danger">
+                      <Link
+                        to={`/campaigns/edit/${x._id}`}
+                        className="btn btn-outline-danger"
+                      >
                         View Details
+                      </Link>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          deleteCampaign(x._id);
+                        }}
+                        style={{ verticalAlign: 'middle' }}
+                      >
+                        <DeleteIcon />
                       </button>
                     </div>
-                    <Dropdown isOpen={state.isOpen[k]} toggle={() => toggle(k)}>
+                    {/* <Dropdown isOpen={state.isOpen[k]} toggle={() => toggle(k)}>
                       <DropdownToggle className="toggle-more">
                         ...
                       </DropdownToggle>
@@ -146,7 +187,7 @@ const CampaignList = props => {
                         <DropdownItem>Duplicate</DropdownItem>
                         <DropdownItem>Delete</DropdownItem>
                       </DropdownMenu>
-                    </Dropdown>
+                    </Dropdown> */}
                   </div>
                 </div>
               );

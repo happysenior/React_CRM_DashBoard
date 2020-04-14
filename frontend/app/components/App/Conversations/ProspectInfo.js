@@ -38,7 +38,6 @@ export default function ProspectInfo(props) {
       <div>
         <ProspectSectionWrapper>
           <ProspectProfile
-            prospect={props.prospect}
             changeProspectProperty={props.changeProspectProperty}
             changeLocalProspectProperty={props.changeLocalProspectProperty}
           />

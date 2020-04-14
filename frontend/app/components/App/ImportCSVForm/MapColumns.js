@@ -213,7 +213,13 @@ export default function MapColumns(props) {
   };
 
   const submitCSV = e => {
-    dispatch(csvSubmitAction({ csvFile: props.csvFile, match: state.match }));
+    dispatch(
+      csvSubmitAction({
+        csvFile: props.csvFile,
+        match: state.match,
+        campaign: props.campaign,
+      }),
+    );
   };
 
   const { isSubmitting } = useSelector(stateSelector);

@@ -8,7 +8,7 @@ var isTestEnvironment = process.env.NODE_ENV === "test";
 var _default = {
   name: "real estate crm",
   version: "1.0",
-  host: "localhost" || "127.0.0.1",
+  host: "http://localhost:8000" || "127.0.0.1",
   environment: process.env.NODE_ENV || "development",
   port: (isTestEnvironment ? "8001" : "8000") || "8000",
   pagination: {

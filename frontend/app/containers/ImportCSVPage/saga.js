@@ -23,7 +23,7 @@ import { submitEndAction } from './actions';
 import { CSV_SUBMIT } from './constants';
 import { string } from 'prop-types';
 
-export function* csvSubmit({ payload: { csvFile, match } }) {
+export function* csvSubmit({ payload: { csvFile, match, campaign } }) {
   const api = new ApiEndpoint();
   const auth = new AuthService();
   const token = auth.getToken();
@@ -33,6 +33,7 @@ export function* csvSubmit({ payload: { csvFile, match } }) {
     let csv = new FormData();
     csv.append('csvFile', csvFile);
     csv.append('match', JSON.stringify(match));
+    csv.append('campaign', campaign);
     const response = yield axios.post(requestURL, csv, {
       headers: {
         'Content-Type': 'multipart/form-data',

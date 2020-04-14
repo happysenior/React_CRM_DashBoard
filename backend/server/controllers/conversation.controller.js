@@ -51,9 +51,9 @@ conversationRouter.route("/list").get(async (req, res, next) => {
         prospect: {
           _id: lastConversations[i].prospect._id,
           firstName: lastConversations[i].prospect.firstName,
-          lastName: lastConversations[i].prospect.lastName
+          lastName: lastConversations[i].prospect.lastName,
         },
-        unreadMessage: unreadMessage ? unreadMessage : 0
+        unreadMessage: unreadMessage ? unreadMessage : 0,
       });
     }
     res.send({ success: true, list: result });
@@ -66,7 +66,7 @@ conversationRouter.route("/list").get(async (req, res, next) => {
 conversationRouter.route("/chat/:prospectId").get(async (req, res, next) => {
   try {
     const conversations = await Conversation.find({
-      prospect: Mongoose.Types.ObjectId(req.params.prospectId)
+      prospect: Mongoose.Types.ObjectId(req.params.prospectId),
     }).sort({ createdAt: "asc" });
     res.send({ success: true, chat: conversations });
   } catch (error) {
@@ -83,8 +83,8 @@ conversationRouter
       res.send({
         success: true,
         prospect: {
-          profile: prospect
-        }
+          profile: prospect,
+        },
       });
     } catch (error) {}
   });
@@ -95,7 +95,7 @@ conversationRouter
     try {
       const conversation = new Conversation({
         message: req.body.message,
-        prospect: Mongoose.Types.ObjectId(req.params.prospectId)
+        prospect: Mongoose.Types.ObjectId(req.params.prospectId),
       });
       await conversation.save();
       const prospect = await Prospect.findById(req.params.prospectId);
@@ -103,11 +103,11 @@ conversationRouter
       const signalwireMessage = await client.messages.create({
         from: config.signalwire.messagingNumber,
         body: req.body.message,
-        to: prospect.phone
+        to: prospect.phone,
       });
       res.send({
         success: true,
-        conversation
+        conversation,
       });
     } catch (error) {
       console.log(error);
@@ -120,12 +120,12 @@ conversationRouter.route("/mark/:prospectId").get(async (req, res, next) => {
     await Conversation.updateMany(
       {
         prospect: Mongoose.Types.ObjectId(req.params.prospectId),
-        outgoing: false
+        outgoing: false,
       },
       { $set: { status: "read" } }
     );
     res.send({
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);
@@ -144,7 +144,7 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
       "{{MyFullName}}",
       "{{MyFirstName}}",
       "{{MyPhoneNumber}}",
-      "{{Signature}}"
+      "{{Signature}}",
     ];
     let convertWords = [];
 
@@ -154,11 +154,11 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
     convertWords[3] = user.phone;
 
     await Promise.all(
-      selectedProspectIds.map(async id => {
+      selectedProspectIds.map(async (id) => {
         const conversation = new Conversation({
           message,
           prospect: Mongoose.Types.ObjectId(id),
-          method
+          method,
         });
         await conversation.save();
         const prospect = await Prospect.findById(id);
@@ -177,7 +177,7 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
       })
     );
     res.send({
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);

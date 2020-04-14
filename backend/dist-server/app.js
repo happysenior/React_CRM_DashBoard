@@ -29,9 +29,10 @@ app.use(_express["default"].urlencoded({
   extended: false
 }));
 app.use((0, _cookieParser["default"])());
-app.use(_express["default"]["static"](_path["default"].join(__dirname, "../public/build")));
+app.use("/files", _express["default"]["static"](_path["default"].join(__dirname, "../uploads")));
 app.use("/api", _routes["default"]); // catch 404 and forward to error handler
 
+app.use(_express["default"]["static"](_path["default"].join(__dirname, "../public/build")));
 app.use(function (req, res, next) {
   res.redirect("/"); // var err = new Error("Not Found");
   // err.status = 404;

@@ -1,0 +1,36 @@
+$PRIMARY_BORDER_GREY: #b1b1b1;
+$PRIMARY_BACKGROUND: #fafafb;
+
+.missing-days {
+  padding: 32px 0;
+  color: #b0b0b0;
+  font-size: 18px;
+  letter-spacing: -0.11px;
+  line-height: 27px;
+  text-align: center;
+}
+
+.drag-drop-area {
+  border-radius: 15px;
+  border-color: $PRIMARY_BORDER_GREY;
+  color: $PRIMARY_BORDER_GREY;
+  border-style: dotted;
+  background-color: $PRIMARY_BACKGROUND;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.image-wrapper {
+  position: relative;
+}
+
+.image-clear {
+  position: absolute;
+  top: 10px;
+  left: 165px;
+}

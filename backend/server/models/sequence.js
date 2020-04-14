@@ -1,18 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 
 const EventSchema = new Schema({
-  delay: Number,
+  delay: String,
   notes: String,
   name: String,
   subject: String,
   content: String,
   type: String,
-  attaches: [String],
+  attach: String,
 });
 
 const DaySchema = new Schema({
   runDay: Number,
-  runTime: Number,
+  runTime: String,
   events: [EventSchema],
 });
 

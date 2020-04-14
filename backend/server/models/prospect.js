@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Campaign from "./campaign";
+import campaignRouter from "../controllers/campaign.controller";
 
 const Schema = mongoose.Schema;
 
@@ -10,13 +12,16 @@ const ProspectSchema = new Schema(
     email: { type: String, default: "" },
     status: { type: String, default: "NEW" },
     chatted: { type: Boolean, default: false },
-    campaign: { type: String, default: "" },
+    campaign: {
+      type: Schema.Types.ObjectId,
+      ref: "Campaign",
+    },
     address: { type: String, default: "" },
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );
 
-const validatePresenceOf = value => value && value.length;
+const validatePresenceOf = (value) => value && value.length;
 
 // ProspectSchema.path("firstName").validate(function(name) {
 //   return name.length;
@@ -53,26 +58,17 @@ const validatePresenceOf = value => value && value.length;
 //   }
 // });
 
-const fields = [
-  "firstName",
-  "lastName",
-  "phone",
-  "email",
-  "status",
-  "campaign",
-];
+const fields = ["firstName", "lastName", "phone", "email", "status"];
 
 ProspectSchema.methods = {};
 
 ProspectSchema.statics = {
-  load: function(options, cb) {
+  load: function (options, cb) {
     options.select = options.select || "firstName";
-    return this.findOne(options.criteria)
-      .select(options.select)
-      .exec(cb);
+    return this.findOne(options.criteria).select(options.select).exec(cb);
   },
 
-  findByFilters: function(options) {
+  findByFilters: function (options) {
     let where = {};
 
     const { filters, searchKey } = options;
@@ -85,7 +81,7 @@ ProspectSchema.statics = {
         } else if (filters[i].rule == "contains") {
           where = {
             ...where,
-            [filters[i].key]: new RegExp(filters[i].value, "i")
+            [filters[i].key]: new RegExp(filters[i].value, "i"),
           };
         } else if (filters[i].rule == "not contains") {
           where = {
@@ -93,7 +89,7 @@ ProspectSchema.statics = {
             [filters[i].key]: new new RegExp(
               `^((?!${filters[i].value}).)*$`,
               "i"
-            )()
+            )(),
           };
         }
       }
@@ -103,16 +99,16 @@ ProspectSchema.statics = {
       for (let i = 0; i < fields.length; i++) {
         searchWhere = [
           ...searchWhere,
-          { [fields[i]]: new RegExp(`${searchKey}`, "i") }
+          { [fields[i]]: new RegExp(`${searchKey}`, "i") },
         ];
       }
     }
     const query = this.find(where);
-    if (searchKey) return query.or(searchWhere);
-    return query;
+    if (searchKey) return query.or(searchWhere).populate("campaign");
+    return query.populate("campaign");
   },
 
-  assignCampaign: async function(options) {
+  assignCampaign: async function (options) {
     let query = this.find();
     if (options.checkAll) {
       query = this.findByFilters(options);
@@ -124,13 +120,13 @@ ProspectSchema.statics = {
       {},
       {
         $set: {
-          campaign: options.campaign
-        }
+          campaign: options.campaign,
+        },
       }
     );
   },
 
-  assignStatus: async function(options) {
+  assignStatus: async function (options) {
     let query = this.find();
     if (options.checkAll) {
       query = this.findByFilters(options);
@@ -142,13 +138,13 @@ ProspectSchema.statics = {
       {},
       {
         $set: {
-          status: options.status
-        }
+          status: options.status,
+        },
       }
     );
   },
 
-  deleteProspects: async function(options) {
+  deleteProspects: async function (options) {
     let query = this.find();
     if (options.checkAll) {
       query = this.findByFilters(options);
@@ -159,7 +155,7 @@ ProspectSchema.statics = {
     const prospects = await query.deleteMany({});
   },
 
-  updateProspect: async function(id, options) {
+  updateProspect: async function (id, options) {
     // let prospect = await this.findByIdAndUpdate(id, {
     //   [options.field]: options.value
     // });
@@ -170,7 +166,7 @@ ProspectSchema.statics = {
       { [options.field]: options.value }
     );
     console.log(prospect);
-  }
+  },
 };
 
 export default mongoose.model("Prospect", ProspectSchema);

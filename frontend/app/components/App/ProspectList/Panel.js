@@ -68,7 +68,11 @@ export default class Panel extends React.Component {
                       />
                     </div>
                     <div className="w-20">{`${prospect.firstName} ${prospect.lastName}`}</div>
-                    <div className="w-33">{prospect.campaign}</div>
+                    <div className="w-33">
+                      {prospect.campaign && prospect.campaign.name ? (
+                        <span>{prospect.campaign.name}</span>
+                      ) : null}
+                    </div>
                     <div className="w-14">
                       <span className={className}>{prospect.status}</span>
                     </div>

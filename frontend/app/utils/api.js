@@ -166,4 +166,28 @@ export default class ApiEndpoint {
   getRenameCampaignPath = campaignId => {
     return `${BASE_URL}${CAMPAIGNS_PATH}/${campaignId}`;
   };
+
+  getUploadFilePath = () => {
+    return `${BASE_URL}/api/uploads`;
+  };
+
+  getUpdateSequencePath = sequenceId => {
+    return `${BASE_URL}${SEQUENCE_PATH}/${sequenceId}`;
+  };
+
+  getAllCampaignsPath = () => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}`;
+  };
+
+  getCampaignsAggregationPath = () => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}/aggregation`;
+  };
+
+  getDeleteCampaignPath = campaignId => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}/${campaignId}`;
+  };
+
+  getLoadCampaignStatisticPath = campaignId => {
+    return `${BASE_URL}${CAMPAIGNS_PATH}/statistic/${campaignId}`;
+  }
 }

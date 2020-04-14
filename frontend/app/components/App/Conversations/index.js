@@ -109,7 +109,6 @@ const Conversations = props => {
       <ConversationsRootWrapper>
         <Chat chat={chat} prospect={prospect} sendMessage={sendMessage} />
         <ProspectInfo
-          prospect={prospect}
           changeProspectProperty={changeProspectProperty}
           changeLocalProspectProperty={changeLocalProspectProperty}
         />

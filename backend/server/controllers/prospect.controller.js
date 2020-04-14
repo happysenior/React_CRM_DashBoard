@@ -9,21 +9,21 @@ import Prospect from "../models/prospect";
 import phone from "phone";
 
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "uploads");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     const fName = file.fieldname + "-" + Date.now() + ".csv";
     cb(null, fName);
-  }
+  },
 });
 
 const csvUpload = multer({
   storage,
   limits: { fileSize: 2000000 },
-  fileFilter: function(req, file, cb) {
+  fileFilter: function (req, file, cb) {
     checkCSV(file, cb);
-  }
+  },
 });
 
 function checkCSV(file, cb) {
@@ -44,7 +44,7 @@ prospectRouter
   .post(
     [
       check("csvFile").exists({ checkNull: false }),
-      check("match").exists({ checkNull: false })
+      check("match").exists({ checkNull: false }),
     ],
     csvUpload.single("csvFile"),
     async (req, res, next) => {
@@ -56,15 +56,19 @@ prospectRouter
           }
           let csv = await neatCsv(data);
           const match = JSON.parse(req.body.match);
+          let campaign = req.body.campaign;
           await Promise.all(
-            csv.map(async item => {
+            csv.map(async (item) => {
               let phoneNum = match.phone ? phone(item[match.phone])[0] : "";
-              const feed = {
+              let feed = {
                 firstName: match.firstName ? item[match.firstName] : "",
                 lastName: match.lastName ? item[match.lastName] : "",
                 phone: match.phone ? phoneNum : "",
-                email: "testuser@gmail.com"
+                email: "testuser@gmail.com",
               };
+              if (campaign != undefined && campaign != "") {
+                feed = { ...feed, campaign };
+              }
               const prospect = new Prospect(feed);
               await prospect.save();
             })
@@ -83,8 +87,33 @@ prospectRouter.route("/read").post(async (req, res, next) => {
   try {
     let prospects = await Prospect.findByFilters({
       filters: req.body.filters,
-      searchKey: req.body.searchKey
+      searchKey: req.body.searchKey,
     });
+
+    const campaignFilter = req.body.filters.find((x) => x.key == "campaign");
+    if (campaignFilter != undefined && campaignFilter.value != "") {
+      prospects = prospects.filter((x) => {
+        if (x.campaign && x.campaign.name) {
+          if (campaignFilter.rule == "is") {
+            if (x.campaign.name == campaignFilter.value) return true;
+          } else if (campaignFilter.rule == "contains") {
+            if (new RegExp(campaignFilter, "i").test(x.campaign.name))
+              return true;
+            return false;
+          } else if (campaignFilter == "not contains") {
+            if (
+              new new RegExp(`^((?!${campaignFilter.value}).)*$`, "i").test(
+                x.campaign.name
+              )
+            )
+              return true;
+            return false;
+          }
+        }
+        return false;
+      });
+    }
+
     const totalProspects = prospects.length;
     const lastPage = Math.ceil(totalProspects / 15);
     prospects = prospects.filter((x, i) => {
@@ -94,7 +123,7 @@ prospectRouter.route("/read").post(async (req, res, next) => {
       success: true,
       prospects,
       totalProspects,
-      lastPage
+      lastPage,
     });
   } catch (error) {
     console.log(error);
@@ -107,7 +136,7 @@ prospectRouter.route("/:id").get(async (req, res, next) => {
     const prospect = await Prospect.findById(req.params.id);
     res.send({
       success: true,
-      prospect
+      prospect,
     });
   } catch (error) {
     console.log(error);
@@ -119,7 +148,7 @@ prospectRouter.route("/bulkedit/campaign").put(async (req, res, next) => {
   try {
     await Prospect.assignCampaign(req.body);
     res.status(200).json({
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);
@@ -131,7 +160,7 @@ prospectRouter.route("/bulkedit/status").put(async (req, res, next) => {
   try {
     await Prospect.assignStatus(req.body);
     res.status(200).json({
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);
@@ -143,7 +172,7 @@ prospectRouter.route("/bulkedit/delete").delete(async (req, res, next) => {
   try {
     await Prospect.deleteProspects(req.body);
     res.status(200).json({
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);
@@ -155,7 +184,7 @@ prospectRouter.route("/:id/update").put(async (req, res, next) => {
   try {
     await Prospect.updateProspect(req.params.id, req.body);
     res.status(200).json({
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);

@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useReducer } from 'react-redux';
 
 import Select from 'react-select';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap';
 import IOSSwitch from './SwitchButton';
 import { assignStatus } from '../../../containers/ProspectPage/saga';
+
+import ApiEndpoint from 'utils/api';
+import AuthService from 'services/auth.service';
+import request from 'utils/request';
+
+const auth = new AuthService();
+const token = auth.getToken();
+const api = new ApiEndpoint();
 
 const CampaignModal = props => {
   const toggle = props.modalToggle;
@@ -15,11 +23,8 @@ const CampaignModal = props => {
     waiting: false,
   });
 
-  const options = [
-    { value: 'welend', label: 'welend' },
-    { value: 'labroker2', label: 'LABROKER2' },
-  ];
-
+  const [options, setOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = () => {
     setState(prevState => ({
       ...prevState,
@@ -46,6 +51,36 @@ const CampaignModal = props => {
     });
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      const url = api.getAllCampaignsPath();
+      try {
+        const res = await request(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.campaigns) {
+          return res.campaigns.map(x => {
+            return {
+              value: x._id,
+              label: x.name,
+            };
+          });
+        }
+      } catch (err) {}
+    }
+    setIsLoading(true);
+    fetchData().then(x => {
+      setOptions(x);
+      setIsLoading(false);
+    });
+  }, []);
+
   return (
     <div>
       <Modal isOpen={true} toggle={toggle} centered={true}>
@@ -57,7 +92,11 @@ const CampaignModal = props => {
             <span> prospects to?</span>
           </div>
           <div className="mt-2 h6">Campaigns</div>
-          <Select options={options} onChange={changeCampaign} />
+          <Select
+            options={options}
+            isLoading={isLoading}
+            onChange={changeCampaign}
+          />
           <div className="mt-3 h6">Schedule automatic sequence</div>
           <div className="d-inline-flex">
             <div>

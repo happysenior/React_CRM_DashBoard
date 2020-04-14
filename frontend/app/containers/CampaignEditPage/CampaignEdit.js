@@ -5,6 +5,7 @@ import Sequence from './Sequence';
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import classNames from 'classnames';
 import { useHistory, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import './index.scss';
 
@@ -14,10 +15,12 @@ import request from 'utils/request';
 
 const CampaignEdit = props => {
   let campaignCardStyle = { height: props.sequence ? '230px' : '175px' };
-
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const history = useHistory();
   const { campaignId } = useParams();
 
+  const [statistic, setStatistic] = useState(null);
   const [state, setState] = useState({
     campaign: null,
     sequence: null,
@@ -51,6 +54,26 @@ const CampaignEdit = props => {
           },
           sequence: res.campaign.sequence ? res.campaign.sequence : null,
         });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const loadStatistic = async () => {
+    const url = api.getLoadCampaignStatisticPath(campaignId);
+    try {
+      const res = await request(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res) {
+        setStatistic(res);
       }
     } catch (err) {
       console.log(err);
@@ -110,12 +133,191 @@ const CampaignEdit = props => {
   };
 
   const addDay = () => {
-    let days = state.sequence.days;
-    console.log(days);
+    let sequence = { ...state.sequence };
+
+    let days = sequence.days;
+    let newDay = days.length > 0 ? days[days.length - 1].runDay + 1 : 1;
+
+    sequence.days.push({
+      runDay: newDay,
+      runTime: '09:00',
+      events: [],
+    });
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence: sequence,
+      };
+    });
+  };
+
+  const deleteDay = index => {
+    let sequence = state.sequence;
+    sequence.days = sequence.days.filter((x, k) => {
+      return k != index;
+    });
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence,
+      };
+    });
+  };
+
+  const selectDay = index => {
+    setSelectedEvent(null);
+    setSelectedDay(index);
+  };
+
+  const changeRunDay = (day, value) => {
+    let sequence = state.sequence;
+    sequence.days = sequence.days.map((x, k) => {
+      if (k != day) return x;
+      return {
+        ...x,
+        runDay: value,
+      };
+    });
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence,
+      };
+    });
+  };
+
+  const changeRunTime = (day, value) => {
+    let sequence = state.sequence;
+    sequence.days = sequence.days.map((x, k) => {
+      if (k != day) return x;
+      return {
+        ...x,
+        runTime: value,
+      };
+    });
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence,
+      };
+    });
+  };
+
+  const addEvent = (day, type) => {
+    let sequence = state.sequence;
+    sequence.days = sequence.days.map((x, k) => {
+      if (k != day) return x;
+      let events = x.events;
+      events.push({
+        type,
+        delay: '00:00',
+        notes: '',
+        name: '',
+        subject: '',
+        content: '',
+      });
+      return {
+        ...x,
+        events,
+      };
+    });
+
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence,
+      };
+    });
+  };
+
+  const deleteEvent = (day, index) => {
+    let sequence = state.sequence;
+    sequence.days = sequence.days.map((x, k) => {
+      if (k != day) return x;
+      let events = x.events;
+      events = events.filter((y, l) => l != index);
+      return {
+        ...x,
+        events,
+      };
+    });
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence,
+      };
+    });
+  };
+
+  const selectEvent = index => {
+    setSelectedEvent(index);
+  };
+
+  const updateEventProperty = (key, value) => {
+    let sequence = state.sequence;
+    sequence.days = sequence.days.map((x, k) => {
+      if (k != selectedDay) return x;
+      let events = x.events;
+      events = events.map((y, l) => {
+        if (l != selectedEvent) return y;
+        return {
+          ...y,
+          [key]: value,
+        };
+      });
+      return {
+        ...x,
+        events,
+      };
+    });
+    setState(prevState => {
+      return {
+        ...prevState,
+        sequence,
+      };
+    });
+  };
+
+  const fileUpload = file => {
+    const url = api.getUploadFilePath();
+    const formData = new FormData();
+    formData.append('uploadFile', file);
+
+    return axios.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
+  const setImage = imageFile => {
+    return fileUpload(imageFile).then(res => {
+      updateEventProperty('attach', res.data.url);
+    });
+  };
+
+  const saveSequence = async () => {
+    const url = api.getUpdateSequencePath(state.sequence._id);
+    try {
+      const res = await request(url, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(state.sequence),
+      });
+      loadCampaign();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     loadCampaign();
+    loadStatistic();
   }, []);
 
   return (
@@ -180,7 +382,7 @@ const CampaignEdit = props => {
                       </div>
                     </div>
                   </div>
-                  {state.statistic ? (
+                  {statistic ? (
                     <div className="row mt-2">
                       <div className="col-3">
                         <div
@@ -192,9 +394,12 @@ const CampaignEdit = props => {
                               All prospects
                             </h5>
 
-                            <div className="big-number">0</div>
+                            <div className="big-number">
+                              {statistic.allProspects}
+                            </div>
                             <div className="small-number text-danger">
-                              0 (0%)
+                              <span>{statistic.subProspects}</span>
+                              <span>{`(${statistic.prospectPercent}%)`}</span>
                             </div>
                           </div>
                         </div>
@@ -207,9 +412,12 @@ const CampaignEdit = props => {
                           <div className="card-body">
                             <h5 className="card-title text-muted">Messages</h5>
 
-                            <div className="big-number">0</div>
+                            <div className="big-number">
+                              {statistic.allConversations}
+                            </div>
                             <div className="small-number text-danger">
-                              0 (0%)
+                              <span>{statistic.subConversations}</span>
+                              <span>{` (${statistic.conversationPercent}%)`}</span>
                             </div>
                           </div>
                         </div>
@@ -222,9 +430,12 @@ const CampaignEdit = props => {
                           <div className="card-body">
                             <h5 className="card-title text-muted">Responded</h5>
 
-                            <div className="big-number">0</div>
+                            <div className="big-number">
+                              {statistic.allConversations}
+                            </div>
                             <div className="small-number text-danger">
-                              0 (0%)
+                              <span>{statistic.subConversations}</span>
+                              <span>{` (${statistic.respondedPercent}%)`}</span>
                             </div>
                           </div>
                         </div>
@@ -240,10 +451,11 @@ const CampaignEdit = props => {
                             </h5>
 
                             <div className="big-number">
-                              <span>0</span> <span>%</span>
+                              <span>{statistic.responseRate}</span>
+                              <span>%</span>
                             </div>
                             <div className="small-number text-success">
-                              0 (0%)
+                              {`${statistic.responseRate} (${statistic.responseRate}%)`}
                             </div>
                           </div>
                         </div>
@@ -255,6 +467,19 @@ const CampaignEdit = props => {
                   sequence={state.sequence}
                   createSequence={createSequence}
                   addDay={addDay}
+                  deleteDay={deleteDay}
+                  selectDay={selectDay}
+                  selectedDay={selectedDay}
+                  changeRunDay={changeRunDay}
+                  changeRunTime={changeRunTime}
+                  addEvent={addEvent}
+                  deleteEvent={deleteEvent}
+                  selectEvent={selectEvent}
+                  selectedEvent={selectedEvent}
+                  updateEventProperty={updateEventProperty}
+                  setImage={setImage}
+                  saveSequence={saveSequence}
+                  loadCampaign={loadCampaign}
                 />
               </div>
             ) : null}
