@@ -168,12 +168,11 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
           let pattern = new RegExp(templateWords[i], "g");
           message = message.replace(pattern, convertWords[i]);
         }
-        console.log(message);
-        // const signalwireMessage = await client.messages.create({
-        //   from: config.signalwire.messagingNumber,
-        //   body: message,
-        //   to: prospect.phone
-        // });
+        const signalwireMessage = await client.messages.create({
+          from: config.signalwire.messagingNumber,
+          body: message,
+          to: prospect.phone,
+        });
       })
     );
     res.send({

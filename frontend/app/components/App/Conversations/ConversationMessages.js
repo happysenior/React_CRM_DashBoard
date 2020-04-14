@@ -16,6 +16,7 @@ const ConversationMessages = props => {
   useEffect(() => {
     if (messageEnd) {
       messageEnd.scrollIntoView({});
+      props.readMessage();
     }
   });
   return (

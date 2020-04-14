@@ -19,7 +19,8 @@ import {
   TEST,
   RELOAD_CONVERSATION,
   UPDATE_PROSPECT,
-  CHANGE_LOCAL_PPOSPECT
+  CHANGE_LOCAL_PPOSPECT,
+  DECREASE_UNREAD_MESSAGE
 } from './constants';
 
 export function loadListAction() {
@@ -124,6 +125,15 @@ export function changeLocalProspectAction(property) {
     type: CHANGE_LOCAL_PPOSPECT,
     payload: {
       ...property,
+    },
+  };
+}
+
+export function decreaseUnreadMessageAction(prospectId) {
+  return {
+    type: DECREASE_UNREAD_MESSAGE,
+    payload: {
+      prospectId,
     },
   };
 }

@@ -17,6 +17,7 @@ import {
   RECEIVE_NEW_MESSAGE,
   RELOAD_CONVERSATION_COUNT,
   CHANGE_LOCAL_PPOSPECT,
+  DECREASE_UNREAD_MESSAGE,
 } from './constants';
 
 export const initialState = {
@@ -59,6 +60,16 @@ const prospectPageReducer = produce((draft, action) => {
       // draft.selectedProspectId = action.payload.selectedProspectId;
       draft.list = draft.list.map((item, index) => {
         if (item.prospect._id == action.payload.selectedProspectId)
+          return {
+            ...item,
+            unreadMessage: 0,
+          };
+        return item;
+      });
+      break;
+    case DECREASE_UNREAD_MESSAGE:
+      draft.list = draft.list.map((item, index) => {
+        if (item.prospect._id == action.payload.prospectId)
           return {
             ...item,
             unreadMessage: 0,

@@ -15,5 +15,6 @@ export const RELOAD_CONVERSATION = 'app/ConversationPage/reload_conversation';
 export const RELOAD_CONVERSATION_COUNT =
   'app/ConversationPage/reload_conversation_count';
 export const TEST = 'app/ConversationPage/test';
-export const UPDATE_PROSPECT = 'app/ProspectPage/update_prospect';
-export const CHANGE_LOCAL_PPOSPECT = 'app/ProspectPage/change_local_prospect';
+export const UPDATE_PROSPECT = 'app/ConversationPage/update_prospect';
+export const CHANGE_LOCAL_PPOSPECT = 'app/ConversationPage/change_local_prospect';
+export const DECREASE_UNREAD_MESSAGE = 'app/ConversationPage/decrease_unread_message';

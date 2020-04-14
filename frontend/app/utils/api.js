@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'https://desolate-refuge-15487.herokuapp.com';
 const AUTH_PATH = '/api/auth';
 const USERS_PATH = '/api/users';
 const BILLS_PATH = '/api/bills';
@@ -189,5 +189,5 @@ export default class ApiEndpoint {
 
   getLoadCampaignStatisticPath = campaignId => {
     return `${BASE_URL}${CAMPAIGNS_PATH}/statistic/${campaignId}`;
-  }
+  };
 }

@@ -15,6 +15,7 @@ import {
   reloadConversationAction,
   updateProspectAction,
   changeLocalProspectAction,
+  decreaseUnreadMessageAction,
 } from 'containers/ConversationPage/actions';
 
 import { readMessageAction } from 'containers/App/actions';
@@ -73,6 +74,17 @@ const Conversations = props => {
     dispatch(selectProspectAction(prospectId));
   };
 
+  const readMessage = () => {
+    for (let i = 0; i < list.length; i++) {
+      if (selectedProspectId == list[i].prospect._id) {
+        if (list[i].unreadMessage > 0) {
+          dispatch(readMessageAction(list[i].unreadMessage));
+          dispatch(decreaseUnreadMessageAction(selectedProspectId));
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     if (selectedProspectId) {
       goConversation(selectedProspectId);
@@ -107,7 +119,12 @@ const Conversations = props => {
         />
       </ConversationsSidebarWrapper>
       <ConversationsRootWrapper>
-        <Chat chat={chat} prospect={prospect} sendMessage={sendMessage} />
+        <Chat
+          chat={chat}
+          prospect={prospect}
+          sendMessage={sendMessage}
+          readMessage={readMessage}
+        />
         <ProspectInfo
           changeProspectProperty={changeProspectProperty}
           changeLocalProspectProperty={changeLocalProspectProperty}
