@@ -127,7 +127,12 @@ campaignRouter.route("/:id").delete(async (req, res, next) => {
 
 campaignRouter.route("/").get(async (req, res, next) => {
   try {
-    const campaigns = await Campaign.find({});
+    let campaigns = await Campaign.find().populate("sequence");
+    campaigns = campaigns.filter((x) => {
+      if (x.sequence) return true;
+      return false;
+    });
+    
     res.send({ campaigns });
   } catch (error) {
     console.log(error);

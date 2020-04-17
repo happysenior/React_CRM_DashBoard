@@ -23,6 +23,8 @@ var _terminalLink = _interopRequireDefault(require("terminal-link"));
 
 var _socket = require("../socket");
 
+var _cron = _interopRequireDefault(require("../cron"));
+
 function _templateObject() {
   var data = (0, _taggedTemplateLiteral2["default"])(["{green.bold Connected to } {yellow ", "}"]);
 
@@ -63,6 +65,8 @@ function listen() {
   server.on("listening", onListening);
 
   _socket.socketServer.init(server);
+
+  _cron["default"].init();
 }
 
 function connect() {
@@ -131,8 +135,5 @@ function onError(error) {
 
 
 function onListening() {
-  var prefix = "http://";
-  if (process.env.NODE_ENV === "production") prefix = "https://";
-  var link = (0, _terminalLink["default"])(_chalk["default"].green("Server started at "), "".concat(prefix).concat(_config["default"].host, ":").concat(_config["default"].port));
-  log(link);
+  log(_chalk["default"].green("Server started"));
 }

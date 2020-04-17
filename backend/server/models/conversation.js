@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const ConversationSchema = new Schema({
   message: { type: String, default: "" },
   outgoing: { type: Boolean, default: true },
-  method: { type: String, default: "text" },
+  method: { type: String, default: "sms" },
   prospect: { type: Schema.Types.ObjectId, ref: Prospect },
   status: { type: String, default: "delivered" },
   createdAt: { type: Date, default: Date.now },

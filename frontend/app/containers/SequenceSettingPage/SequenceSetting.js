@@ -5,6 +5,10 @@ import ApiEndpoint from 'utils/api';
 import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
+const auth = new AuthService();
+const token = auth.getToken();
+const api = new ApiEndpoint();
+
 export default class SequenceSetting extends React.Component {
   constructor(props) {
     super(props);
@@ -50,10 +54,6 @@ export default class SequenceSetting extends React.Component {
 
   submitSettings = async () => {
     if (this.validCheck()) {
-      const auth = new AuthService();
-      const token = auth.getToken();
-      const api = new ApiEndpoint();
-
       const sequenceId = this.props.match.params.id;
 
       const url = api.getSequenceSettingPath(sequenceId);
@@ -89,6 +89,54 @@ export default class SequenceSetting extends React.Component {
 
   cancel = () => {
     this.props.history.goBack();
+  };
+
+  componentDidMount = () => {
+    this.loadSequence();
+  };
+
+  loadSequence = async () => {
+    const sequenceId = this.props.match.params.id;
+
+    const url = api.getSequenceSettingPath(sequenceId);
+
+    try {
+      const res = await request(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const {
+        title,
+        email,
+        phone,
+        name,
+        isForwardText,
+        stopAfterRespond,
+        start,
+        end,
+        weekendMessage,
+      } = res.sequence;
+
+      this.setState({
+        title: title || '',
+        email: email || '',
+        phone: phone || '',
+        name: name || '',
+        isForwardText: isForwardText != undefined ? isForwardText : false,
+        stopAfterRespond:
+          stopAfterRespond != undefined ? stopAfterRespond : true,
+        start: start || '09:00',
+        end: end || '18:00',
+        weekendMessage: weekendMessage != undefined ? weekendMessage : false,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   render() {

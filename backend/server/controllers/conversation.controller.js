@@ -144,6 +144,7 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
       "{{MyFullName}}",
       "{{MyFirstName}}",
       "{{MyPhoneNumber}}",
+      "{{Address}}",
       "{{Signature}}",
     ];
     let convertWords = [];
@@ -155,19 +156,21 @@ conversationRouter.route("/broadcast").post(async (req, res, next) => {
 
     await Promise.all(
       selectedProspectIds.map(async (id) => {
+        const prospect = await Prospect.findById(id);
+        convertWords[0] = prospect.firstName;
+        convertWords[4] = prospect.address;
+
+        for (let i = 0; i < 5; i++) {
+          let pattern = new RegExp(templateWords[i], "g");
+          message = message.replace(pattern, convertWords[i]);
+        }
+
         const conversation = new Conversation({
           message,
           prospect: Mongoose.Types.ObjectId(id),
           method,
         });
         await conversation.save();
-        const prospect = await Prospect.findById(id);
-        convertWords[0] = prospect.firstName;
-
-        for (let i = 0; i < 4; i++) {
-          let pattern = new RegExp(templateWords[i], "g");
-          message = message.replace(pattern, convertWords[i]);
-        }
         const signalwireMessage = await client.messages.create({
           from: config.signalwire.messagingNumber,
           body: message,

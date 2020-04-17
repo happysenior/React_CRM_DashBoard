@@ -19,9 +19,9 @@ const useStyles = makeStyles(theme => ({
 
 const preservedWords = [
   '{{prospectFirstName}}',
-  '{{campaign}}',
-  '{{myName}}',
-  '{{campaignPhone}}',
+  '{{myNameInSequence}}',
+  '{{sequencePhone}}',
+  '{{Address}}',
 ];
 
 const SmsEdit = props => {

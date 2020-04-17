@@ -16,47 +16,11 @@ const ProspectSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Campaign",
     },
+    dateOfAssignment: { type: Date, default: undefined },
     address: { type: String, default: "" },
   },
   { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
 );
-
-const validatePresenceOf = (value) => value && value.length;
-
-// ProspectSchema.path("firstName").validate(function(name) {
-//   return name.length;
-// }, "first name cannot be blank");
-
-// ProspectSchema.path("lastName").validate(function(name) {
-//   return name.length;
-// }, "last name cannot be blank");
-
-// ProspectSchema.path("phone").validate(function(phone) {
-//   return phone.length;
-// }, "phone cannot be blank");
-
-// ProspectSchema.path("phone").validate(function(phone) {
-//   return new Promise(resolve => {
-//     const Prospect = mongoose.model("Prospect");
-
-//     // Check only when it is a new user or when email field is modified
-//     if (this.isNew || this.isModified("phone")) {
-//       Prospect.find({ phone }).exec((err, prospects) =>
-//         resolve(!err && !prospects.length)
-//       );
-//     } else resolve(true);
-//   });
-// }, "Phone `{VALUE}` already exists");
-
-// ProspectSchema.pre("save", function(next) {
-//   if (!this.isNew) return next();
-
-//   if (!validatePresenceOf(this.phone)) {
-//     next(new Error("Invalid phone"));
-//   } else {
-//     next();
-//   }
-// });
 
 const fields = ["firstName", "lastName", "phone", "email", "status"];
 
@@ -121,6 +85,7 @@ ProspectSchema.statics = {
       {
         $set: {
           campaign: options.campaign,
+          status: "NEW",
         },
       }
     );
@@ -156,15 +121,16 @@ ProspectSchema.statics = {
   },
 
   updateProspect: async function (id, options) {
-    // let prospect = await this.findByIdAndUpdate(id, {
-    //   [options.field]: options.value
-    // });
-    console.log(id);
-    console.log(options);
     let prospect = await this.findOneAndUpdate(
       { _id: id },
       { [options.field]: options.value }
     );
+    if (options.field == "campaign") {
+      await this.findOneAndUpdate(
+        { _id: id },
+        { dateOfAssignment: new Date(), status: "NEW" }
+      );
+    }
     console.log(prospect);
   },
 };

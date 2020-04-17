@@ -67,7 +67,7 @@ prospectRouter
                 email: "testuser@gmail.com",
               };
               if (campaign != undefined && campaign != "") {
-                feed = { ...feed, campaign };
+                feed = { ...feed, campaign, dateOfAssignment: new Date() };
               }
               const prospect = new Prospect(feed);
               await prospect.save();

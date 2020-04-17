@@ -11,6 +11,7 @@ import chalk from "chalk";
 import config from "../config/config";
 import terminalLink from "terminal-link";
 import { socketServer } from "../socket";
+import cronJobs from "../cron";
 
 const log = console.log;
 const connection = connect();
@@ -47,13 +48,14 @@ function listen() {
   server.on("listening", onListening);
 
   socketServer.init(server);
+  cronJobs.init();
 }
 
 function connect() {
   var options = {
     keepAlive: 1,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   };
   mongoose.connect(config.db.host, options);
   mongoose.set("useFindAndModify", false);
@@ -112,11 +114,5 @@ function onError(error) {
  */
 
 function onListening() {
-  var prefix = "http://";
-  if (process.env.NODE_ENV === "production") prefix = "https://";
-  const link = terminalLink(
-    chalk.green(`Server started at `),
-    `${prefix}${config.host}:${config.port}`
-  );
-  log(link);
+  log(chalk.green(`Server started`));
 }

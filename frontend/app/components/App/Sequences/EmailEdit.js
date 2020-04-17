@@ -1,4 +1,7 @@
 import React from 'react';
+import EmailIcon from '@material-ui/icons/Email';
+import BackupIcon from '@material-ui/icons/Backup';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 
 const EmailEdit = props => {
   return (

@@ -9,6 +9,7 @@ const templateWords = [
   '{{MyFullName}}',
   '{{MyFirstName}}',
   '{{MyPhoneNumber}}',
+  '{{Address}}',
   '{{Signature}}',
 ];
 
@@ -17,7 +18,7 @@ const templateWordDescriptions = [
   ` - You full name`,
   ` - Your first name`,
   ` - Your system phone number`,
-  ` - Account signature. (edit at account settings)`,
+  ` - Prospect's address`,
   ` - Account signature. (edit at account settings)`,
 ];
 
