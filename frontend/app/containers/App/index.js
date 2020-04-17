@@ -28,6 +28,7 @@ import CampaignPage from 'containers/CampaignPage/Loadable';
 import CampaignCreatePage from 'containers/CampaignCreatePage/Loadable';
 import CampaignEditPage from 'containers/CampaignEditPage/Loadable';
 import SequenceSettingPage from 'containers/SequenceSettingPage/Loadable';
+import ProspectCreatePage from 'containers/ProspectCreatePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 // Import Components
@@ -63,6 +64,7 @@ export default function App(props) {
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
+        <PrivateRoute path="/prospects/create" component={ProspectCreatePage} />
         <PrivateRoute path="/prospects/import" component={ImportCSVPage} />
         <PrivateRoute path="/broadcast" component={BroadcastPage} />
         <PrivateRoute path="/prospects" component={ProspectPage} />

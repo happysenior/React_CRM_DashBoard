@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInjectSaga } from 'utils/injectSaga';
 
@@ -58,6 +59,8 @@ const Toolbar = props => {
     open: false,
   });
 
+  let history = useHistory();
+
   const toggleBulkEdit = () => setBulkEditDropdownOpen(prevState => !prevState);
   const toggleActions = () => setActionsDropdownOpen(prevState => !prevState);
 
@@ -71,6 +74,10 @@ const Toolbar = props => {
 
   const handleImportCSV = () => {
     dispatch(goImportCSVAction());
+  };
+
+  const handlCreateProspect = () => {
+    history.push('/prospects/create');
   };
 
   const modalToggle = () => {
@@ -167,7 +174,7 @@ const Toolbar = props => {
             help="To prospects who match these filter"
           />
         </DropdownItem>
-        <DropdownItem>
+        <DropdownItem onClick={handlCreateProspect}>
           <ToolbarMenuItem title="Add new prospect" help="" />
         </DropdownItem>
 

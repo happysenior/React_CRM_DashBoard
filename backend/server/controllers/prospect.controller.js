@@ -180,6 +180,17 @@ prospectRouter.route("/bulkedit/delete").delete(async (req, res, next) => {
   }
 });
 
+prospectRouter.route("/").post(async (req, res, next) => {
+  try {
+    const prospect = new Prospect(req.body);
+    await prospect.save();
+    res.send({ status: true });
+  } catch (error) {
+    console.log(error);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
+});
+
 prospectRouter.route("/:id/update").put(async (req, res, next) => {
   try {
     await Prospect.updateProspect(req.params.id, req.body);

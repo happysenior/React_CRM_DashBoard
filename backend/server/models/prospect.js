@@ -16,6 +16,7 @@ const ProspectSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Campaign",
     },
+    autoSequence: { type: Boolean, default: true },
     dateOfAssignment: { type: Date, default: undefined },
     address: { type: String, default: "" },
   },
