@@ -6,7 +6,6 @@ import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
 const auth = new AuthService();
-const token = auth.getToken();
 const api = new ApiEndpoint();
 
 const message = [
@@ -36,6 +35,8 @@ export default class GetNumber extends React.Component {
     this.setState({ areaCode: event.target.value, stage });
     if (stage == 0) return;
     const url = api.getNumberAvailabilityPath();
+    const token = auth.getToken();
+
     try {
       this.setState(prevState => {
         return {
@@ -72,6 +73,8 @@ export default class GetNumber extends React.Component {
   getNewNumber = async () => {
     if (this.state.areaCode == '' || this.state.stage != 3) return;
     const url = api.getNewNumberPath();
+    const token = auth.getToken();
+
     try {
       const res = await request(url, {
         method: 'POST',

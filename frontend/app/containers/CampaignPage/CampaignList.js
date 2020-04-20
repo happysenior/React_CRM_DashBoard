@@ -16,7 +16,6 @@ import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
 const auth = new AuthService();
-const token = auth.getToken();
 const api = new ApiEndpoint();
 
 const headers = [
@@ -51,6 +50,8 @@ const CampaignList = props => {
 
   const loadCampaigns = async () => {
     const url = api.getCampaignsAggregationPath();
+    const token = auth.getToken();
+
     try {
       const res = await request(url, {
         method: 'GET',
@@ -70,6 +71,8 @@ const CampaignList = props => {
 
   const deleteCampaign = async campaignId => {
     const url = api.getDeleteCampaignPath(campaignId);
+    const token = auth.getToken();
+
     try {
       const res = await request(url, {
         method: 'DELETE',

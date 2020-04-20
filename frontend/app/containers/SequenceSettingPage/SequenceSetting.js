@@ -6,7 +6,6 @@ import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
 const auth = new AuthService();
-const token = auth.getToken();
 const api = new ApiEndpoint();
 
 export default class SequenceSetting extends React.Component {
@@ -57,6 +56,7 @@ export default class SequenceSetting extends React.Component {
       const sequenceId = this.props.match.params.id;
 
       const url = api.getSequenceSettingPath(sequenceId);
+      const token = auth.getToken();
 
       try {
         const res = await request(url, {
@@ -99,6 +99,7 @@ export default class SequenceSetting extends React.Component {
     const sequenceId = this.props.match.params.id;
 
     const url = api.getSequenceSettingPath(sequenceId);
+    const token = auth.getToken();
 
     try {
       const res = await request(url, {

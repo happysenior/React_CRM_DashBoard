@@ -43,7 +43,6 @@ import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
 const auth = new AuthService();
-const token = auth.getToken();
 const api = new ApiEndpoint();
 
 class ProspectProfile extends React.Component {
@@ -73,6 +72,8 @@ class ProspectProfile extends React.Component {
 
   loadCampaigns = async () => {
     const url = api.getAllCampaignsPath();
+    const token = auth.getToken();
+
     try {
       const res = await request(url, {
         method: 'GET',

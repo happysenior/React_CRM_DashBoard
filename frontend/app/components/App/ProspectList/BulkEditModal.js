@@ -11,11 +11,11 @@ import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
 const auth = new AuthService();
-const token = auth.getToken();
 const api = new ApiEndpoint();
 
 const CampaignModal = props => {
   const toggle = props.modalToggle;
+  const token = auth.getToken();
 
   const [state, setState] = useState({
     campaign: '',

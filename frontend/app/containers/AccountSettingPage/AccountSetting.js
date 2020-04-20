@@ -7,7 +7,6 @@ import AuthService from 'services/auth.service';
 import request from 'utils/request';
 
 const auth = new AuthService();
-const token = auth.getToken();
 const api = new ApiEndpoint();
 
 export default class AccountSetting extends React.Component {
@@ -52,6 +51,7 @@ export default class AccountSetting extends React.Component {
 
   submit = async () => {
     if (this.validCheck()) {
+      const token = auth.getToken();
       const url = api.getUsersDetailPath(auth.getUserId());
 
       try {
@@ -80,7 +80,10 @@ export default class AccountSetting extends React.Component {
 
   loadUserInfo = async () => {
     const url = api.getUsersDetailPath(auth.getUserId());
+    const token = auth.getToken();
+
     console.log(url);
+    console.log(token);
     try {
       const res = await request(url, {
         method: 'GET',
