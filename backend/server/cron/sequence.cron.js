@@ -16,7 +16,9 @@ const sequenceEventsCron = new CronJob("*/60 * * * * *", async function () {
   const now = moment().toDate();
   const current = moment(now).format("HH:mm");
   const currentInMinutes = getIntegerMinutes(current);
-  // console.log("cron started");
+
+  console.log("cron started");
+
   try {
     const campaigns = await Campaign.find().populate("sequence");
 
@@ -28,6 +30,7 @@ const sequenceEventsCron = new CronJob("*/60 * * * * *", async function () {
         const runTime = day.runTime;
         if (runDay == undefined || runTime == "" || runTime == undefined)
           continue;
+
         for (let j = 0; j < day.events.length; j++) {
           const event = day.events[j];
           if (
@@ -37,17 +40,26 @@ const sequenceEventsCron = new CronJob("*/60 * * * * *", async function () {
             event.delay == ""
           )
             continue;
-          const delayTime =
-            getIntegerMinutes(runTime) + getIntegerMinutes(event.delay);
-          if (currentInMinutes != delayTime) continue;
 
-          const start = moment(now)
-            .subtract(runDay, "days")
-            .format("YYYY-MM-DD 00:00:00");
-          const end = moment(now)
-            .subtract(runDay - 1, "days")
-            .format("YYYY-MM-DD 00:00:00");
-          const prospects = await Prospect.find({
+          let prospects = [];
+          let start, end;
+
+          if (runDay == 1) {
+            start = now.getTime() - getIntegerMinutes(event.delay) * 60 * 1000;
+            end = start + 60 * 1000;
+          } else {
+            const delayTime =
+              getIntegerMinutes(runTime) + getIntegerMinutes(event.delay);
+            if (currentInMinutes != delayTime) continue;
+            start = moment(now)
+              .subtract(runDay - 1, "days")
+              .format("YYYY-MM-DD 00:00:00");
+            end = moment(now)
+              .subtract(runDay - 2, "days")
+              .format("YYYY-MM-DD 00:00:00");
+          }
+
+          prospects = await Prospect.find({
             campaign: campaign._id,
             dateOfAssignment: { $gte: new Date(start), $lt: new Date(end) },
           });

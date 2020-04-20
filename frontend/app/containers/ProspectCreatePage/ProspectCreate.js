@@ -221,9 +221,10 @@ const ProspectCreate = props => {
             sequence
           </Explanation>
           <Switch
-            checked={true}
-            onChange={value => {
-              changeState('autoSequence', value);
+            checked={state.autoSequence}
+            onChange={event => {
+              event.persist();
+              changeState('autoSequence', event.target.checked);
             }}
             name="autoSequence"
             color="primary"

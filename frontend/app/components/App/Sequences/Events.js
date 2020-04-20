@@ -45,44 +45,46 @@ const Events = props => {
         ) : null}
         {props.sequence.days.length > 0 && props.selectedDay != null ? (
           <React.Fragment>
-            <form
-              className="form-inline mb-4 event-settings"
-              onSubmit={e => {
-                e.preventDefault();
-              }}
-            >
-              <label htmlFor="run_on_day" className="mr-4">
-                Run on day
-              </label>
-              <input
-                type="number"
-                id="run_on_day"
-                name="run_on_day"
-                className="form-control mb-2 mr-sm-4"
-                style={{ width: '55px' }}
-                min={1}
-                value={props.sequence.days[props.selectedDay].runDay}
-                onChange={e => {
-                  props.changeRunDay(props.selectedDay, e.target.value);
+            {props.selectedDay > 0 ? (
+              <form
+                className="form-inline mb-4 event-settings"
+                onSubmit={e => {
+                  e.preventDefault();
                 }}
-              />
-              <TextField
-                id="time"
-                label="at"
-                type="time"
-                defaultValue={props.sequence.days[props.selectedDay].runTime}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 300, // 5 min
-                }}
-                onChange={e => {
-                  props.changeRunTime(props.selectedDay, e.target.value);
-                }}
-              />
-            </form>
+              >
+                <label htmlFor="run_on_day" className="mr-4">
+                  Run on day
+                </label>
+                <input
+                  type="number"
+                  id="run_on_day"
+                  name="run_on_day"
+                  className="form-control mb-2 mr-sm-4"
+                  style={{ width: '55px' }}
+                  min={1}
+                  value={props.sequence.days[props.selectedDay].runDay}
+                  onChange={e => {
+                    props.changeRunDay(props.selectedDay, e.target.value);
+                  }}
+                />
+                <TextField
+                  id="time"
+                  label="at"
+                  type="time"
+                  defaultValue={props.sequence.days[props.selectedDay].runTime}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 300, // 5 min
+                  }}
+                  onChange={e => {
+                    props.changeRunTime(props.selectedDay, e.target.value);
+                  }}
+                />
+              </form>
+            ) : null}
             <div className="add-new-event">
               <div
                 id="popover"

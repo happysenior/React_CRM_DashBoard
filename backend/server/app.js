@@ -21,8 +21,14 @@ app.use("/api", routes);
 // catch 404 and forward to error handler
 app.use(express.static(path.join(__dirname, "../public/build")));
 
-app.use(function (req, res, next) {
-  res.redirect("/");
+app.use(function (err, req, res, next) {
+  if (err) {
+    console.log(err);
+    console.log("that's ok");
+    res.status(500).end();
+  } else {
+    res.redirect("/");
+  }
   // var err = new Error("Not Found");
   // err.status = 404;
   // next(err);

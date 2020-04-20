@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -14,6 +14,8 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import {
   Navbar,
   Nav,
@@ -40,6 +42,9 @@ import {
   loadProspectAction,
   reloadConversationAction,
 } from 'containers/ConversationPage/actions';
+import { Button } from 'reactstrap';
+
+import AuthService from 'services/auth.service.js';
 
 const EmptyLogo = styled.div`
   width: 40px;
@@ -69,11 +74,17 @@ const stateSelector = createStructuredSelector({
 export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
-  const toggle = () => setDropdownOpen(prevState => !prevState);
-
+  const history = useHistory();
+  const toggle = () => {
+    console.log(dropdownOpen);
+    setDropdownOpen(prevState => !prevState);
+  };
   useInjectSaga({ key, saga });
   useInjectReducer({ key, reducer });
 
+  const auth = new AuthService();
+  const firstName = auth.getUserFirstName();
+  const lastName = auth.getUserLastName();
   const { unreadMessage } = useSelector(stateSelector);
   const notifications = 0;
   const appointments = 0;
@@ -173,8 +184,25 @@ export default function Header() {
                   <AccountCircleIcon fontSize="large" />
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem onClick={handleLogout}>Log out</DropdownItem>
+                  <DropdownItem className="font-weight-bold">
+                    {`${firstName} ${lastName}`}
+                  </DropdownItem>
+
                   <DropdownItem divider />
+
+                  <DropdownItem
+                    onClick={() => {
+                      history.push('/preferences/general');
+                    }}
+                  >
+                    <PersonOutlineIcon />
+                    Account Setting
+                  </DropdownItem>
+
+                  <DropdownItem onClick={handleLogout}>
+                    <PowerSettingsNewIcon />
+                    Log out
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </NavItem>

@@ -33,10 +33,17 @@ app.use("/files", _express["default"]["static"](_path["default"].join(__dirname,
 app.use("/api", _routes["default"]); // catch 404 and forward to error handler
 
 app.use(_express["default"]["static"](_path["default"].join(__dirname, "../public/build")));
-app.use(function (req, res, next) {
-  res.redirect("/"); // var err = new Error("Not Found");
+app.use(function (err, req, res, next) {
+  if (err) {
+    console.log(err);
+    console.log("that's ok");
+    res.status(500).end();
+  } else {
+    res.redirect("/");
+  } // var err = new Error("Not Found");
   // err.status = 404;
   // next(err);
+
 });
 var _default = app;
 exports["default"] = _default;

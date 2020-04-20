@@ -29,6 +29,10 @@ var UserSchema = new Schema({
     type: String,
     "default": ""
   },
+  systemPhone: {
+    type: String,
+    "default": ""
+  },
   hashedPassword: {
     type: String,
     "default": ""
@@ -36,6 +40,10 @@ var UserSchema = new Schema({
   salt: {
     type: String,
     "default": ""
+  },
+  role: {
+    type: String,
+    "default": "user"
   }
 });
 

@@ -6,44 +6,46 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   email: {
     type: String,
-    default: ""
+    default: "",
   },
   firstName: { type: String, default: "" },
   lastName: { type: String, default: "" },
-  phone: { type: String, default: ""},
+  phone: { type: String, default: "" },
+  systemPhone: { type: String, default: "" },
   hashedPassword: {
     type: String,
-    default: ""
+    default: "",
   },
-  salt: { type: String, default: "" }
+  salt: { type: String, default: "" },
+  role: { type: String, default: "user" },
 });
 
-const validatePresenceOf = value => value && value.length;
+const validatePresenceOf = (value) => value && value.length;
 
 UserSchema.virtual("password")
-  .set(function(password) {
+  .set(function (password) {
     this._password = password;
     this.salt = this.makeSalt();
     this.hashedPassword = this.encryptPassword(password);
   })
-  .get(function() {
+  .get(function () {
     return this._password;
   });
 
-UserSchema.path("firstName").validate(function(name) {
+UserSchema.path("firstName").validate(function (name) {
   return name.length;
 }, "first name cannot be blank");
 
-UserSchema.path("lastName").validate(function(name) {
+UserSchema.path("lastName").validate(function (name) {
   return name.length;
 }, "last name cannot be blank");
 
-UserSchema.path("email").validate(function(email) {
+UserSchema.path("email").validate(function (email) {
   return email.length;
 }, "Email cannot be blank");
 
-UserSchema.path("email").validate(function(email) {
-  return new Promise(resolve => {
+UserSchema.path("email").validate(function (email) {
+  return new Promise((resolve) => {
     const User = mongoose.model("User");
 
     // Check only when it is a new user or when email field is modified
@@ -53,11 +55,11 @@ UserSchema.path("email").validate(function(email) {
   });
 }, "Email `{VALUE}` already exists");
 
-UserSchema.path("hashedPassword").validate(function(hashedPassword) {
+UserSchema.path("hashedPassword").validate(function (hashedPassword) {
   return hashedPassword.length && this._password.length;
 }, "Password cannot be blank");
 
-UserSchema.pre("save", function(next) {
+UserSchema.pre("save", function (next) {
   if (!this.isNew) return next();
 
   if (!validatePresenceOf(this.password)) {
@@ -68,15 +70,15 @@ UserSchema.pre("save", function(next) {
 });
 
 UserSchema.methods = {
-  authenticate: function(plainText) {
+  authenticate: function (plainText) {
     return this.encryptPassword(plainText) === this.hashedPassword;
   },
 
-  makeSalt: function() {
+  makeSalt: function () {
     return Math.round(new Date().valueOf() * Math.random()) + "";
   },
 
-  encryptPassword: function(password) {
+  encryptPassword: function (password) {
     if (!password) return "";
     try {
       const hashedPassword = crypto
@@ -87,16 +89,14 @@ UserSchema.methods = {
     } catch (err) {
       throw err;
     }
-  }
+  },
 };
 
 UserSchema.statics = {
-  load: function(options, cb) {
+  load: function (options, cb) {
     options.select = options.select || "firstName";
-    return this.findOne(options.criteria)
-      .select(options.select)
-      .exec(cb);
-  }
+    return this.findOne(options.criteria).select(options.select).exec(cb);
+  },
 };
 
 export default mongoose.model("User", UserSchema);

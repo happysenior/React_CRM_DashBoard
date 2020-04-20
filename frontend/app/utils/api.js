@@ -1,6 +1,7 @@
 const BASE_URL = 'http://localhost:8000';
 const AUTH_PATH = '/api/auth';
 const USERS_PATH = '/api/users';
+const ADMIN_PATH = '/api/admin';
 const BILLS_PATH = '/api/bills';
 const TRANSACTIONS_PATH = '/api/transactions';
 const CURRENCY_PATH = '/api/currency';
@@ -193,5 +194,17 @@ export default class ApiEndpoint {
 
   getLoadCampaignStatisticPath = campaignId => {
     return `${BASE_URL}${CAMPAIGNS_PATH}/statistic/${campaignId}`;
+  };
+
+  getNumberAvailabilityPath = () => {
+    return `${BASE_URL}${USERS_PATH}/number/availability`;
+  };
+
+  getNewNumberPath = () => {
+    return `${BASE_URL}${USERS_PATH}/number/get`;
+  };
+
+  getUsersDetailPath = userId => {
+    return `${BASE_URL}${USERS_PATH}/${userId}`;
   };
 }

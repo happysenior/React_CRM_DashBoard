@@ -34,4 +34,18 @@ export default class AuthService {
     const token = decode(this.getToken());
     return token.id;
   };
+
+  getRole = () => {
+    const token = decode(this.getToken());
+    return token.role;
+  };
+
+  getUserFirstName = () => {
+    const token = decode(this.getToken());
+    return token.firstName;
+  };
+  getUserLastName = () => {
+    const token = decode(this.getToken());
+    return token.lastName;
+  };
 }

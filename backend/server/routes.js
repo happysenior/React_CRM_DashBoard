@@ -6,7 +6,7 @@ import campaignRouter from "./controllers/campaign.controller";
 import sequenceRouter from "./controllers/sequence.controller";
 import webhookRouter from "./controllers/webhook.controller";
 import uploadRouter from "./controllers/upload.controller";
-
+import userRouter from "./controllers/user.controller";
 import AuthHandler from "./middlewares/authHandler.middleware";
 
 const router = Router();
@@ -16,5 +16,6 @@ router.use("/conversations", AuthHandler.authorization, conversationRouter);
 router.use("/campaigns", AuthHandler.authorization, campaignRouter);
 router.use("/sequences", AuthHandler.authorization, sequenceRouter);
 router.use("/uploads", AuthHandler.authorization, uploadRouter);
+router.use("/users", AuthHandler.authorization, userRouter);
 router.use("/webhook", webhookRouter);
 export default router;

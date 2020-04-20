@@ -25,7 +25,9 @@ export function* handleLogged() {
       });
       if (response.success && response.user) {
         yield put(loadAppStateSuccessAction(response));
-        return yield put(push('/prospects'));
+        if (response.user.role == 'admin')
+          return yield put(push('/admin/dashboard'));
+        else return yield put(push('/prospects'));
       }
     } else {
       return yield put(push('/login'));

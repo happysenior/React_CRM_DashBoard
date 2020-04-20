@@ -29,6 +29,8 @@ import CampaignCreatePage from 'containers/CampaignCreatePage/Loadable';
 import CampaignEditPage from 'containers/CampaignEditPage/Loadable';
 import SequenceSettingPage from 'containers/SequenceSettingPage/Loadable';
 import ProspectCreatePage from 'containers/ProspectCreatePage/Loadable';
+import AdminLayout from 'containers/Admin/index.js';
+import AccountSettingPage from 'containers/AccountSettingPage/index.js';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 // Import Components
@@ -57,6 +59,29 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
+function AdminRoute({ component: Component, ...rest }) {
+  const auth = new AuthService();
+  const isLogged = auth.loggedIn();
+  const role = auth.getRole();
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isLogged && role == 'admin' ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/404',
+              state: { from: props.location },
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
 export default function App(props) {
   return (
     <Fragment>
@@ -64,6 +89,7 @@ export default function App(props) {
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/forgot-password" component={ForgotPasswordPage} />
+        <AdminRoute path="/admin" component={AdminLayout} />
         <PrivateRoute path="/prospects/create" component={ProspectCreatePage} />
         <PrivateRoute path="/prospects/import" component={ImportCSVPage} />
         <PrivateRoute path="/broadcast" component={BroadcastPage} />
@@ -79,6 +105,7 @@ export default function App(props) {
         <PrivateRoute path="/campaigns/create" component={CampaignCreatePage} />
         <PrivateRoute path="/campaigns" component={CampaignPage} />
         <PrivateRoute path="/sequences/:id" component={SequenceSettingPage} />
+        <PrivateRoute path="/preferences" component={AccountSettingPage} />
         <Route path="/404" component={NotFoundPage} />
         <Route render={() => <Redirect to="/404" />} />
       </Switch>

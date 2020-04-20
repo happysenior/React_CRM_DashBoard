@@ -23,6 +23,8 @@ var _webhook = _interopRequireDefault(require("./controllers/webhook.controller"
 
 var _upload = _interopRequireDefault(require("./controllers/upload.controller"));
 
+var _user = _interopRequireDefault(require("./controllers/user.controller"));
+
 var _authHandler = _interopRequireDefault(require("./middlewares/authHandler.middleware"));
 
 var router = (0, _express.Router)();
@@ -32,6 +34,7 @@ router.use("/conversations", _authHandler["default"].authorization, _conversatio
 router.use("/campaigns", _authHandler["default"].authorization, _campaign["default"]);
 router.use("/sequences", _authHandler["default"].authorization, _sequence["default"]);
 router.use("/uploads", _authHandler["default"].authorization, _upload["default"]);
+router.use("/users", _authHandler["default"].authorization, _user["default"]);
 router.use("/webhook", _webhook["default"]);
 var _default = router;
 exports["default"] = _default;
