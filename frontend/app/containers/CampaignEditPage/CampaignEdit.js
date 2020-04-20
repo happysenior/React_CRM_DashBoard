@@ -15,8 +15,6 @@ import request from 'utils/request';
 
 const CampaignEdit = props => {
   let campaignCardStyle = { height: props.sequence ? '230px' : '175px' };
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const history = useHistory();
   const { campaignId } = useParams();
 
@@ -25,6 +23,8 @@ const CampaignEdit = props => {
     campaign: null,
     sequence: null,
     modalOpen: false,
+    selectEvent: null,
+    selectedDay: null,
   });
 
   const [newCampaignName, setNewCampaignName] = useState('');
@@ -156,17 +156,25 @@ const CampaignEdit = props => {
     sequence.days = sequence.days.filter((x, k) => {
       return k != index;
     });
+
     setState(prevState => {
       return {
         ...prevState,
         sequence,
+        selectedDay: null,
+        selectedEvent: null,
       };
     });
   };
 
   const selectDay = index => {
-    setSelectedEvent(null);
-    setSelectedDay(index);
+    setState(prevState => {
+      return {
+        ...prevState,
+        selectedEvent: null,
+        selectedDay: index,
+      };
+    });
   };
 
   const changeRunDay = (day, value) => {
@@ -241,6 +249,7 @@ const CampaignEdit = props => {
         events,
       };
     });
+
     setState(prevState => {
       return {
         ...prevState,
@@ -250,16 +259,21 @@ const CampaignEdit = props => {
   };
 
   const selectEvent = index => {
-    setSelectedEvent(index);
+    setState(prevState => {
+      return {
+        ...prevState,
+        selectedEvent: index,
+      };
+    });
   };
 
   const updateEventProperty = (key, value) => {
     let sequence = state.sequence;
     sequence.days = sequence.days.map((x, k) => {
-      if (k != selectedDay) return x;
+      if (k != state.selectedDay) return x;
       let events = x.events;
       events = events.map((y, l) => {
-        if (l != selectedEvent) return y;
+        if (l != state.selectedEvent) return y;
         return {
           ...y,
           [key]: value,
@@ -469,13 +483,13 @@ const CampaignEdit = props => {
                   addDay={addDay}
                   deleteDay={deleteDay}
                   selectDay={selectDay}
-                  selectedDay={selectedDay}
+                  selectedDay={state.selectedDay}
                   changeRunDay={changeRunDay}
                   changeRunTime={changeRunTime}
                   addEvent={addEvent}
                   deleteEvent={deleteEvent}
                   selectEvent={selectEvent}
-                  selectedEvent={selectedEvent}
+                  selectedEvent={state.selectedEvent}
                   updateEventProperty={updateEventProperty}
                   setImage={setImage}
                   saveSequence={saveSequence}

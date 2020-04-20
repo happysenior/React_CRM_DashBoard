@@ -167,7 +167,8 @@ const Events = props => {
                               {k == props.selectedEvent ? (
                                 <div
                                   className="col-sm-2 d-flex align-items-center justify-content-center"
-                                  onClick={() => {
+                                  onClick={event => {
+                                    event.stopPropagation();
                                     props.deleteEvent(
                                       props.selectedDay,
                                       props.selectedEvent,

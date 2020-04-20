@@ -122,17 +122,19 @@ ProspectSchema.statics = {
   },
 
   updateProspect: async function (id, options) {
-    let prospect = await this.findOneAndUpdate(
-      { _id: id },
-      { [options.field]: options.value }
-    );
     if (options.field == "campaign") {
+      let value = options.value;
+      if (value == "") value = undefined;
       await this.findOneAndUpdate(
         { _id: id },
-        { dateOfAssignment: new Date(), status: "NEW" }
+        { campaign: value, dateOfAssignment: new Date(), status: "NEW" }
+      );
+    } else {
+      await this.findOneAndUpdate(
+        { _id: id },
+        { [options.field]: options.value }
       );
     }
-    console.log(prospect);
   },
 };
 

@@ -31,7 +31,8 @@ const Days = props => {
                       {k == props.selectedDay ? (
                         <span
                           className="pull-right pt-3"
-                          onClick={() => {
+                          onClick={event => {
+                            event.stopPropagation();
                             props.deleteDay(k);
                           }}
                         >

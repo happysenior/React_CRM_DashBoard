@@ -45,8 +45,8 @@ const sequenceEventsCron = new CronJob("*/60 * * * * *", async function () {
           let start, end;
 
           if (runDay == 1) {
-            start = now.getTime() - getIntegerMinutes(event.delay) * 60 * 1000;
-            end = start + 60 * 1000;
+            end = now.getTime() - getIntegerMinutes(event.delay) * 60 * 1000;
+            start = end - 60 * 1000;
           } else {
             const delayTime =
               getIntegerMinutes(runTime) + getIntegerMinutes(event.delay);

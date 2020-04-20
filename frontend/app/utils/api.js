@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'https://desolate-refuge-15487.herokuapp.com';
 const AUTH_PATH = '/api/auth';
 const USERS_PATH = '/api/users';
 const ADMIN_PATH = '/api/admin';
