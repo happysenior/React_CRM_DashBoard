@@ -65,12 +65,12 @@ const Conversations = props => {
   );
 
   const goConversation = prospectId => {
-    for (let i = 0; i < list.length; i++) {
-      if (prospectId == list[i].prospect._id) {
-        if (list[i].unreadMessage)
-          dispatch(readMessageAction(list[i].unreadMessage));
-      }
-    }
+    // for (let i = 0; i < list.length; i++) {
+    //   if (prospectId == list[i].prospect._id) {
+    //     if (list[i].unreadMessage)
+    //       dispatch(readMessageAction(list[i].unreadMessage));
+    //   }
+    // }
     dispatch(selectProspectAction(prospectId));
   };
 

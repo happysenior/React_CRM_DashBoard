@@ -63,6 +63,7 @@ prospectRouter
               let feed = {
                 firstName: match.firstName ? item[match.firstName] : "",
                 lastName: match.lastName ? item[match.lastName] : "",
+                address: match.address ? item[match.address] : "",
                 phone: match.phone ? phoneNum : "",
                 email: "testuser@gmail.com",
               };

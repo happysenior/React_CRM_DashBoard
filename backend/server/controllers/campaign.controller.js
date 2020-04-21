@@ -52,27 +52,31 @@ campaignRouter.route("/statistic/:id").get(async (req, res, next) => {
     });
     let responseRate =
       outgoingConversations.length > 0
-        ? subConversations.length / outgoingConversations.length
+        ? Math.ceil(
+            (subConversations.length / outgoingConversations.length) * 10000
+          ) / 100
         : 100;
     if (subConversations.length == 0) responseRate = 0;
-    console.log(allConversations);
     res.send({
       allProspects,
       subProspects: subProspects.length,
-      prospectPercent: Math.ceil(subConversations.length / allProspects),
+      prospectPercent:
+        Math.ceil((subConversations.length / allProspects) * 10000) / 100,
       allConversations: allConversations,
       subConversations: subConversations.length,
       conversationPercent:
         allConversations > 0
-          ? Math.ceil(subConversations.length / allConversations)
+          ? Math.ceil((subConversations.length / allConversations) * 10000) /
+            100
           : 0,
       outgoingConversations: outgoingConversations.length,
       respondedPercent:
         outgoingConversations.length + subConversations.length > 0
           ? Math.ceil(
-              subConversations.length /
-                (outgoingConversations.length + subConversations.length)
-            )
+              (subConversations.length /
+                (outgoingConversations.length + subConversations.length)) *
+                10000
+            ) / 100
           : 0,
       responseRate,
     });
@@ -132,7 +136,7 @@ campaignRouter.route("/").get(async (req, res, next) => {
       if (x.sequence) return true;
       return false;
     });
-    
+
     res.send({ campaigns });
   } catch (error) {
     console.log(error);

@@ -1,5 +1,14 @@
 import React from 'react';
+import moment from 'moment';
 import './index.scss';
+
+const pluralDays = daysAgo => {
+  return daysAgo > 1 ? `${daysAgo} days ago` : `${daysAgo} day ago`;
+};
+
+const pluralHours = hoursAgo => {
+  return hoursAgo > 1 ? `${hoursAgo} hours ago` : `${hoursAgo} hour ago`;
+};
 
 export default class Panel extends React.Component {
   constructor(props) {
@@ -16,6 +25,8 @@ export default class Panel extends React.Component {
   }
 
   render() {
+    const now = moment(new Date());
+
     return (
       <div className="p-3">
         <div className="prospect-table p-3">
@@ -38,6 +49,9 @@ export default class Panel extends React.Component {
           {this.props.prospects
             ? this.props.prospects.map(prospect => {
                 const className = `prospect-${prospect.status.toLowerCase()}`;
+                const createdAt = moment(prospect.createdAt);
+                const daysAgo = now.diff(createdAt, 'days');
+                const hoursAgo = now.diff(createdAt, 'hours');
                 let checked =
                   (this.props.checkAll &&
                     !this.props.selectedProspectIds.includes(prospect._id)) ||
@@ -76,7 +90,13 @@ export default class Panel extends React.Component {
                     <div className="w-14">
                       <span className={className}>{prospect.status}</span>
                     </div>
-                    <div className="w-14">1 day ago</div>
+                    {daysAgo > 0 ? (
+                      <div className="w-14">{pluralDays(daysAgo)}</div>
+                    ) : null}
+                    {daysAgo == 0 ? (
+                      <div className="w-14">{pluralHours(hoursAgo)}</div>
+                    ) : null}
+
                     <div className="w-6"></div>
                   </div>
                 );

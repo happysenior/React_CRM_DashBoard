@@ -128,6 +128,7 @@ const HeaderRows = props => {
             <option value="lastName">Last Name</option>
             <option value="email">Email</option>
             <option value="phone">Phone Number</option>
+            <option value="address">Address</option>
             <option value="notes">Notes</option>
             <option value="dontmatch">Don't match</option>
           </Input>

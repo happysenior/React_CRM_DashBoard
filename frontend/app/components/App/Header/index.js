@@ -76,7 +76,6 @@ export default function Header() {
   const dispatch = useDispatch();
   const history = useHistory();
   const toggle = () => {
-    console.log(dropdownOpen);
     setDropdownOpen(prevState => !prevState);
   };
   useInjectSaga({ key, saga });
