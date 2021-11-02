@@ -73,7 +73,7 @@
     "@material-ui/icons": "4.2.1",
     "@material-ui/styles": "4.1.2",
     "autosuggest-highlight": "^3.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "bootstrap": "^4.4.1",
     "chalk": "2.4.2",
     "classnames": "^2.2.6",
