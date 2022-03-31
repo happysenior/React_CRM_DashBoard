@@ -93,7 +93,7 @@
     "ip": "1.1.5",
     "jwt-decode": "^2.2.0",
     "lodash": "4.17.21",
-    "minimist": "1.2.3",
+    "minimist": "1.2.6",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "notistack": "^0.8.6",
