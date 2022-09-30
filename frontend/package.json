@@ -118,7 +118,7 @@
     "react-tooltip": "^4.0.3",
     "react-trend": "^1.2.5",
     "reactstrap": "^8.4.1",
-    "recharts": "^1.6.2",
+    "recharts": "^2.1.14",
     "redux": "4.0.2",
     "redux-saga": "1.0.5",
     "reselect": "4.0.0",
